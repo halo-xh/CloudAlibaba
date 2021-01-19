@@ -1,5 +1,7 @@
 package com.xh.cloudprovider8002.rest;
 
+import com.xh.cloudprovider8002.service.KafkaOutService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +19,12 @@ public class TestController {
     @Value("${server.port}")
     private String serverPort;
 
+    @Autowired
+    KafkaOutService kafkaOutService;
+
     @RequestMapping("/provider/nacos/{id}")
     public String getServerPort(@PathVariable("id") String id) {
+        kafkaOutService.sayHello("nacos registry , server port : " + serverPort + "\t id: " + id);
         return "nacos registry , server port : " + serverPort + "\t id: " + id;
     }
 
