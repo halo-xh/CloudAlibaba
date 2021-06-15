@@ -1,5 +1,7 @@
-package com.xh.cloudconfig9001.rest;
+package com.xh.cloudconfig7001.rest;
 
+import com.xh.cloudconfig7001.feign.UserService;
+import com.xh.common.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * author  Xiao Hong
@@ -28,6 +31,9 @@ public class TestController {
     @Resource
     private RestTemplate restTemplate;
 
+    @Resource
+    private UserService userService;
+
     @Value("${service-url.service-provider}")
     private String serverURL;
 
@@ -36,5 +42,12 @@ public class TestController {
          return restTemplate.getForObject(serverURL + "/provider/nacos/" + id, String.class);
     }
 
+    @RequestMapping("/consumer/nacos/user")
+    public String getServerPort(){
+        User user = new User();
+        user.setId(1767446417L);
+        user.setBirth(new Date());
+        return userService.getUser(user);
+    }
 
 }

@@ -1,9 +1,9 @@
 package com.xh.cloudprovider8002.rest;
 
+import com.xh.common.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * author  Xiao Hong
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * description
  */
 
+@Slf4j
 @RestController
 public class TestController {
 
@@ -20,6 +21,14 @@ public class TestController {
     @RequestMapping("/provider/nacos/{id}")
     public String getServerPort(@PathVariable("id") String id) {
         return "nacos registry , server port : " + serverPort + "\t id: " + id;
+    }
+
+    @PostMapping("/provider/nacos/user")
+    public String getUser(@RequestBody User user) {
+        log.info(user.toString());
+        user.setId(user.getId() +123L);
+        log.info(user.toString());
+        return user.toString();
     }
 
 }

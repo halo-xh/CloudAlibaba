@@ -5,6 +5,7 @@
 
     <groupId>com.xh</groupId>
     <artifactId>cloud-alibaba</artifactId>
+    <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>cloud-alibaba</name>
     <description>cloud-alibaba-demo</description>
@@ -14,6 +15,7 @@
         <module>cloud-provider-8002</module>
         <module>cloud-consumer-7001</module>
         <module>cloud-config-9001</module>
+        <module>cloud-feign-api</module>
     </modules>
 
     <properties>
@@ -54,6 +56,13 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- feign -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-openfeign</artifactId>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
