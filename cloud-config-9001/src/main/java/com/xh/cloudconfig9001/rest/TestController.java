@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RefreshScope
 public class TestController {
 
-    @Value("${config.xh}")
+    @Value("${server.port}")
     private String config;
 
     @RequestMapping("/config/info")

@@ -1,0 +1,36 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: cloud-config
+  profiles:
+    active: dev
+
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:9848
+        file-extension: yml
+        namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
+        group: APP_GROUP # set default group
+        # AP config , use upper default group
+        ext-config[2]:
+          data-id: cloud-config.yml
+        # common config
+        ext-config[0]:
+          group: SHARED_GROUP
+          data-id: cloud-stream.yml, datasource-mysql.yml, jackson.yml, JPA.yml
+          # 强制自动刷新
+          refresh: true
+        # 不会自动刷新
+        ext-config[1]:
+          group: SHARED_GROUP
+          data-id: JPA.yml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+

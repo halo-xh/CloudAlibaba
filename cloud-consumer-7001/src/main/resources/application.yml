@@ -1,23 +1,23 @@
 server:
   port: 7001
-spring:
-  application:
-    name: cloud-consumer
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
-    stream:
-      bindings:
-        input:
-          kafka:
-            binder:
-              zk-nodes: 127.0.0.1:2128
-              brokers: 127.0.0.1:9092
-            bindings:
-              input:
-                consumer: test_stream
-#                  ## 所有服务都可发送 dlq
+#spring:
+#  application:
+#    name: cloud-consumer
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: 127.0.0.1:9848
+#    stream:
+#      bindings:
+#        input:
+#          kafka:
+#            binder:
+#              zk-nodes: 127.0.0.1:2128
+#              brokers: 127.0.0.1:9092
+#            bindings:
+#              input:
+#                consumer: test_stream
+##                  ## 所有服务都可发送 dlq
 #                  enableDlq: true
 #                  dlqName: xtErrorTopic
 service-url:
