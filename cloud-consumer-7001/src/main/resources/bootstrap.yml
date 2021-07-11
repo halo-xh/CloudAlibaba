@@ -1,9 +1,9 @@
 server:
-  port: 9001
+  port: 7001
 
 spring:
   application:
-    name: cloud-config
+    name: cloud-consumer
   profiles:
     active: dev
 
@@ -16,7 +16,7 @@ spring:
         group: APP_GROUP # set default group
         # AP config , use upper default group
         extension-configs[4]:
-          data-id: cloud-config.yml
+          data-id: cloud-consumer.yml
         # common config
         extension-configs[0]:
           group: SHARED_GROUP
@@ -36,6 +36,7 @@ spring:
         # 账号密码。 配置了要验证就一定要记得加这个配
         access-key: nacos
         secret-key: nacos
+
       discovery:
         register-enabled: true
         server-addr: ${spring.cloud.nacos.config.server-addr}

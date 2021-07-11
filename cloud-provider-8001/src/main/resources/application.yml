@@ -22,10 +22,9 @@ spring:
 #                  dlqName: xtErrorTopic
 service-url:
   service-provider: http://cloud-provider
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#
