@@ -9,6 +9,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.lang.Nullable;
+import org.springframework.messaging.support.GenericMessage;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -76,10 +77,10 @@ public class AuditLogModelMessageBuilder {
                 }
             }
         }
-        auditLog.setParams(paramsJson);
+        auditLog.setParams(paramsJson.toJSONString());
 
         // 描述
-        if (auditLog != null && methodAuditMetadata != null) {
+        if (methodAuditMetadata != null) {
             StringBuilder descption = new StringBuilder("");
             if (classAuditMetadata != null) {
                 descption.append(classAuditMetadata.value());
@@ -89,7 +90,7 @@ public class AuditLogModelMessageBuilder {
             descption.append(methodAuditMetadata.value());
             auditLog.setDescription(descption.toString());
         }
-
+        String userName = null;
         String loginPath = "login";
         if (loginPath.equals(signature.getName())) {
             try {
@@ -99,12 +100,12 @@ public class AuditLogModelMessageBuilder {
                 e.printStackTrace();
             }
         }
-        auditLog.setUid(uid);
+//        auditLog.setUid(uid);
         auditLog.setUserName(userName);
-        auditLog.setBrowser(browser);
+//        auditLog.setBrowser(browser);
         auditLog.setCreatedAt(LocalDateTime.now());
         auditLog.setMethod(methodName);
-        auditLog.setServiceName(serviceName);
+//        auditLog.setServiceName(serviceName);
         return auditLog;
     }
 

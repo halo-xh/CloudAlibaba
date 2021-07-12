@@ -15,7 +15,6 @@
         <module>cloud-provider-8002</module>
         <module>cloud-consumer-7001</module>
         <module>cloud-config-9001</module>
-        <module>cloud-feign-api</module>
         <module>cloud-dlp</module>
         <module>cloud-common</module>
     </modules>
@@ -29,9 +28,12 @@
         <cloud.version>Hoxton.SR9</cloud.version>
         <alibaba.version>2.2.1.RELEASE</alibaba.version>
         <stream.version>Horsham.SR9</stream.version>
+        <spring-cloud-openfeign.version>2.2.6.RELEASE</spring-cloud-openfeign.version>
         <nacos.client.version>2.0.2</nacos.client.version>
         <fastjson.version>1.2.61</fastjson.version>
         <swagger.version>1.6.2</swagger.version>
+        <!-- custom dependency -->
+        <cloud-common.version>0.0.1-SNAPSHOT</cloud-common.version>
     </properties>
 
     <dependencyManagement>
@@ -64,15 +66,11 @@
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
                 <version>${alibaba.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
                 <version>${alibaba.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
             <!-- feign -->
             <dependency>
@@ -81,20 +79,22 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
+
             <dependency>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.xh</groupId>
+                <artifactId>cloud-common</artifactId>
+                <version>${cloud-common.version}</version>
             </dependency>
 
         </dependencies>
@@ -106,6 +106,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.version}</version>
                 <configuration>
                     <excludes>
                         <exclude>

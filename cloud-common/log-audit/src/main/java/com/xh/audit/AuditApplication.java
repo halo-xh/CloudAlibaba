@@ -1,13 +1,12 @@
 package com.xh.audit;
 
+import com.xh.audit.service.AuditLogProcessor;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 
-@SpringBootApplication
+@EnableBinding(AuditLogProcessor.class)
+@EnableAutoConfiguration
 public class AuditApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(AuditApplication.class, args);
-    }
-
 }
