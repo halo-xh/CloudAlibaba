@@ -1,0 +1,23 @@
+server:
+  port: 7001
+
+service-url:
+  service-provider: http://cloud-provider
+
+
+spring:
+  application:
+    name: cloud-consumer
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: channelin2
+          group: 7
+          consumer:
+            enableDlq: true
+            dlqName: ErrorTopic-listener
+            autoCommitOffset: true
+            concurrency: 7
+        output:
+          destination: order-topic

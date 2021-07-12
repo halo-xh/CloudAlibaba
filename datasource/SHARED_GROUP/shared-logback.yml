@@ -1,0 +1,18 @@
+logging:
+  custom:
+    #自定义参数 产品线
+    productline: mall
+  file:
+    # 当前写入的日志文件名
+    name: ./log/${spring.application.name}.log
+    # 日志保留最大天数
+    max-history: 30
+    # 每个日志文件大小限制
+    max-size: 10MB
+
+  pattern:
+    file: >-
+      {"date":"%d{yyyy-MM-dd HH:mm:ss.SSS}","thread":"%thread","level":"%-5level","env":"%property{spring.profiles.active}","appname":"${spring.application.name}","productline":"${logging.custom.productline}","logger":"%logger{50}","msg":"%replace(%msg %replace(%replace(%replace(%xException){"\r\n", "\\n"}){"\n", "\\n"}){"\t", "\\t"}%nopex){"\"", "\'"}"}%n
+    level: INFO
+    # 归档文件名
+    rolling-file-name: ${logging.file.name}.%d{yyyy-MM-dd}.%i.log

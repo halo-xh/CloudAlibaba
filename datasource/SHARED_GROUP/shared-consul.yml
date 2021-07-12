@@ -1,0 +1,33 @@
+spring:
+  cloud:
+    service-registry:
+      auto-multi-registration.enabled: true
+      auto-registration:
+        enabled: true
+        fail-fast: true
+    consul:
+      config:
+        enable: true
+      discovery:
+        health-check-path: ${server.servlet.context-path}/actuator/health
+        prefer-ip-address: true
+        tags: type=app
+
+management:
+  endpoints:
+    health.show-details: always
+    web:
+      base-path: /actuator
+      exposure.include: health,info,env,prometheus,metrics,httptrace,threaddump,heapdump,springmetrics
+  metrics:
+    export.prometheus:
+      descriptions: true
+      enabled: true
+      step: 1m
+  server:
+    servlet:
+      context-path: /
+  web.server.auto-time-requests: true
+  health:
+    elasticsearch:
+      enabled: false

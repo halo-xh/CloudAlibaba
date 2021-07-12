@@ -1,0 +1,27 @@
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: 127.0.0.1:9092
+          required-acks: -1
+          auto-add-partitions: true
+          # 依赖broker的 auto.create.topics.enable
+          auto-create-topics: true 
+          producer-properties:
+            # 开启幂等
+            enable.idempotence: true
+            # 提交消息失败重试次数
+            retries: 7
+          consumer-properties:
+            # 消费端事务隔离级别.
+            isolation.level: read_committed
+          transaction:
+            transaction-id-prefix: tx-
+        # 死信
+        bindings:
+          input:
+            consumer:
+              ## 所有服务都可发送 dlq
+              enableDlq: true
+              dlqName: ErrorTopic-listener

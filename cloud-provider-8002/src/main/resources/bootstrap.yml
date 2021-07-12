@@ -1,9 +1,9 @@
 server:
-  port: 7001
+  port: 8002
 
 spring:
   application:
-    name: cloud-comsumer
+    name: cloud-provider2
 
   cloud:
     nacos:

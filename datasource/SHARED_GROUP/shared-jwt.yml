@@ -1,0 +1,11 @@
+jwt:
+  header: Authorization
+  # 令牌前缀
+  token-start-with: Bearer
+  # 必须使用最少88位的Base64对该令牌进行编码
+  base64-secret: eWVOM2c5RXNOZmlhWWZvZFY2M2RJMWo4RmJrc3NrNUhhTDdXNHlhVzR5ajRNZjQ1bWZnMnY4OTl777xazU3Ng==
+  token-validity-in-seconds: 432000000
+  # 在线用户key
+  online-key: online-token
+  # 验证码
+  code-key: code-key
