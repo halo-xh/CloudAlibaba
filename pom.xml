@@ -16,6 +16,7 @@
         <module>cloud-consumer-7001</module>
         <module>cloud-config-9001</module>
         <module>cloud-feign-api</module>
+        <module>cloud-dlp</module>
     </modules>
 
     <properties>
