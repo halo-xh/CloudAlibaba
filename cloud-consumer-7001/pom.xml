@@ -66,13 +66,12 @@
         </dependency>
 
         <dependency>
-            <groupId>com.xh</groupId>
-            <artifactId>cloud-common</artifactId>
+            <groupId>com.xh.common</groupId>
+            <artifactId>cloud-feign-api</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <groupId>com.xh.common</groupId>
+            <artifactId>log-audit</artifactId>
         </dependency>
 
         <dependency>

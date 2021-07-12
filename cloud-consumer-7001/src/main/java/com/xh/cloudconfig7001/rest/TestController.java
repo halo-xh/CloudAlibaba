@@ -2,6 +2,7 @@ package com.xh.cloudconfig7001.rest;
 
 import com.xh.cloudconfig7001.feign.UserService;
 import com.xh.common.User;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
