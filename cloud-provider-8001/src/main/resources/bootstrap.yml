@@ -4,38 +4,35 @@ server:
 spring:
   application:
     name: cloud-provider
-  profiles:
-    active: dev
 
   cloud:
     nacos:
       config:
-        server-addr: 127.0.0.1:9848
         file-extension: yml
-        namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
-        group: APP_GROUP # set default group
-        # APP config , use upper default group
-        extension-configs[4]: # number 4 , greater -> higher priority
-          data-id: cloud-provider
+        # set default group
+        group: APP_GROUP
+        prefix: ${spring.application.name}
+        # 在服务启动时自动拉取配置
+        enable-remote-sync-config: true
+        refresh-enabled: false
+        # AP config , use upper default group
         # common config
-        extension-configs[0]:
-          group: SHARED_GROUP
-          data-id: cloud-stream.yml # 不能用逗号分隔写多个。。
-        extension-configs[1]:
-          group: SHARED_GROUP
-          data-id: datasource-mysql.yml
-        extension-configs[2]:
-          group: SHARED_GROUP
-          data-id: jackson.yml
-          # 强制自动刷新
-          refresh: true
-        # 不会自动刷新
-        extension-configs[3]:
-          group: SHARED_GROUP
-          data-id: JPA.yml
-        # 账号密码。 配置了要验证就一定要记得加这个配
-        access-key: nacos
-        secret-key: nacos
+        shared-configs:
+          - data-id: cloud-stream.yml
+            group: SHARED_GROUP
+            refresh: true
+          - data-id: datasource-mysql.yml
+            group: SHARED_GROUP
+          - data-id: jackson.yml
+            group: SHARED_GROUP
+          # 不会自动刷新
+          - data-id: JPA.yml
+            group: SHARED_GROUP
+          # 会自动刷新
+          # number greater -> higher priority
+          - data-id: shared-logback.yml
+            group: SHARED_GROUP
+            refresh: true
 
       discovery:
         register-enabled: true
@@ -47,3 +44,15 @@ management:
     web:
       exposure:
         include: "*"
+
+---
+spring:
+  profile: dev
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        # 账号密码。 配置了要验证就一定要记得加这个配
+        access-key: dev
+        secret-key: 123456
+        namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5

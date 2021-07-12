@@ -10,7 +10,7 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: 127.0.0.1:9848
+        server-addr: 127.0.0.1:8848
         file-extension: yml
         namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
         group: APP_GROUP # set default group
@@ -36,6 +36,7 @@ spring:
         # 账号密码。 配置了要验证就一定要记得加这个配
         access-key: nacos
         secret-key: nacos
+
 
       discovery:
         register-enabled: true

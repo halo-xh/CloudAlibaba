@@ -11,9 +11,9 @@ public class CloudConfig9001Application {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(CloudConfig9001Application.class, args);
-        String userName = applicationContext.getEnvironment().getProperty("spring.jpa.show-sql");
+        String userName = applicationContext.getEnvironment().getProperty("test.domain");
         String datasource = applicationContext.getEnvironment().getProperty("spring.datasource.name");
-        System.err.println("spring.jpa.show-sql :" + userName);
+        System.err.println("test.domain :" + userName);
         System.err.println("spring.datasource:" + datasource);
     }
 
