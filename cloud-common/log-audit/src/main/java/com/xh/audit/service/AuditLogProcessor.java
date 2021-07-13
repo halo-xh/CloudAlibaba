@@ -6,7 +6,7 @@ import org.springframework.messaging.MessageChannel;
 /**
  * author  Xiao Hong
  * date  2021/7/12 19:56
- * description
+ * description stream channels
  */
 
 public interface AuditLogProcessor {

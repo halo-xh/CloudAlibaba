@@ -1,7 +1,8 @@
 package com.xh.audit.aspect;
 
-import com.xh.audit.model.AuditLogModel;
-import com.xh.audit.build.AuditLogModelMessageBuilder;
+import com.xh.audit.model.BaseAuditLogModel;
+import com.xh.audit.model.HttpAuditLogModel;
+import com.xh.audit.model.StreamAuditLogModel;
 import com.xh.audit.service.LogMessageSender;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -10,19 +11,11 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.event.Level;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 import static com.xh.audit.build.BuildUtils.getStackTrace;
 
@@ -48,38 +41,61 @@ public class AuditLogAspect {
     /**
      * 配置切入点
      */
-    @Pointcut("(@within(org.springframework.stereotype.Controller) || @within(org.springframework.web.bind.annotation.RestController) || @annotation(org.springframework.kafka.annotation.KafkaListener))" +
+    @Pointcut("(@within(org.springframework.stereotype.Controller) " +
+            "|| @within(org.springframework.web.bind.annotation.RestController))" +
             "&& !@annotation(com.xh.audit.annotations.AuditLogIgnore)")
-    public void logPointcut() {
+    public void httpLogPointcut() {
     }
 
+    @Pointcut("@annotation(org.springframework.kafka.annotation.KafkaListener) " +
+            "||@annotation(org.springframework.cloud.stream.annotation.StreamListener)" +
+            "&& !@annotation(com.xh.audit.annotations.AuditLogIgnore)")
+    public void streamLogPointcut() {
+
+    }
+
+    @Value("${spring.application.name}")
+    private String serviceName;
 
 
-    @Around(value = "logPointcut()")
+    @Around(value = "httpLogPointcut()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         long beginTime = System.currentTimeMillis();
         Object result = joinPoint.proceed();
         try {
-            AuditLogModel auditLog = new AuditLogModel();
-            auditLog.setLevel(Level.INFO);
-            auditLog.setSpendTime(beginTime - System.currentTimeMillis());
-            HttpServletRequest httpServletRequest = null;
-            try {
-                ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-                if (requestAttributes != null) {
-                    httpServletRequest = requestAttributes.getRequest();
-                    auditLog.setReferer(httpServletRequest.getHeader("Referer"));
-                }
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                // todo.
-                Object principal = authentication.getPrincipal();
-                AuditLogModelMessageBuilder builder = new AuditLogModelMessageBuilder(principal, httpServletRequest, joinPoint, auditLog);
-                messageSender.send(builder.build());
-            } catch (Exception e) {
-                AuditLogModelMessageBuilder builder = new AuditLogModelMessageBuilder(null, httpServletRequest, joinPoint, auditLog);
-                messageSender.send(builder.build());
+            long spendTime = System.currentTimeMillis() - beginTime;
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserDetails principal = null;
+            if (authentication != null) {
+                principal = (UserDetails) authentication.getPrincipal();
             }
+            BaseAuditLogModel model = HttpAuditLogModel.Builder
+                    .getBuilder(joinPoint)
+                    .info()
+                    .principal(principal)
+                    .spentTime(spendTime)
+                    .serviceName(serviceName)
+                    .build();
+            messageSender.send(model);
+        } catch (Throwable throwable) {
+            log.warn("Audit modules cannot work.Check the Elasticsearch configs, exception message: {}", throwable.getMessage());
+        }
+        return result;
+    }
 
+    @Around(value = "streamLogPointcut()")
+    public Object logStreamAround(ProceedingJoinPoint joinPoint) throws Throwable {
+        long beginTime = System.currentTimeMillis();
+        Object result = joinPoint.proceed();
+        try {
+            long spendTime = beginTime - System.currentTimeMillis();
+            BaseAuditLogModel model = StreamAuditLogModel.Builder
+                    .getBuilder(joinPoint)
+                    .info()
+                    .spentTime(spendTime)
+                    .serviceName(serviceName)
+                    .build();
+            messageSender.send(model);
         } catch (Throwable throwable) {
             log.warn("Audit modules cannot work.Check the Elasticsearch configs, exception message: {}", throwable.getMessage());
         }
@@ -87,25 +103,41 @@ public class AuditLogAspect {
     }
 
 
-    @AfterThrowing(pointcut = "logPointcut()", throwing = "e")
-    public void logAfterThrowing(JoinPoint joinPoint, Throwable e) throws Throwable {
-        long beginTime = System.currentTimeMillis();
+    @AfterThrowing(pointcut = "httpLogPointcut()", throwing = "e")
+    public void logAfterHttpThrowing(JoinPoint joinPoint, Throwable e) throws Throwable {
         try {
-            AuditLogModel auditLog = new AuditLogModel();
-            auditLog.setLevel(Level.ERROR);
-            auditLog.setSpendTime(beginTime - System.currentTimeMillis());
-            auditLog.setExceptionDetail(getStackTrace(e));
-            RequestAttributes request = RequestContextHolder.getRequestAttributes();
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Object principal = authentication.getPrincipal(); // todo.
-            AuditLogModelMessageBuilder builder = new AuditLogModelMessageBuilder(principal, null, joinPoint, auditLog);
-            messageSender.send(builder.build());
+            UserDetails principal = null;
+            if (authentication != null) {
+                principal = (UserDetails) authentication.getPrincipal();
+            }
+            BaseAuditLogModel model = HttpAuditLogModel.Builder
+                    .getBuilder(joinPoint)
+                    .error()
+                    .errorStack(getStackTrace(e))
+                    .principal(principal)
+                    .serviceName(serviceName)
+                    .build();
+            messageSender.send(model);
         } catch (Throwable throwable) {
             log.warn("Audit modules cannot work.Check the Elasticsearch configs, exception message: {}", throwable.getMessage());
         }
-
     }
 
+    @AfterThrowing(pointcut = "streamLogPointcut()", throwing = "e")
+    public void logAfterStreamThrowing(JoinPoint joinPoint, Throwable e) throws Throwable {
+        try {
+            BaseAuditLogModel model = StreamAuditLogModel.Builder
+                    .getBuilder(joinPoint)
+                    .error()
+                    .errorStack(getStackTrace(e))
+                    .serviceName(serviceName)
+                    .build();
+            messageSender.send(model);
+        } catch (Throwable throwable) {
+            log.warn("ERROR LOG SEND FAILED, exception message: {}", throwable.getMessage());
+        }
+    }
 
 }
 
