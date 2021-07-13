@@ -25,6 +25,8 @@ spring:
             group: SHARED_GROUP
           - data-id: jackson.yml
             group: SHARED_GROUP
+          - data-id: stream-audit.yml
+            group: SHARED_GROUP
           # 不会自动刷新
           - data-id: JPA.yml
             group: SHARED_GROUP

@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -31,6 +32,7 @@ import static com.xh.audit.build.BuildUtils.getStackTrace;
 @Slf4j
 public class AuditLogAspect {
 
+    public static final String EXCEPTION_MESSAGE = "ERROR LOG SEND FAILED, exception message: {}";
     private final LogMessageSender messageSender;
 
 
@@ -64,10 +66,13 @@ public class AuditLogAspect {
         Object result = joinPoint.proceed();
         try {
             long spendTime = System.currentTimeMillis() - beginTime;
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             UserDetails principal = null;
-            if (authentication != null) {
-                principal = (UserDetails) authentication.getPrincipal();
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            if (securityContext != null) {
+                Authentication authentication = securityContext.getAuthentication();
+                if (authentication != null) {
+                    principal = (UserDetails) authentication.getPrincipal();
+                }
             }
             BaseAuditLogModel model = HttpAuditLogModel.Builder
                     .getBuilder(joinPoint)
@@ -78,7 +83,7 @@ public class AuditLogAspect {
                     .build();
             messageSender.send(model);
         } catch (Throwable throwable) {
-            log.warn("Audit modules cannot work.Check the Elasticsearch configs, exception message: {}", throwable.getMessage());
+            log.warn(EXCEPTION_MESSAGE, throwable.getMessage());
         }
         return result;
     }
@@ -96,8 +101,9 @@ public class AuditLogAspect {
                     .serviceName(serviceName)
                     .build();
             messageSender.send(model);
+            log.info("sent audit log......");
         } catch (Throwable throwable) {
-            log.warn("Audit modules cannot work.Check the Elasticsearch configs, exception message: {}", throwable.getMessage());
+            log.warn(EXCEPTION_MESSAGE, throwable.getMessage());
         }
         return result;
     }
@@ -106,10 +112,13 @@ public class AuditLogAspect {
     @AfterThrowing(pointcut = "httpLogPointcut()", throwing = "e")
     public void logAfterHttpThrowing(JoinPoint joinPoint, Throwable e) throws Throwable {
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             UserDetails principal = null;
-            if (authentication != null) {
-                principal = (UserDetails) authentication.getPrincipal();
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            if (securityContext != null) {
+                Authentication authentication = securityContext.getAuthentication();
+                if (authentication != null) {
+                    principal = (UserDetails) authentication.getPrincipal();
+                }
             }
             BaseAuditLogModel model = HttpAuditLogModel.Builder
                     .getBuilder(joinPoint)
@@ -120,7 +129,7 @@ public class AuditLogAspect {
                     .build();
             messageSender.send(model);
         } catch (Throwable throwable) {
-            log.warn("Audit modules cannot work.Check the Elasticsearch configs, exception message: {}", throwable.getMessage());
+            log.warn(EXCEPTION_MESSAGE, throwable.getMessage());
         }
     }
 
@@ -135,7 +144,7 @@ public class AuditLogAspect {
                     .build();
             messageSender.send(model);
         } catch (Throwable throwable) {
-            log.warn("ERROR LOG SEND FAILED, exception message: {}", throwable.getMessage());
+            log.warn(EXCEPTION_MESSAGE, throwable.getMessage());
         }
     }
 

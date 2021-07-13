@@ -58,10 +58,14 @@
         </dependency>
 
         <dependency>
-            <groupId>com.xh</groupId>
+            <groupId>com.xh.common</groupId>
             <artifactId>cloud-feign-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.xh.common</groupId>
+            <artifactId>log-audit</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

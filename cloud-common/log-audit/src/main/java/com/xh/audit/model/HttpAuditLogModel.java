@@ -71,8 +71,10 @@ public class HttpAuditLogModel extends BaseAuditLogModel {
             httpAuditLogModel.setSpendTime(this.spendTime);
             httpAuditLogModel.setServiceName(this.serviceName);
             httpAuditLogModel.setExceptionDetail(this.errorStack);
-            httpAuditLogModel.setUserName(principal.getUsername());
+            if (principal != null) {
+                httpAuditLogModel.setUserName(principal.getUsername());
 //            httpAuditLogModel.setUid(principal.getId());
+            }
         }
 
 

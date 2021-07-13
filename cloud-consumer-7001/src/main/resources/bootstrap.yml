@@ -25,6 +25,8 @@ spring:
             group: SHARED_GROUP
           - data-id: jackson.yml
             group: SHARED_GROUP
+          - data-id: stream-audit.yml
+            group: SHARED_GROUP
           # 不会自动刷新
           - data-id: JPA.yml
             group: SHARED_GROUP
@@ -56,3 +58,9 @@ spring:
         access-key: dev
         secret-key: 123456
         namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
+    stream:
+      bindings:
+        output-audit:
+          destination: audit-log-topic
+          producer:
+            partition-count: 10 # 设置分区数，配合auto-add-partitions，会自动创建

@@ -68,6 +68,16 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.xh.common</groupId>
+            <artifactId>cloud-feign-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.xh.common</groupId>
+            <artifactId>log-audit</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
