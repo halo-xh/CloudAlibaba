@@ -18,10 +18,10 @@ spring:
             isolation.level: read_committed
           transaction:
             transaction-id-prefix: tx-
-        # 死信
-        bindings:
-          input:
-            consumer:
-              ## 所有服务都可发送 dlq
-              enableDlq: true
-              dlqName: ErrorTopic-listener
+      # 死信
+      bindings:
+        input:
+          consumer:
+            ## 所有服务都可发送 dlq
+            enableDlq: true
+            dlqName: ErrorTopic-listener

@@ -32,9 +32,13 @@
 | Spring Cloud Hoxton.SR3     | 2.2.1.RELEASE                     | 2.2.5.RELEASE       |
 | Spring Cloud Hoxton.RELEASE | 2.2.0.RELEASE                     | 2.2.X.RELEASE       |
 | Spring Cloud Greenwich      | 2.1.2.RELEASE                     | 2.1.X.RELEASE       |
-| Spring Cloud Finchley       | 2.0.4.RELEASE(停止维护，建议升级) | 2.0.X.RELEASE       |
-| Spring Cloud Edgware        | 1.5.1.RELEASE(停止维护，建议升级) | 1.5.X.RELEASE       |
-
 
 ### nacos 配置
- 
+ - datasource
+### kafka-stream
+ - 死信管理
+ - 事务
+### 审计日志
+ - log-audit
+ - 审计api和stream msg
+### feign

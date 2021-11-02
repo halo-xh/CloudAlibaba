@@ -13,7 +13,7 @@ spring:
       bindings:
         input:
           destination: channelin2
-          group: 7
+          group: cloud-consumer
           consumer:
             enableDlq: true
             dlqName: ErrorTopic-listener

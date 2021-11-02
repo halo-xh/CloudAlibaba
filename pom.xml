@@ -27,7 +27,7 @@
         <spring.version>2.3.2.RELEASE</spring.version>
         <cloud.version>Hoxton.SR9</cloud.version>
         <alibaba.version>2.2.1.RELEASE</alibaba.version>
-        <stream.version>Horsham.SR9</stream.version>
+        <spring-cloud-stream.version>3.1.4</spring-cloud-stream.version>
         <spring-cloud-openfeign.version>2.2.6.RELEASE</spring-cloud-openfeign.version>
         <nacos.client.version>2.0.2</nacos.client.version>
         <fastjson.version>1.2.61</fastjson.version>
@@ -54,6 +54,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework.integration</groupId>
+                <artifactId>spring-integration-core</artifactId>
+                <version>5.5.5</version>
+            </dependency>
+
 
             <!--alibaba-->
             <dependency>
@@ -86,6 +93,17 @@
                 <groupId>com.xh.common</groupId>
                 <artifactId>log-audit</artifactId>
                 <version>${cloud-common.version}</version>
+            </dependency>
+            <!--redis-->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-data-23</artifactId>
+                <version>3.16.3</version>
+            </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>3.16.3</version>
             </dependency>
 
             <!--others-->
