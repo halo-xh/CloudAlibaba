@@ -2,8 +2,17 @@ package com.xh.cloudprovider8002.rest;
 
 import com.xh.common.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 /**
  * author  Xiao Hong

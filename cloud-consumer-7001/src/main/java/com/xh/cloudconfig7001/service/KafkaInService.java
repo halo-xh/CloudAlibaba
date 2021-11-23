@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaInService {
 
-    private Sink source;
+    private final Sink source;
 
     public KafkaInService(Sink source) {
         this.source = source;

@@ -58,3 +58,28 @@ spring:
         access-key: dev
         secret-key: 123456
         namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
+
+    stream:
+      kafka:
+        binder:
+          brokers: 127.0.0.1:19092
+          required-acks: -1
+          auto-add-partitions: true
+          auto-create-topics: true # 依赖broker的 auto.create.topics.enable
+          transaction:
+            transaction-id-prefix: tx-
+      bindings:
+        input:
+          destination: channelin2
+          group: 7
+          consumer:
+            enableDlq: true
+            dlqName: ErrorTopic-listener
+            autoCommitOffset: true
+            concurrency: 7
+        output:
+          destination: testblock
+        channel-out:
+          destination: concurrency-test
+          producer:
+            partition-count: 10 # 设置分区数，配合auto-add-partitions，会自动创建

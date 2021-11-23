@@ -8,7 +8,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
+
+@EnableScheduling
 @Import({AuditApplication.class})
 @EnableBinding({Processor.class})
 @SpringBootApplication

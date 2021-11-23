@@ -66,3 +66,17 @@ spring:
           destination: audit-log-topic
           producer:
             partition-count: 10 # 设置分区数，配合auto-add-partitions，会自动创建
+        input:
+          destination: order-topic
+          group: 7
+          consumer:
+            enableDlq: true
+            dlqName: ErrorTopic-listener
+            autoCommitOffset: true
+            concurrency: 7
+        output:
+          destination: order-topic
+        channel-out:
+          destination: concurrency-test
+          producer:
+            partition-count: 10 # 设置分区数，配合auto-add-partitions，会自动创建
