@@ -1,8 +1,5 @@
 package com.xh.filter;
 
-import com.netflix.zuul.ZuulFilter;
-import com.netflix.zuul.context.RequestContext;
-import com.netflix.zuul.exception.ZuulException;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
