@@ -18,7 +18,7 @@ public class TestController {
     @Value("${server.port}")
     private String serverPort;
 
-    @RequestMapping("/provider/nacos/{id}")
+    @RequestMapping("/nacos/{id}")
     public String getServerPort(@PathVariable("id") String id) {
         return "nacos registry , server port : " + serverPort + "\t id: " + id;
     }

@@ -17,10 +17,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients
-public class CloudConsumer7001Application {
+public class CloudConsumer9002Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(CloudConsumer7001Application.class, args);
+        SpringApplication.run(CloudConsumer9002Application.class, args);
     }
 
 }

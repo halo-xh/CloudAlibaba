@@ -1,9 +1,11 @@
 server:
   port: 8002
+  servlet:
+    context-path: /cloud-provider
 
 spring:
   application:
-    name: cloud-provider2
+    name: cloud-provider
 
   cloud:
     nacos:
@@ -74,7 +76,7 @@ spring:
           group: 7
           consumer:
             enableDlq: true
-            dlqName: ErrorTopic-listener
+            dlqName: ErrorTopic
             autoCommitOffset: true
             concurrency: 7
         output:

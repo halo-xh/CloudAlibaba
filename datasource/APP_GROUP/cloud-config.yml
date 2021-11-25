@@ -1,5 +1,0 @@
-server:
-  port: 9001
-
-test:
-  domain: cloud-config-9001

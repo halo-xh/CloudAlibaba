@@ -22,7 +22,7 @@ public class TestController {
     @Autowired
     KafkaOutService kafkaOutService;
 
-    @RequestMapping("/provider/nacos/{id}")
+    @RequestMapping("/nacos/{id}")
     public String getServerPort(@PathVariable("id") String id) {
         kafkaOutService.sayHello("nacos registry , server port : " + serverPort + "\t id: " + id);
         return "nacos registry , server port : " + serverPort + "\t id: " + id;

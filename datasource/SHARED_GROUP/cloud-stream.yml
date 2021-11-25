@@ -24,4 +24,4 @@ spring:
           consumer:
             ## 所有服务都可发送 dlq
             enableDlq: true
-            dlqName: ErrorTopic-listener
+            dlqName: ErrorTopic

@@ -1,20 +1,24 @@
 server:
-  port: 7001
+  port: 9001
+  servlet:
+    context-path: /cloud-consumer
 
 spring:
   application:
-    name: cloud-comsumer
+    name: cloud-consumer
+  profiles:
+    active: dev
 
   cloud:
     nacos:
       config:
         file-extension: yml
+        namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
         # set default group
         group: APP_GROUP
         prefix: ${spring.application.name}
         # 在服务启动时自动拉取配置
         enable-remote-sync-config: true
-        refresh-enabled: false
         # AP config , use upper default group
         # common config
         shared-configs:
@@ -24,10 +28,6 @@ spring:
           - data-id: datasource-mysql.yml
             group: SHARED_GROUP
           - data-id: jackson.yml
-            group: SHARED_GROUP
-          - data-id: stream-audit.yml
-            group: SHARED_GROUP
-          - data-id: shared-redisson.yml
             group: SHARED_GROUP
           # 不会自动刷新
           - data-id: JPA.yml
@@ -60,23 +60,3 @@ spring:
         access-key: dev
         secret-key: 123456
         namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
-#    stream:
-#      bindings:
-#        output-audit:
-#          destination: audit-log-topic
-#          producer:
-#            partition-count: 10 # 设置分区数，配合auto-add-partitions，会自动创建
-#        input:
-#          destination: order-topic
-#          group: 7
-#          consumer:
-#            enableDlq: true
-#            dlqName: ErrorTopic-listener
-#            autoCommitOffset: true
-#            concurrency: 7
-#        output:
-#          destination: order-topic
-#        channel-out:
-#          destination: concurrency-test
-#          producer:
-#            partition-count: 10 # 设置分区数，配合auto-add-partitions，会自动创建

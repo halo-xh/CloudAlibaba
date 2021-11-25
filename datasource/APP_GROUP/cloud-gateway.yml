@@ -9,16 +9,15 @@ spring:
           enabled: true
       routes:
         - id: api-gateway-provider
-          # 动态路由方式需要配合eureka、nacos注册中心使用
-          uri: http://localhost:8083
+          #uri: http://localhost:8001  #静态，写死了地址，只能调用一个服务
+          uri: lb://cloud-provider  #动态，lb://微服务名
           predicates:
-            - Path=/api/provider/**
+            - Path=/api/cloud-provider/**
           filters:
             - StripPrefix=1
         - id: api-gateway-consumer
-          # 动态路由方式需要配合eureka、nacos注册中心使用
-          uri: http://localhost:8081
+          uri: lb://cloud-consumer
           predicates:
-            - Path=/consumer/provider/**
+            - Path=/api/cloud-consumer/**
           filters:
             - StripPrefix=1

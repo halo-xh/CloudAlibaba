@@ -49,14 +49,6 @@ public class TestController {
     @Resource
     private UserService userService;
 
-    @Value("${service-url.service-provider}")
-    private String serverURL;
-
-    @RequestMapping("/consumer/nacos/{id}")
-    public String getServerPort(@PathVariable("id") String id) {
-        return restTemplate.getForObject(serverURL + "/provider/nacos/" + id, String.class);
-    }
-
     @RequestMapping("/consumer/nacos/user")
     public String getServerPort() {
         User user = new User();

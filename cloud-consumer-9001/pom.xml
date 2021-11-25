@@ -8,7 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>cloud-config-9001</artifactId>
+    <artifactId>cloud-consumer-9001</artifactId>
 
     <properties>
         <java.version>1.8</java.version>

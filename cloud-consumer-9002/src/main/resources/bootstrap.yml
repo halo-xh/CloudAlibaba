@@ -1,22 +1,22 @@
 server:
-  port: 9001
+  port: 9002
+  servlet:
+    context-path: /cloud-comsumer
 
 spring:
   application:
-    name: cloud-config
-  profiles:
-    active: dev
+    name: cloud-consumer
 
   cloud:
     nacos:
       config:
         file-extension: yml
-        namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
         # set default group
         group: APP_GROUP
         prefix: ${spring.application.name}
         # 在服务启动时自动拉取配置
         enable-remote-sync-config: true
+        refresh-enabled: false
         # AP config , use upper default group
         # common config
         shared-configs:
@@ -26,6 +26,10 @@ spring:
           - data-id: datasource-mysql.yml
             group: SHARED_GROUP
           - data-id: jackson.yml
+            group: SHARED_GROUP
+          - data-id: stream-audit.yml
+            group: SHARED_GROUP
+          - data-id: shared-redisson.yml
             group: SHARED_GROUP
           # 不会自动刷新
           - data-id: JPA.yml
@@ -53,8 +57,8 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: 127.0.0.1:8848
+        server-addr: 127.0.0.1:18848
         # 账号密码。 配置了要验证就一定要记得加这个配
-        username: dev
-        password: 123456
+        access-key: dev
+        secret-key: 123456
         namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
