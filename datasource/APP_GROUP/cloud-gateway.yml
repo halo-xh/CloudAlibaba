@@ -3,10 +3,10 @@ spring:
     gateway:
       discovery:
         locator:
-          # 开启从注册中心动态创建路由的功能，利用微服务名称进行路由
+          # true 开启从注册中心动态创建路由的功能，利用微服务名称进行路由
           # 只要请求地址符合规则：http://gatewayip:gatewayport/微服务名称/微服务请求地址
           # 网关自动映射。把请求转发到 http://微服务名称/微服务请求地址
-          enabled: true
+          enabled: false
       routes:
         - id: api-gateway-provider
           #uri: http://localhost:8001  #静态，写死了地址，只能调用一个服务
