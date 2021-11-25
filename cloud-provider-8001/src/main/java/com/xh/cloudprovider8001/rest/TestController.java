@@ -1,6 +1,6 @@
-package com.xh.cloudprovider8002.rest;
+package com.xh.cloudprovider8001.rest;
 
-import com.xh.cloudprovider8002.service.KafkaOutService;
+import com.xh.cloudprovider8001.service.KafkaOutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -27,8 +27,8 @@
         <java.version>1.8</java.version>
         <spring.version>2.3.2.RELEASE</spring.version>
         <cloud.version>Hoxton.SR9</cloud.version>
-        <alibaba.version>2.2.1.RELEASE</alibaba.version>
-        <spring-cloud-stream.version>3.1.4</spring-cloud-stream.version>
+        <alibaba.version>2.2.5.RELEASE</alibaba.version>
+<!--        <spring-cloud-stream.version>3.1.4</spring-cloud-stream.version>-->
         <spring-cloud-openfeign.version>2.2.6.RELEASE</spring-cloud-openfeign.version>
         <nacos.client.version>2.0.2</nacos.client.version>
         <fastjson.version>1.2.61</fastjson.version>
@@ -55,12 +55,19 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.integration</groupId>-->
+<!--                <artifactId>spring-integration-core</artifactId>-->
+<!--                <version>5.5.5</version>-->
+<!--            </dependency>-->
 
-            <dependency>
-                <groupId>org.springframework.integration</groupId>
-                <artifactId>spring-integration-core</artifactId>
-                <version>5.5.5</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.cloud</groupId>-->
+<!--                <artifactId>spring-cloud-stream</artifactId>-->
+<!--                <version>${spring-cloud-stream.version}</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
 
 
             <!--alibaba-->

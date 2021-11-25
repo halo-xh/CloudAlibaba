@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          # 开启从注册中心动态创建路由的功能，利用微服务名称进行路由
+          # 只要请求地址符合规则：http://gatewayip:gatewayport/微服务名称/微服务请求地址
+          # 网关自动映射。把请求转发到 http://微服务名称/微服务请求地址
+          enabled: true
+      routes:
+        - id: api-gateway-provider
+          # 动态路由方式需要配合eureka、nacos注册中心使用
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/provider/**
+          filters:
+            - StripPrefix=1
+        - id: api-gateway-consumer
+          # 动态路由方式需要配合eureka、nacos注册中心使用
+          uri: http://localhost:8081
+          predicates:
+            - Path=/consumer/provider/**
+          filters:
+            - StripPrefix=1

@@ -3,6 +3,9 @@ server:
 spring:
   application:
     name: cloud-consumer
+  profiles:
+    active: dev
+
 service-url:
   service-provider: http://cloud-provider
 

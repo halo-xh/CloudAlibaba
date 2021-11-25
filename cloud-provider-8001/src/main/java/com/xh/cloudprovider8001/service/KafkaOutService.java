@@ -1,6 +1,5 @@
-package com.xh.cloudprovider8002.service;
+package com.xh.cloudprovider8001.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;

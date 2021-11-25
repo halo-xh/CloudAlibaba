@@ -73,11 +73,6 @@ public class TestController {
     @StreamListener(value = Sink.INPUT, condition = "headers['name']=='test1'")
     public void listener1(@Payload String order) {
         log.info("receive msg by StreamListener test1 : {}", order);
-        try {
-            Thread.sleep(10000 * 1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @StreamListener(value = Sink.INPUT, condition = "headers['name']=='test2'")
@@ -85,7 +80,7 @@ public class TestController {
         log.info("receive msg by StreamListener test2 : {}", order);
     }
 
-    @Scheduled(cron = "*/1 * * * * ?")
+//    @Scheduled(cron = "*/1 * * * * ?")
     public void sendOrder() {
         Map<String, Object> header = new HashMap<>();
         header.put("name", "test1");
@@ -93,7 +88,7 @@ public class TestController {
         log.info("test1 send :{}", send);
     }
 
-    @Scheduled(cron = "*/1 * * * * ?")
+//    @Scheduled(cron = "*/1 * * * * ?")
     public void sendOrder2() {
         Map<String, Object> header = new HashMap<>();
         header.put("name", "test2");
