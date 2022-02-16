@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        output-audit:
+          destination: audit-log-topic
+          producer:
+            #设置分区数，配合auto-add-partitions，会自动创建
+            partition-count: 20

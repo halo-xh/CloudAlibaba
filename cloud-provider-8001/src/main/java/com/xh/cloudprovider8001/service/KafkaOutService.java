@@ -19,6 +19,7 @@ public class KafkaOutService {
     }
 
     public void sayHello(String name) {
+        System.out.println("name = " + name);
         source.output().send(MessageBuilder.withPayload(name).build());
     }
 }

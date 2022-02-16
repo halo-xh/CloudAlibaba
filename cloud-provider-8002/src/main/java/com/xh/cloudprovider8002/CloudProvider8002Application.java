@@ -10,6 +10,7 @@ import org.springframework.cloud.stream.messaging.Processor;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+
 @EnableFeignClients
 @EnableScheduling
 @EnableBinding({ Processor.class})
