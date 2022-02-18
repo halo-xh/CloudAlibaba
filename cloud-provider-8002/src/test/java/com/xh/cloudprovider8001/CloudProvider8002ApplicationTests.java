@@ -1,20 +1,17 @@
 package com.xh.cloudprovider8001;
 
 import com.xh.cloudprovider8002.CloudProvider8002Application;
-import com.xh.cloudprovider8002.sn.idgen.core.generator.MysqlDistributedSequenceGenerator;
-import com.xh.cloudprovider8002.sn.idgen.core.model.Sequence;
-import com.xh.cloudprovider8002.sn.idgen.core.service.SequenceDetailService;
-import com.xh.cloudprovider8002.sn.idgen.designresource.DesignResourceSequence;
-import com.xh.cloudprovider8002.sn.idgen.designresource.MysqlDesignResourceSnGenerator;
-import com.xh.cloudprovider8002.sn.idgen.designresource.RedisDesignResourceSnGenerator;
+import com.xh.cloudprovider8002.sn.core.service.SequenceDetailService;
+import com.xh.cloudprovider8002.sn.designresource.MysqlDesignResourceSnGenerator;
+import com.xh.cloudprovider8002.sn.designresource.RedisDesignResourceSnGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.redisson.api.RAtomicLong;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.annotation.Resource;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {CloudProvider8002Application.class})
@@ -33,6 +30,19 @@ public class CloudProvider8002ApplicationTests {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
+    @Autowired
+    private RedissonClient redissonClient;
+
+
+    @Test
+    public void redissonClient() {
+        RAtomicLong asd = redissonClient.getAtomicLong("asd");
+        long l = asd.addAndGet(1L);
+        System.out.println("l = " + l);
+        RAtomicLong asd2 = redissonClient.getAtomicLong("asd");
+        long l2 = asd2.addAndGet(1L);
+        System.out.println("l2 = " + l2);
+    }
 
     @Test
     public void create() {
