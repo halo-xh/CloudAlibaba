@@ -7,7 +7,7 @@ import com.xh.cloudprovider8001.redission.core.model.Sequence;
 import com.xh.cloudprovider8001.redission.core.model.SequenceDetail;
 import com.xh.cloudprovider8001.redission.core.service.SequenceDetailService;
 import com.xh.cloudprovider8001.redission.designresource.DesignResourceSequence;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,8 +24,8 @@ public class RedisDesignResourceSnGenerator extends RedisDistributedSequenceGene
     private static final DateTimeFormatter DATE_PATTERN_YYMMDD = DateTimeFormatter.ofPattern("yyMMdd");
 
     public RedisDesignResourceSnGenerator(SequenceDetailService sequenceDetailService,
-                                          RedisTemplate<String, String> redisTemplate) {
-        super(redisTemplate, sequenceDetailService);
+                                         RedissonClient redissonClient) {
+        super(redissonClient, sequenceDetailService);
     }
 
 

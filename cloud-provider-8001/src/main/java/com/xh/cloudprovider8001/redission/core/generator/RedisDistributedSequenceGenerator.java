@@ -10,18 +10,10 @@ import com.xh.cloudprovider8001.redission.core.model.SequenceDetail;
 import com.xh.cloudprovider8001.redission.core.service.SequenceDetailService;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.*;
-import org.springframework.data.redis.connection.RedisStringCommands;
-import org.springframework.data.redis.connection.StringRedisConnection;
-import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.types.Expiration;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * @author xiaohong
@@ -55,32 +47,27 @@ public abstract class RedisDistributedSequenceGenerator extends AbstractDistribu
     protected void checkSequenceUsedConsistent(List<String> cachedBizTypeList) {
         log.info("[SequenceGenerator-redis] start check Sequence Consistent...");
         List<SequenceDetail> sequenceDetailList = sequenceDetailService.findAllByBizTypeList(cachedBizTypeList);
-        redisTemplate.execute((RedisCallback<Object>) connection -> {
-            for (SequenceDetail detail : sequenceDetailList) {
-                StringRedisConnection stringRedisConnection = (StringRedisConnection) connection;
-                String bizType = detail.getBizType();
-                String cacheSeqKey = seqKey(bizType);
-                String cachedCurrentVal = stringRedisConnection.get(cacheSeqKey);
-                Long current = detail.getCurrent();
-                if (StringUtils.hasText(cachedCurrentVal)) {
-                    long cachedCurrent = Long.parseLong(cachedCurrentVal);
-                    if (current > cachedCurrent) {
-                        // db 大于 redis
-                        log.warn("[SequenceGenerator-redis] Consistent Conflict bizType:{} database:{} redis:{}. fix with max one.", bizType, current, cachedCurrentVal);
-                        stringRedisConnection.set(cacheSeqKey, String.valueOf(current),
-                                Expiration.from(3L, TimeUnit.DAYS), RedisStringCommands.SetOption.SET_IF_ABSENT);
-                    } else if (current < cachedCurrent) {
-                        // redis 大于 db
-                        log.warn("[SequenceGenerator-redis] Consistent Conflict bizType:{} database:{} redis:{}. fix with max one.", bizType, current, cachedCurrentVal);
-                        int updateStock = sequenceDetailService.increaseCurrentWithLockVersion(bizType, cachedCurrent, detail.getVersion());
-                        if (updateStock < 1) {
-                            log.error("[SequenceGenerator-redis] Consistent Conflict fix failed bizType:{} database:{} redis:{}.", bizType, current, cachedCurrentVal);
-                        }
+        for (SequenceDetail detail : sequenceDetailList) {
+            String bizType = detail.getBizType();
+            String cacheSeqKey = seqKey(bizType);
+            RBucket<Long> bucket = redissonClient.getBucket(cacheSeqKey);
+            Long cachedCurrent = bucket.get();
+            Long current = detail.getCurrent();
+            if (cachedCurrent != null) {
+                if (current > cachedCurrent) {
+                    // db 大于 redis
+                    log.warn("[SequenceGenerator-redis] Consistent Conflict bizType:{} database:{} redis:{}. fix with max one.", bizType, current, cachedCurrent);
+                    bucket.compareAndSet(cachedCurrent,current);
+                } else if (current < cachedCurrent) {
+                    // redis 大于 db
+                    log.warn("[SequenceGenerator-redis] Consistent Conflict bizType:{} database:{} redis:{}. fix with max one.", bizType, current, cachedCurrent);
+                    int updateStock = sequenceDetailService.increaseCurrentWithLockVersion(bizType, cachedCurrent, detail.getVersion());
+                    if (updateStock < 1) {
+                        log.error("[SequenceGenerator-redis] Consistent Conflict fix failed bizType:{} database:{} redis:{}.", bizType, current, cachedCurrent);
                     }
                 }
             }
-            return null;
-        });
+        }
     }
 
     protected List<String> getCachedBizTypeList() {

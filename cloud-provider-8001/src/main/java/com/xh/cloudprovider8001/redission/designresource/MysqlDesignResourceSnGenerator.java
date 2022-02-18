@@ -6,8 +6,6 @@ import com.xh.cloudprovider8001.redission.core.generator.MysqlDistributedSequenc
 import com.xh.cloudprovider8001.redission.core.model.Sequence;
 import com.xh.cloudprovider8001.redission.core.model.SequenceDetail;
 import com.xh.cloudprovider8001.redission.core.service.SequenceDetailService;
-import com.xh.cloudprovider8001.redission.designresource.DesignResourceSequence;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,12 +25,9 @@ public class MysqlDesignResourceSnGenerator extends MysqlDistributedSequenceGene
     private static final DateTimeFormatter DATE_PATTERN_YYMMDD = DateTimeFormatter.ofPattern("yyMMdd");
 
 
-    private final RedisTemplate<String, String> redisTemplate;
 
-    public MysqlDesignResourceSnGenerator(SequenceDetailService sequenceDetailService,
-                                          RedisTemplate<String, String> redisTemplate) {
+    public MysqlDesignResourceSnGenerator(SequenceDetailService sequenceDetailService) {
         super(sequenceDetailService);
-        this.redisTemplate = redisTemplate;
     }
 
 
@@ -48,12 +43,6 @@ public class MysqlDesignResourceSnGenerator extends MysqlDistributedSequenceGene
     }
 
 
-//    @Override
-//    protected boolean gotInitLock(SequenceDetail sequenceDetails) {
-//        String bizType = sequenceDetails.getBizType();
-//        Boolean absent = redisTemplate.opsForValue().setIfAbsent(SeqConstants.REDIS_KEY_SEQ_INIT_PREFIX + bizType, "1", 10, TimeUnit.SECONDS);
-//        return (absent != null && absent);
-//    }
 
 
     /**
