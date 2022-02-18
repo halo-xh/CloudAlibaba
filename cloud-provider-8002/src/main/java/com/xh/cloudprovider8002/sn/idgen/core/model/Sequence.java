@@ -1,6 +1,4 @@
-package com.xh.cloudprovider8002.sn.idgen.model;
-
-import lombok.Data;
+package com.xh.cloudprovider8002.sn.idgen.core.model;
 
 /**
  * @author xiaohong

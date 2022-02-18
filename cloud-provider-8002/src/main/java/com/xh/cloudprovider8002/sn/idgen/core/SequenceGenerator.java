@@ -1,6 +1,6 @@
-package com.xh.cloudprovider8002.sn.idgen;
+package com.xh.cloudprovider8002.sn.idgen.core;
 
-import com.xh.cloudprovider8002.sn.idgen.model.Sequence;
+import com.xh.cloudprovider8002.sn.idgen.core.model.Sequence;
 import org.springframework.lang.Nullable;
 
 /**
@@ -10,7 +10,9 @@ import org.springframework.lang.Nullable;
 public interface SequenceGenerator {
 
 
+    /**
+     * 获取sequence
+     */
     Sequence nextSequence(@Nullable Object seqKey);
-
 
 }

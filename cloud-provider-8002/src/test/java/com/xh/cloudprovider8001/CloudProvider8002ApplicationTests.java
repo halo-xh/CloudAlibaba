@@ -1,15 +1,17 @@
 package com.xh.cloudprovider8001;
 
 import com.xh.cloudprovider8002.CloudProvider8002Application;
-import com.xh.cloudprovider8002.sn.idgen.MysqlDistributedSequenceGenerator;
-import com.xh.cloudprovider8002.sn.idgen.SequenceGenerator;
-import com.xh.cloudprovider8002.sn.idgen.model.DesignResourceSequence;
-import com.xh.cloudprovider8002.sn.idgen.model.Sequence;
-import com.xh.cloudprovider8002.sn.service.ICmSnGenerateService;
+import com.xh.cloudprovider8002.sn.idgen.core.generator.MysqlDistributedSequenceGenerator;
+import com.xh.cloudprovider8002.sn.idgen.core.model.Sequence;
+import com.xh.cloudprovider8002.sn.idgen.core.service.SequenceDetailService;
+import com.xh.cloudprovider8002.sn.idgen.designresource.DesignResourceSequence;
+import com.xh.cloudprovider8002.sn.idgen.designresource.MysqlDesignResourceSnGenerator;
+import com.xh.cloudprovider8002.sn.idgen.designresource.RedisDesignResourceSnGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -18,27 +20,33 @@ import javax.annotation.Resource;
 @SpringBootTest(classes = {CloudProvider8002Application.class})
 public class CloudProvider8002ApplicationTests {
 
-    @Resource
-    private ICmSnGenerateService cmSnGenerateService;
 
-    @Resource
-    private MysqlDistributedSequenceGenerator sequenceGenerator;
+    @Autowired
+    private SequenceDetailService cmSnGenerateService;
+
+    @Autowired
+    private MysqlDesignResourceSnGenerator sequenceGenerator;
+
+    @Autowired
+    private RedisDesignResourceSnGenerator redisDesignResourceSnGenerator;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
 
     @Test
     public void create() {
-//        SequenceGenerator sequenceGenerator = new MysqlDistributedSequenceGenerator(cmSnGenerateService);
-//        Sequence sequence = sequenceGenerator.nextSequence("as220216");
-//        DesignResourceSequence designResourceSequence = new DesignResourceSequence(sequence,"f");
-//        System.out.println("Thread = " + Thread.currentThread().getId() + " --> seq = " + designResourceSequence.getSeq());
-        for (int i = 0; i < 2000; i++) {
-            new Thread(()->{
-                Sequence sequence = sequenceGenerator.nextSequence("as220216");
-                DesignResourceSequence designResourceSequence = new DesignResourceSequence(sequence,"f");
-                System.out.println("Thread = " + Thread.currentThread().getId() + " --> seq = " + designResourceSequence.getSeq());
+        for (int i = 0; i < 20; i++) {
+            int finalI = i;
+            new Thread(() -> {
+                for (int j = 0; j < 30; j++) {
+                    String sequence = sequenceGenerator.getSn("ADW" + finalI, false);
+                    System.out.println("Thread = " + Thread.currentThread().getId() + " --> seq = " + sequence);
+                }
             }).start();
         }
         try {
-            Thread.sleep(10000*100);
+            Thread.sleep(10000 * 100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

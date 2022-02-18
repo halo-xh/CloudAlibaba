@@ -1,7 +1,6 @@
-package com.xh.cloudprovider8002.sn.entity;
+package com.xh.cloudprovider8002.sn.idgen.core.model;
 
-
-import com.xh.cloudprovider8002.sn.idgen.model.SequenceAcquireLock;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -19,38 +18,42 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value="CmSnGenerate对象", description="编号生成表")
-public class CmSnGenerate extends SequenceAcquireLock {
+@TableName(value = "cm_sn_generate")
+@ApiModel(value = "CmSnGenerate对象", description = "编号生成表")
+public class SequenceDetail {
+
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
 
     @ApiModelProperty(value = "业务类型，唯一")
     private String bizType;
 
     @ApiModelProperty(value = "最大值")
-    private Long max;
+    private Long maxVal;
 
     @ApiModelProperty(value = "步长")
     private Integer step;
 
     @ApiModelProperty(value = "余数")
-    private Long current;
+    private Long current = 0L;
 
+    @Version
     @ApiModelProperty(value = "版本")
     private Long version;
 
-    @ApiModelProperty(value = "创建人id")
+    public static final Integer DELETE_TRUE = 0;
+    public static final Integer DELETE_FALSE = 1;
+
     private Long createUserId;
 
-    @ApiModelProperty(value = "修改人id")
     private Long updateUserId;
 
-    @ApiModelProperty(value = "服务器创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private Date serverCreateTime;
 
-    @ApiModelProperty(value = "服务器最后修改时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date serverUpdateTime;
 
-    @ApiModelProperty(value = "删除标记，1:未删除，0:删除")
-    private Boolean statusFlag;
-
+    private Integer statusFlag = DELETE_FALSE;
 
 }

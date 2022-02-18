@@ -1,4 +1,4 @@
-package com.xh.cloudprovider8002.sn.idgen.model;
+package com.xh.cloudprovider8002.sn.idgen.core.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
