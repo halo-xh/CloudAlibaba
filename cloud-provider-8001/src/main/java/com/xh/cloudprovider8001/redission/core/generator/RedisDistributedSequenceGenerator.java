@@ -10,6 +10,8 @@ import com.xh.cloudprovider8001.redission.core.model.SequenceDetail;
 import com.xh.cloudprovider8001.redission.core.service.SequenceDetailService;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.*;
+import org.redisson.client.codec.Codec;
+import org.redisson.client.codec.LongCodec;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,14 +52,14 @@ public abstract class RedisDistributedSequenceGenerator extends AbstractDistribu
         for (SequenceDetail detail : sequenceDetailList) {
             String bizType = detail.getBizType();
             String cacheSeqKey = seqKey(bizType);
-            RBucket<Long> bucket = redissonClient.getBucket(cacheSeqKey);
+            RBucket<Long> bucket = redissonClient.getBucket(cacheSeqKey, new LongCodec());
             Long cachedCurrent = bucket.get();
             Long current = detail.getCurrent();
             if (cachedCurrent != null) {
                 if (current > cachedCurrent) {
                     // db 大于 redis
                     log.warn("[SequenceGenerator-redis] Consistent Conflict bizType:{} database:{} redis:{}. fix with max one.", bizType, current, cachedCurrent);
-                    bucket.compareAndSet(cachedCurrent,current);
+                    bucket.compareAndSet(cachedCurrent, current);
                 } else if (current < cachedCurrent) {
                     // redis 大于 db
                     log.warn("[SequenceGenerator-redis] Consistent Conflict bizType:{} database:{} redis:{}. fix with max one.", bizType, current, cachedCurrent);
@@ -89,7 +91,7 @@ public abstract class RedisDistributedSequenceGenerator extends AbstractDistribu
     @Override
     protected SequenceAcquireLock lock(Object seqKey) {
         String bizType = (String) seqKey;
-        RBucket<Long> max = redissonClient.getBucket(maxKey(bizType));
+        RBucket<Long> max = redissonClient.getBucket(maxKey(bizType), new LongCodec());
         if (max.get() != null) {
             RedisFakeSequenceAcquireLock lock = new RedisFakeSequenceAcquireLock();
             lock.setLocked(true);
@@ -132,9 +134,9 @@ public abstract class RedisDistributedSequenceGenerator extends AbstractDistribu
         super.doAfterInitialize(sequenceDetails);
         String bizType = sequenceDetails.getBizType();
         RTransaction transaction = redissonClient.createTransaction(TransactionOptions.defaults());
-        RBucket<Long> seq = transaction.getBucket(SeqConstants.REDIS_KEY_SEQ_VAL_PREFIX + bizType);
+        RBucket<Long> seq = transaction.getBucket(SeqConstants.REDIS_KEY_SEQ_VAL_PREFIX + bizType, new LongCodec());
         seq.set(sequenceDetails.getCurrent(), 3, TimeUnit.DAYS);
-        RBucket<Long> max = transaction.getBucket(SeqConstants.REDIS_KEY_MAX_VAL_PREFIX + bizType);
+        RBucket<Long> max = transaction.getBucket(SeqConstants.REDIS_KEY_MAX_VAL_PREFIX + bizType, new LongCodec());
         max.set(sequenceDetails.getMaxVal(), 3, TimeUnit.DAYS);
         transaction.commit();
     }

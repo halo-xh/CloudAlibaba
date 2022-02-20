@@ -31,7 +31,7 @@ class CloudProvider8001ApplicationTests {
             int finalI = i;
             new Thread(() -> {
                 for (int j = 0; j < 30; j++) {
-                    String sequence = redisDesignResourceSnGenerator.getSn("ADT" + finalI, false);
+                    String sequence = redisDesignResourceSnGenerator.getSn("ADC" + finalI, false);
                     System.out.println("Thread = " + Thread.currentThread().getId() + " --> seq = " + sequence);
                 }
             }).start();

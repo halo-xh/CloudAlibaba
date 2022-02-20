@@ -69,7 +69,7 @@ public abstract class AbstractSequencePreInitializer implements SequencePreIniti
     }
 
     public boolean saveSequenceDetails(SequenceDetail sequenceDetail) {
-        return getSequenceDetailService().createIfNotExist(sequenceDetail);
+        return getSequenceDetailService().create(sequenceDetail);
     }
 
     protected abstract SequenceDetailService getSequenceDetailService();

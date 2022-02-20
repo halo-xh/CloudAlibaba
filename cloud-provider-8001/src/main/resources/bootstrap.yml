@@ -26,6 +26,8 @@ spring:
             group: SHARED_GROUP
           - data-id: jackson.yml
             group: SHARED_GROUP
+          - data-id: shared-redisson.yml
+            group: SHARED_GROUP
           # 不会自动刷新
           - data-id: JPA.yml
             group: SHARED_GROUP
@@ -47,18 +49,16 @@ management:
         include: "*"
 
 ---
----
 spring:
   profile: dev
   cloud:
     nacos:
       config:
-        server-addr: 127.0.0.1:18848
+        server-addr: 127.0.0.1:9848
         # 账号密码。 配置了要验证就一定要记得加这个配
         access-key: dev
         secret-key: 123456
         namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
-
     stream:
       kafka:
         binder:
