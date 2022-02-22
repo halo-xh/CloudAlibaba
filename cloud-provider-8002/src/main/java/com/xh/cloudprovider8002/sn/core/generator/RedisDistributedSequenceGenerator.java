@@ -146,7 +146,6 @@ public abstract class RedisDistributedSequenceGenerator extends AbstractDistribu
     @Override
     protected boolean getInitLock(SequenceDetail sequenceDetails) {
         String bizType = sequenceDetails.getBizType();
-
         Boolean absent = redisTemplate.opsForValue().setIfAbsent(SeqConstants.REDIS_KEY_SEQ_INIT_PREFIX + bizType, "1", 10, TimeUnit.SECONDS);
         return (absent != null && absent);
     }

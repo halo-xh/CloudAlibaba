@@ -47,13 +47,6 @@ public class MysqlDesignResourceSnGenerator extends MysqlDistributedSequenceGene
     }
 
 
-//    @Override
-//    protected boolean gotInitLock(SequenceDetail sequenceDetails) {
-//        String bizType = sequenceDetails.getBizType();
-//        Boolean absent = redisTemplate.opsForValue().setIfAbsent(SeqConstants.REDIS_KEY_SEQ_INIT_PREFIX + bizType, "1", 10, TimeUnit.SECONDS);
-//        return (absent != null && absent);
-//    }
-
 
     /**
      * 生成设计资源编号业务类型

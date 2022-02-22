@@ -47,10 +47,9 @@ public class CloudProvider8002ApplicationTests {
     @Test
     public void create() {
         for (int i = 0; i < 20; i++) {
-            int finalI = i;
             new Thread(() -> {
                 for (int j = 0; j < 30; j++) {
-                    String sequence = sequenceGenerator.getSn("ADW" + finalI, false);
+                    String sequence = redisDesignResourceSnGenerator.getSn("ADT" , false);
                     System.out.println("Thread = " + Thread.currentThread().getId() + " --> seq = " + sequence);
                 }
             }).start();

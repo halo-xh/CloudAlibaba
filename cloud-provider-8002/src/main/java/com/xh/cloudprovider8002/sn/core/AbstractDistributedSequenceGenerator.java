@@ -25,18 +25,22 @@ public abstract class AbstractDistributedSequenceGenerator extends AbstractSeque
     public Sequence nextSequence(Object seqKey) {
         SequenceAcquireLock lock = lock(seqKey);
         if (lock == null) {
-            if (initIfNeed(seqKey)) {
-                // try lock again.
-                for (int i = 0; i < 3; i++) {
-                    try {
-                        TimeUnit.SECONDS.sleep(2);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    lock = lock(seqKey);
-                    if (lock != null && lock.isLocked()) {
-                        return getSequence(seqKey, lock);
-                    }
+            if (initIfNeed(seqKey)){
+                lock = lock(seqKey);
+                if (lock != null && lock.isLocked()) {
+                    return getSequence(seqKey, lock);
+                }
+            }
+            // try lock again.
+            for (int i = 0; i < 3; i++) {
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                lock = lock(seqKey);
+                if (lock != null && lock.isLocked()) {
+                    return getSequence(seqKey, lock);
                 }
             }
         } else {
