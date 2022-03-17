@@ -25,6 +25,11 @@ spring:
         server-addr: ${spring.cloud.nacos.config.server-addr}
         namespace: ${spring.cloud.nacos.config.namespace}
 
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8081
+
 management:
   endpoints:
     web:
