@@ -3,7 +3,7 @@ spring:
     gateway:
       discovery:
         locator:
-          # true 开启从注册中心动态创建路由的功能，利用微服务名称进行路由
+          # 开启从注册中心动态创建路由的功能，利用微服务名称进行路由
           # 只要请求地址符合规则：http://gatewayip:gatewayport/微服务名称/微服务请求地址
           # 网关自动映射。把请求转发到 http://微服务名称/微服务请求地址
           enabled: false
@@ -15,6 +15,11 @@ spring:
             - Path=/api/cloud-provider/**
           filters:
             - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@apiKeyResolver}'
+                redis-rate-limiter.replenishRate: 1
+                redis-rate-limiter.burstCapacity: 3
         - id: api-gateway-consumer
           uri: lb://cloud-consumer
           predicates:
