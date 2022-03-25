@@ -18,6 +18,7 @@
         <module>cloud-api-gateway</module>
         <module>cloud-dlp</module>
         <module>cloud-common</module>
+        <module>cloud-simple</module>
     </modules>
 
     <properties>

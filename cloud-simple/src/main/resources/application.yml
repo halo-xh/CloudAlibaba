@@ -1,0 +1,38 @@
+
+spring:
+  application:
+    name: cloud-simple
+
+  datasource:
+    name: testerDS
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://127.0.0.1:3306/tester?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 12345678
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database: MYSQL
+    show-sql: true
+    properties:
+      hibernate.hbm2ddl.auto: create
+      hibernate.query.substitutions: true 'T', false 'F'
+      hibernate.jdbc.batch_size: 30
+      hibernate.format_sql: true
+      org.hibernate.envers.auditTableSuffix: _AUD
+      org.hibernate.envers.revisionTypeFieldName: REV_TYPE
+      org.hibernate.envers.doNotAuditOptimisticLockingField: false
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.dialect.storage_engine: innodb
+    hibernate:
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      ddl-auto: create
+
+server:
+  port: 8999
