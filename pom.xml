@@ -109,6 +109,12 @@
                 <artifactId>log-audit</artifactId>
                 <version>${cloud-common.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.xh.common</groupId>
+                <artifactId>cloud-dubbo</artifactId>
+                <version>${cloud-common.version}</version>
+            </dependency>
             <!--redis-->
             <dependency>
                 <groupId>org.redisson</groupId>

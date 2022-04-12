@@ -59,7 +59,6 @@
         <dependency>
             <groupId>com.xh.common</groupId>
             <artifactId>cloud-dubbo</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
 

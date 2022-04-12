@@ -6,6 +6,7 @@
  * spring-cloud-feign
  * spring-cloud-alibaba
  * nacos
+ * dubbo
 
 ### 版本对应
 
