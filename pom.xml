@@ -19,6 +19,8 @@
         <module>cloud-dlp</module>
         <module>cloud-common</module>
         <module>cloud-simple</module>
+        <module>dubbo-consumer</module>
+        <module>dubbo-proider</module>
     </modules>
 
     <properties>

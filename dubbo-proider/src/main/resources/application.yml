@@ -1,0 +1,38 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        # 账号密码。 配置了要验证就一定要记得加这个配
+        access-key: dev
+        secret-key: 123456
+        namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
+
+    stream:
+      kafka:
+        binder:
+          brokers: 127.0.0.1:9092
+          required-acks: -1
+          auto-add-partitions: true
+          auto-create-topics: true # 依赖broker的 auto.create.topics.enable
+          transaction:
+            transaction-id-prefix: tx-
+      bindings:
+        input:
+          destination: dubbo
+          group: 7
+          consumer:
+            enableDlq: true
+            dlqName: ErrorTopic
+            autoCommitOffset: true
+            concurrency: 7
+        output:
+          destination: dubbo
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/tester?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    hikari:
+      auto-commit: false
+      maximum-pool-size: 50
+      minimum-idle: 5
+    username: root
+    password: 12345678
