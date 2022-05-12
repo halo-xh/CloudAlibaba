@@ -43,4 +43,10 @@ class CloudProvider8001ApplicationTests {
         }
     }
 
+    @Test
+    public void tT() {
+        kafkaOutService.testTransaction();
+
+    }
+
 }

@@ -28,6 +28,8 @@ spring:
             group: SHARED_GROUP
           - data-id: shared-redisson.yml
             group: SHARED_GROUP
+          - data-id: shared-actuator.yml
+            group: SHARED_GROUP
           # 不会自动刷新
           - data-id: JPA.yml
             group: SHARED_GROUP
