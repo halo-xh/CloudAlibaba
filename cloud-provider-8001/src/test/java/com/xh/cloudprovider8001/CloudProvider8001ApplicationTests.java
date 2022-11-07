@@ -17,8 +17,8 @@ class CloudProvider8001ApplicationTests {
 
     @Test
     void contextLoads() {
-        for (int i = 0; i < 100000000; i++) {
-            kafkaOutService.sayHello(i+"");
+        for (int i = 19999; i < 10100000; i++) {
+            kafkaOutService.sayHello(i + "");
         }
     }
 
@@ -41,6 +41,12 @@ class CloudProvider8001ApplicationTests {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void tT() {
+        kafkaOutService.testTransaction();
+
     }
 
 }

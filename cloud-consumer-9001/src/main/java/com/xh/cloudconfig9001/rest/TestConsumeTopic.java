@@ -10,6 +10,8 @@ import redis.clients.jedis.Jedis;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author xiaohong
@@ -21,26 +23,13 @@ public class TestConsumeTopic {
 
 
     @StreamListener(value = Sink.INPUT)
-    public void receive(GenericMessage<String> message) throws InterruptedException, ClassNotFoundException {
-        Class.forName("com.mysql.jdbc.Driver");
+    public void receive(GenericMessage<String> message) throws InterruptedException {
         String payload = message.getPayload();
-        Jedis jedis = new Jedis("localhost", 6379);  //指定Redis服务Host和port
-        System.out.println("jedis :" + jedis);
-        jedis.connect();
-        //        jedis.close(); //使用完关闭连接
-        try  {
-            Integer integer = Integer.valueOf(payload);
-            if (integer  == 477 ) {
-                log.info(Thread.currentThread().getName() + " go to sleep.");
-               try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/tester?useSSL=false&serverTimezone=UTC", "root", "123456")){
-               }catch (Exception e){
-               }
-                Thread.sleep(5000 * 1000);
-            }
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        System.out.println(Thread.currentThread().getName() + " -> message:" + payload);
+        if (new Random().nextInt() % 3 ==0){
+            TimeUnit.SECONDS.sleep(20);
         }
-        System.out.println(Thread.currentThread().getId() + " -> message:" + payload);
+        System.out.println(Thread.currentThread().getName() + " -> end:");
     }
 
 
