@@ -10,6 +10,13 @@ spring:
     active: dev
 
   cloud:
+    stream:
+      kafka:
+        binder:
+          consumer-properties:
+            max.poll.interval.ms: 10000
+            enable.auto.commit: true
+            group.id: comsumer-001
     nacos:
       config:
         file-extension: yml
