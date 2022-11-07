@@ -25,6 +25,7 @@ public class TestEventListener {
         testDO.setId(7L);
         testDO.setVersion(1);
         applicationEventPublisher.publishEvent(new TestDOEvent(1L,"q"));
+        System.out.println("after publiser ---------------> ");
         testDO.setValue(1);
         testDOService.create(testDO);
     }
