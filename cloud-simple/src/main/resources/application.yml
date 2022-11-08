@@ -1,8 +1,6 @@
-
 spring:
   application:
     name: cloud-simple
-
   datasource:
     name: testerDS
     type: com.zaxxer.hikari.HikariDataSource
@@ -34,5 +32,22 @@ spring:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
       ddl-auto: create
 
+
 server:
-  port: 8999
+  port: 7777
+management:
+  endpoint:
+    bindings:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    export:
+      prometheus:
+        enabled: true
