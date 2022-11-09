@@ -11,16 +11,11 @@
     <description>cloud-alibaba-demo</description>
 
     <modules>
-        <module>cloud-provider-8001</module>
-        <module>cloud-provider-8002</module>
-        <module>cloud-consumer-9002</module>
-        <module>cloud-consumer-9001</module>
         <module>cloud-api-gateway</module>
         <module>cloud-dlp</module>
         <module>cloud-common</module>
         <module>cloud-simple</module>
-        <module>dubbo-consumer</module>
-        <module>dubbo-proider</module>
+        <module>cloud-starters</module>
     </modules>
 
     <properties>
