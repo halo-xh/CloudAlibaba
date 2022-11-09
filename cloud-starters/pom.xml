@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>boot-core</module>
-        <module>cloud-dlp</module>
+        <module>boot-core-starter</module>
+        <module>cloud-dlp-starter</module>
     </modules>
 
 
