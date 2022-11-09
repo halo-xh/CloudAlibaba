@@ -1,7 +1,7 @@
-package com.xh.service;
+package com.xh.zz.service;
 
-import com.xh.service.domain.Destination;
-import com.xh.service.domain.TxMessage;
+import com.xh.zz.service.domain.Destination;
+import com.xh.zz.service.domain.TxMessage;
 
 /**
  * @author Xiao Hong

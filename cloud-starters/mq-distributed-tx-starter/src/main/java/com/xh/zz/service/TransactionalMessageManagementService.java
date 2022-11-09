@@ -1,10 +1,10 @@
-package com.xh.service;
+package com.xh.zz.service;
 
-import com.xh.dao.TransactionalMessageContentDao;
-import com.xh.dao.TransactionalMessageDao;
-import com.xh.entity.TransactionalMessage;
-import com.xh.entity.TransactionalMessageContent;
-import com.xh.service.domain.TxMessageStatus;
+import com.xh.zz.dao.TransactionalMessageContentDao;
+import com.xh.zz.dao.TransactionalMessageDao;
+import com.xh.zz.entity.TransactionalMessage;
+import com.xh.zz.entity.TransactionalMessageContent;
+import com.xh.zz.service.domain.TxMessageStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

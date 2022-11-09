@@ -1,4 +1,4 @@
-package com.xh.service.domain;
+package com.xh.zz.service.domain;
 
 // 发送消息的目的地
 public interface Destination {

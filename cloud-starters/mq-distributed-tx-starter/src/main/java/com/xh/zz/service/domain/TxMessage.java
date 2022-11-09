@@ -1,4 +1,4 @@
-package com.xh.service.domain;
+package com.xh.zz.service.domain;
 
 // 事务消息
 public interface TxMessage {

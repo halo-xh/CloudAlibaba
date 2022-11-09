@@ -1,6 +1,4 @@
-package com.xh.service.domain;
-
-import lombok.RequiredArgsConstructor;
+package com.xh.zz.service.domain;
 
 // 消息状态
 public enum TxMessageStatus {

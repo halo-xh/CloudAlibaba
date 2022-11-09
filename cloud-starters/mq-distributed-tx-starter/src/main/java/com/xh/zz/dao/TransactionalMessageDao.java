@@ -1,6 +1,6 @@
-package com.xh.dao;
+package com.xh.zz.dao;
 
-import com.xh.entity.TransactionalMessage;
+import com.xh.zz.entity.TransactionalMessage;
 
 import java.time.LocalDateTime;
 import java.util.List;

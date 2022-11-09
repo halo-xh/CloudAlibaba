@@ -1,6 +1,6 @@
-package com.xh.dao;
+package com.xh.zz.dao;
 
-import com.xh.entity.TransactionalMessageContent;
+import com.xh.zz.entity.TransactionalMessageContent;
 
 import java.util.List;
 

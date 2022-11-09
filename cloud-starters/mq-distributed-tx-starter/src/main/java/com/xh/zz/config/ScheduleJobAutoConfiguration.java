@@ -1,9 +1,8 @@
-package com.xh.config;
+package com.xh.zz.config;
 
-import com.xh.service.TransactionalMessageManagementService;
+import com.xh.zz.service.TransactionalMessageManagementService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.Redisson;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.context.annotation.Configuration;

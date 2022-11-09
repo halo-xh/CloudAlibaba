@@ -1,4 +1,4 @@
-package com.xh.service.domain;
+package com.xh.zz.service.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

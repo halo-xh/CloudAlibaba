@@ -1,9 +1,9 @@
-package com.xh.service;
+package com.xh.zz.service;
 
-import com.xh.entity.TransactionalMessage;
-import com.xh.service.domain.Destination;
-import com.xh.service.domain.ExchangeType;
-import com.xh.service.domain.TxMessage;
+import com.xh.zz.entity.TransactionalMessage;
+import com.xh.zz.service.domain.Destination;
+import com.xh.zz.service.domain.ExchangeType;
+import com.xh.zz.service.domain.TxMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpAdmin;
