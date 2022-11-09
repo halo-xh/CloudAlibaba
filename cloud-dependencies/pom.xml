@@ -13,11 +13,16 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <java.version>1.8</java.version>
-        <spring.version>2.3.2.RELEASE</spring.version>
-        <cloud.version>Hoxton.SR9</cloud.version>
-        <alibaba.version>2.2.5.RELEASE</alibaba.version>
+
+        <spring.version>2.7.5</spring.version>
+        <cloud.version>2021.0.3</cloud.version>
+        <alibaba.version>2021.1</alibaba.version>
+
+        <junit.version>4.13.2</junit.version>
+        <junit-vintage-engine>5.8.2</junit-vintage-engine>
+
         <spring-cloud-openfeign.version>2.2.6.RELEASE</spring-cloud-openfeign.version>
-        <nacos.client.version>2.0.2</nacos.client.version>
+        <nacos.client.version>2.1.2</nacos.client.version>
         <fastjson.version>1.2.61</fastjson.version>
         <swagger.version>1.6.2</swagger.version>
         <redisson.version>3.16.3</redisson.version>
@@ -102,6 +107,17 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-jpamodelgen</artifactId>
                 <version>${hibernate-jpamodelgen.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.vintage</groupId>
+                <artifactId>junit-vintage-engine</artifactId>
+                <version>${junit-vintage-engine}</version>
             </dependency>
 
         </dependencies>

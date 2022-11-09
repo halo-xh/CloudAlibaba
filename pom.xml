@@ -19,6 +19,8 @@
         <module>cloud-api-gateway</module>
         <module>cloud-common</module>
         <module>cloud-simple</module>
+        <module>cloud-providers</module>
+        <module>cloud-consumers</module>
         <module>cloud-starters</module>
     </modules>
 
