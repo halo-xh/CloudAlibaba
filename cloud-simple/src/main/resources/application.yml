@@ -12,6 +12,10 @@ spring:
       poolName: Hikari
       auto-commit: false
 
+  redis:
+    host: 127.0.0.1
+    port: 63791
+
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     database: MYSQL
@@ -31,7 +35,6 @@ spring:
       naming:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
       ddl-auto: create
-
 
 server:
   port: 7777
