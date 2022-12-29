@@ -1,8 +1,0 @@
-server:
-  port: 14000
-spring:
-  application:
-    name: cloud-gateway
-  profiles:
-    active: dev
-

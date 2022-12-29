@@ -1,5 +1,6 @@
 package com.xh.trace;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.reactivestreams.Subscription;
 import org.slf4j.MDC;
@@ -36,9 +37,8 @@ public class MdcSubscriber implements CoreSubscriber {
         Context c = actual.currentContext();
         Optional<String> traceIdOptional = Optional.empty();
         if (!c.isEmpty() && c.hasKey(SKYWALKING_CTX_SNAPSHOT)) {
-            System.out.println("c.get() = " + c.get(SKYWALKING_CTX_SNAPSHOT));
-//            traceIdOptional = Optional.of(c.get(SKYWALKING_CTX_SNAPSHOT)).map(objectMapper::beanToMap)
-//                    .map(t -> t.get(TRACE_ID)).map(BeanUtil::beanToMap).map(t -> t.get("id")).map(Object::toString);
+            traceIdOptional = Optional.of(c.get(SKYWALKING_CTX_SNAPSHOT)).map(BeanUtil::beanToMap)
+                    .map(t -> t.get(TRACE_ID)).map(BeanUtil::beanToMap).map(t -> t.get("id")).map(Object::toString);
         }
         try (MDC.MDCCloseable cMdc = MDC.putCloseable(TRACE_ID, traceIdOptional.orElse("N/A"))) {
             actual.onNext(o);
