@@ -7,13 +7,13 @@ spring:
   cloud:
     nacos:
       config:
-        file-extension: yml
+        file-extension: yaml
         # set default group
         group: APP_GROUP
         prefix: ${spring.application.name}
         # 在服务启动时自动拉取配置
         enable-remote-sync-config: true
-        refresh-enabled: false
+        refresh-enabled: true
         # AP config , use upper default group
         # common config
         shared-configs:
