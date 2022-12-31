@@ -25,11 +25,11 @@ public class TestConsumeTopic {
     @StreamListener(value = Sink.INPUT)
     public void receive(GenericMessage<String> message) throws InterruptedException {
         String payload = message.getPayload();
-        System.out.println(Thread.currentThread().getName() + " -> message:" + payload);
-        if (new Random().nextInt() % 3 ==0){
-            TimeUnit.SECONDS.sleep(20);
-        }
-        System.out.println(Thread.currentThread().getName() + " -> end:");
+        log.info(Thread.currentThread().getName() + " -> message:" + payload);
+//        if (new Random().nextInt() % 3 ==0){
+//            TimeUnit.SECONDS.sleep(20);
+//        }
+        log.info(Thread.currentThread().getName() + " -> end:");
     }
 
 

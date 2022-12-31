@@ -28,7 +28,7 @@ spring:
             group: SHARED_GROUP
           - data-id: jackson.yml
             group: SHARED_GROUP
-          - data-id: shared-redisson.yml
+          - data-id: shared-redis.yml
             group: SHARED_GROUP
           - data-id: shared-actuator.yml
             group: SHARED_GROUP
@@ -60,13 +60,13 @@ spring:
       config:
         server-addr: 127.0.0.1:8848
         # 账号密码。 配置了要验证就一定要记得加这个配
-        access-key: dev
-        secret-key: 123456
+        access-key: nacos
+        secret-key: nacos
         namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
     stream:
       kafka:
         binder:
-          brokers: 127.0.0.1:9092
+          brokers: 127.0.0.1:19092
           required-acks: -1
           auto-add-partitions: true
           auto-create-topics: true # 依赖broker的 auto.create.topics.enable
@@ -82,7 +82,7 @@ spring:
             autoCommitOffset: true
             concurrency: 7
         output:
-          destination: testblock
+          destination: cloud-consumer
         channel-out:
           destination: concurrency-test
           producer:

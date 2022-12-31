@@ -20,7 +20,6 @@ spring:
     nacos:
       config:
         file-extension: yml
-        namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
         # set default group
         group: APP_GROUP
         prefix: ${spring.application.name}

@@ -1,6 +1,7 @@
 package com.xh.cloudprovider8001.rest;
 
 import com.xh.cloudprovider8001.service.KafkaOutService;
+import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +25,9 @@ public class TestController {
 
     @RequestMapping("/nacos/{id}")
     public String getServerPort(@PathVariable("id") String id) {
-        kafkaOutService.sayHello("nacos registry , server port : " + serverPort + "\t id: " + id);
-        return "nacos registry , server port : " + serverPort + "\t id: " + id;
+        String traceId = TraceContext.traceId();
+        kafkaOutService.sayHello("nacos registry , server port : " + serverPort + "\t id: " + id + "\t traceId:" + traceId);
+        return "nacos registry , server port : " + serverPort + "\t id: " + id + "\t traceId:" + traceId;
     }
 
 }
