@@ -8,24 +8,22 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>boot-sw-trace-log-starter</artifactId>
+    <artifactId>boot-custom-log-starter</artifactId>
     <version>0.0.2-SNAPSHOT</version>
-    <name>boot-sw-trace-log-starter</name>
-    <description>boot-sw-trace-log-starter</description>
+    <name>boot-custom-log-starter</name>
+    <description>boot-custom-log-starter</description>
 
     <dependencies>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
-            <version>2.4.3</version>
             <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-            <version>2.4.3</version>
         </dependency>
         <dependency>
             <groupId>org.apache.skywalking</groupId>

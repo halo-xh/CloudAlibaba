@@ -88,7 +88,7 @@
 
         <dependency>
             <groupId>com.xh</groupId>
-            <artifactId>boot-sw-trace-log-starter</artifactId>
+            <artifactId>boot-custom-log-starter</artifactId>
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
 

@@ -13,17 +13,16 @@ import org.springframework.boot.logging.logback.LogbackLoggingSystem;
 import org.springframework.core.Ordered;
 
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Xiao Hong
  * @since 2022-11-03
  */
-public class SkyWalkingLogLayoutInitializer implements SpringApplicationRunListener, Ordered {
-    private static final Logger log = LoggerFactory.getLogger(SkyWalkingLogLayoutInitializer.class);
+public class CustomLogLayoutInitializer implements SpringApplicationRunListener, Ordered {
+    private static final Logger log = LoggerFactory.getLogger(CustomLogLayoutInitializer.class);
 
 
-    public SkyWalkingLogLayoutInitializer(SpringApplication sa, String[] args) {
+    public CustomLogLayoutInitializer(SpringApplication sa, String[] args) {
     }
 
 
@@ -45,11 +44,19 @@ public class SkyWalkingLogLayoutInitializer implements SpringApplicationRunListe
      * 而 LogbackLoggingSystem 加载方式为spring-boot核心jar包中的spring.factories以 {@link LoggingSystemFactory}为key进行加载
      * 最后代码的执行是在SpringApplication启动生命周期中的 {@see EventPublishingRunListener#environmentPrepared(ConfigurableBootstrapContext, ConfigurableEnvironment)}
      * 方法调用,所以能在starting方法中执行无论顺序，或者也在environmentPrepared方法中执行只是要考虑顺序{@link Ordered}
+     * <p>
+     * 同理:
+     * 此方法可以用于自定义日志解析
+     * 设置key 及其对应的MDCConverter 即可
      *
      * @param bootstrapContext bootstrapContext
      */
     @Override
     public void starting(ConfigurableBootstrapContext bootstrapContext) {
+        customSkyWalkingTraceId();
+    }
+
+    private void customSkyWalkingTraceId() {
         Map<String, String> defaultConverterMap = PatternLayout.DEFAULT_CONVERTER_MAP;
         defaultConverterMap.put("X", LogbackMDCPatternConverter.class.getName());
         defaultConverterMap.put("mdc", LogbackMDCPatternConverter.class.getName());
