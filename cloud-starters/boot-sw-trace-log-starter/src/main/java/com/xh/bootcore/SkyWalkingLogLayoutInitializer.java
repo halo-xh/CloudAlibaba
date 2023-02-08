@@ -13,6 +13,7 @@ import org.springframework.boot.logging.logback.LogbackLoggingSystem;
 import org.springframework.core.Ordered;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Xiao Hong
@@ -49,7 +50,7 @@ public class SkyWalkingLogLayoutInitializer implements SpringApplicationRunListe
      */
     @Override
     public void starting(ConfigurableBootstrapContext bootstrapContext) {
-        Map<String, String> defaultConverterMap = PatternLayout.CONVERTER_CLASS_TO_KEY_MAP;
+        Map<String, String> defaultConverterMap = PatternLayout.DEFAULT_CONVERTER_MAP;
         defaultConverterMap.put("X", LogbackMDCPatternConverter.class.getName());
         defaultConverterMap.put("mdc", LogbackMDCPatternConverter.class.getName());
         //  same as  TraceIdMDCPatternLogbackLayout layout = new TraceIdMDCPatternLogbackLayout();
