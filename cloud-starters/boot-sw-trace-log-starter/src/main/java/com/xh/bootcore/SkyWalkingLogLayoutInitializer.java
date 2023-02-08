@@ -49,8 +49,7 @@ public class SkyWalkingLogLayoutInitializer implements SpringApplicationRunListe
      */
     @Override
     public void starting(ConfigurableBootstrapContext bootstrapContext) {
-        PatternLayout patternLayout = new PatternLayout();
-        Map<String, String> defaultConverterMap = patternLayout.getDefaultConverterMap();
+        Map<String, String> defaultConverterMap = PatternLayout.CONVERTER_CLASS_TO_KEY_MAP;
         defaultConverterMap.put("X", LogbackMDCPatternConverter.class.getName());
         defaultConverterMap.put("mdc", LogbackMDCPatternConverter.class.getName());
         //  same as  TraceIdMDCPatternLogbackLayout layout = new TraceIdMDCPatternLogbackLayout();
