@@ -48,3 +48,8 @@ spring:
         access-key: nacos
         secret-key: nacos
         namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
+logging:
+  pattern:
+    level: DEBUG
+    console: >-
+          {"date":"%d{yyyy-MM-dd HH:mm:ss.SSS}","thread":"%thread","traceId":"%X{tid}" ,"level":"%-5level","env":"%property{spring.profiles.active}","appname":"${spring.application.name}","productline":"${logging.custom.productline}","logger":"%logger{50}","msg":"%replace(%msg %replace(%replace(%replace(%xException){"\r\n", "\\n"}){"\n", "\\n"}){"\t", "\\t"}%nopex){"\"", "\'"}"}%n

@@ -12,6 +12,8 @@ import org.springframework.boot.logging.LoggingSystemFactory;
 import org.springframework.boot.logging.logback.LogbackLoggingSystem;
 import org.springframework.core.Ordered;
 
+import java.util.Map;
+
 /**
  * @author Xiao Hong
  * @since 2022-11-03
@@ -37,7 +39,8 @@ public class SkyWalkingLogLayoutInitializer implements SpringApplicationRunListe
      * 从而使其配置的{@link LogbackMDCPatternConverter} 生效从而识别tid
      * <p>
      * 实现原理:
-     * 阅读源码发现 PatternLayout 最终是在 {@link LogbackLoggingSystem} 中被加载
+     * 1. 类加载顺序以及类静态成员变量知识
+     * 2. 阅读源码发现 PatternLayout 最终是在 {@link LogbackLoggingSystem} 中被加载
      * 而 LogbackLoggingSystem 加载方式为spring-boot核心jar包中的spring.factories以 {@link LoggingSystemFactory}为key进行加载
      * 最后代码的执行是在SpringApplication启动生命周期中的 {@see EventPublishingRunListener#environmentPrepared(ConfigurableBootstrapContext, ConfigurableEnvironment)}
      * 方法调用,所以能在starting方法中执行无论顺序，或者也在environmentPrepared方法中执行只是要考虑顺序{@link Ordered}
@@ -46,8 +49,12 @@ public class SkyWalkingLogLayoutInitializer implements SpringApplicationRunListe
      */
     @Override
     public void starting(ConfigurableBootstrapContext bootstrapContext) {
-        TraceIdMDCPatternLogbackLayout layout = new TraceIdMDCPatternLogbackLayout();
-        log.info("SkyWalking TraceIdMDCPatternLogbackLayout has been loaded.{}", layout);
+        PatternLayout patternLayout = new PatternLayout();
+        Map<String, String> defaultConverterMap = patternLayout.getDefaultConverterMap();
+        defaultConverterMap.put("X", LogbackMDCPatternConverter.class.getName());
+        defaultConverterMap.put("mdc", LogbackMDCPatternConverter.class.getName());
+        //  same as  TraceIdMDCPatternLogbackLayout layout = new TraceIdMDCPatternLogbackLayout();
+        log.info("SkyWalking LogbackMDCPatternConverter has been loaded");
     }
 
     @Override
