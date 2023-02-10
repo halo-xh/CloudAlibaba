@@ -1,0 +1,55 @@
+server:
+  port: 14001
+spring:
+  profiles:
+    active: dev
+  application:
+    name: cloud-gateway2
+  cloud:
+    nacos:
+      config:
+        file-extension: yml
+        # set default group
+        group: APP_GROUP
+        prefix: ${spring.application.name}
+        # 在服务启动时自动拉取配置
+        enable-remote-sync-config: true
+        refresh-enabled: true
+        # AP config , use upper default group
+        # common config
+        shared-configs:
+          - data-id: shared-logback.yml
+            group: SHARED_GROUP
+            refresh: true
+      discovery:
+        register-enabled: true
+        server-addr: ${spring.cloud.nacos.config.server-addr}
+        namespace: ${spring.cloud.nacos.config.namespace}
+
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+---
+spring:
+  profile: dev
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        # 账号密码。 配置了要验证就一定要记得加这个配
+        access-key: nacos
+        secret-key: nacos
+        namespace: ced8504b-967b-4e96-8d38-17f4349e4ab5
+logging:
+  pattern:
+    level: DEBUG
+    console: >-
+      {"date":"%d{yyyy-MM-dd HH:mm:ss.SSS}","thread":"%thread","traceId":"%X{tid}" ,"level":"%-5level","env":"%property{spring.profiles.active}","appname":"${spring.application.name}","productline":"${logging.custom.productline}","logger":"%logger{50}","msg":"%replace(%msg %replace(%replace(%replace(%xException){"\r\n", "\\n"}){"\n", "\\n"}){"\t", "\\t"}%nopex){"\"", "\'"}"}%n
