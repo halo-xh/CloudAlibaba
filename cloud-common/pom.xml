@@ -17,6 +17,7 @@
     <modules>
         <module>log-audit</module>
         <module>cloud-feign-api</module>
+        <module>cloud-dubbo</module>
     </modules>
 
     <properties>
