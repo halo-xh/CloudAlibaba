@@ -1,9 +1,7 @@
 package com.example.cloudsimple.rest;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -14,6 +12,12 @@ public class TestRest {
     public String importKnowledgeType() {
         log.info("simple - recv");
         return "cloud-simple-t1";
+    }
+
+    @PostMapping("/t2")
+    public String importKnowledgeType(@RequestBody String s) {
+        log.info("simple - t2 {}", s);
+        return "cloud-simple-s";
     }
 
 }
