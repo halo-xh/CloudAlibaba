@@ -17,7 +17,7 @@ class CloudProvider8001ApplicationTests {
 
     @Test
     void contextLoads() {
-        for (int i = 19999; i < 10100000; i++) {
+        for (int i = 0; i < 100; i++) {
             kafkaOutService.sayHello(i + "");
         }
     }

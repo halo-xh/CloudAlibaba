@@ -19,6 +19,7 @@
         <module>cloud-provider-8002</module>
         <module>dubbo-provider</module>
         <module>cloud-flux-provider</module>
+        <module>price-calculator</module>
     </modules>
 
     <properties>

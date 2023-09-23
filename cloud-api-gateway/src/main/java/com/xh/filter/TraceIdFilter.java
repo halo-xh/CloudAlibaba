@@ -18,7 +18,7 @@ public class TraceIdFilter implements GlobalFilter , Ordered {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String s = TraceContext.traceId();
-        log.info("trace id:{}", s);
+//        log.info("trace id:{}", s);
         return chain.filter(exchange);
     }
 

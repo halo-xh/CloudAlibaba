@@ -49,19 +49,13 @@ public class XssFilterRewrite implements GlobalFilter, Ordered {
         //白名单url直接放行
         for (String url : urls) {
             if (PATH_MATCHER.match(url, uri.getPath())) {
-                log.info("XssFilter 白名单接口:{}", uri.getPath());
+//                log.info("XssFilter 白名单接口:{}", uri.getPath());
                 return chain.filter(exchange);
             }
         }
 
         String method = request.getMethodValue();
         String contentType = request.getHeaders().getFirst(HttpHeaders.CONTENT_TYPE);
-        boolean postFlag = (MediaType.APPLICATION_FORM_URLENCODED_VALUE.equalsIgnoreCase(contentType)
-                || MediaType.APPLICATION_JSON_VALUE.equals(contentType));
-        if (!postFlag) {
-            log.info("XssFilter 参数类型放行接口:{}", uri.getPath());
-            return chain.filter(exchange);
-        }
         if ((HttpMethod.POST.name().equals(method) || HttpMethod.PUT.name().equals(method))) {
             ServerHttpRequest newRequest = new ServerHttpRequestDecorator(request) {
                 @Override
@@ -73,9 +67,8 @@ public class XssFilterRewrite implements GlobalFilter, Ordered {
                             dataBuffer.read(oldBytes);
                             DataBufferUtils.release(dataBuffer);
                             String bodyString = new String(oldBytes, StandardCharsets.UTF_8);
-                            log.debug("[{}：{}] XSS处理前参数：{}", method, uri.getPath(), bodyString);
+//                            log.debug("[{}：{}] XSS处理前参数：{}", method, uri.getPath(), bodyString);
                             String xssClean =  xssClean(bodyString);
-                            log.info("[{}：{}] XSS处理后参数：{}", method, uri.getPath(), bodyString);
                             // 重新构造body
                             byte[] newBytes = xssClean.getBytes(StandardCharsets.UTF_8);
                             return toDataBuffer(newBytes);
@@ -95,13 +88,13 @@ public class XssFilterRewrite implements GlobalFilter, Ordered {
                     return headers;
                 }
             };
-            log.info("XssFilter POST请求接口:{}", uri.getPath());
+//            log.info("XssFilter POST请求接口:{}", uri.getPath());
             return chain.filter(exchange.mutate().request(newRequest).build());
         } else if (HttpMethod.GET.name().equals(method)) {
 
             String rawQuery = uri.getRawQuery();
             if (!StringUtils.hasText(rawQuery)) {
-                log.info("XssFilter GET请求参数为空接口:{}", uri.getPath());
+//                log.info("XssFilter GET请求参数为空接口:{}", uri.getPath());
                 return chain.filter(exchange);
             }
             rawQuery =  xssClean(rawQuery);
@@ -113,7 +106,7 @@ public class XssFilterRewrite implements GlobalFilter, Ordered {
 
                 ServerHttpRequest newRequest = exchange.getRequest().mutate()
                         .uri(newUri).build();
-                log.info("XssFilter GET请求接口:{},处理之后的参数:{}", uri.getPath(), rawQuery);
+//                log.info("XssFilter GET请求接口:{},处理之后的参数:{}", uri.getPath(), rawQuery);
                 return chain.filter(exchange.mutate().request(newRequest).build());
             } catch (Exception e) {
                 log.error("get请求清理xss攻击异常", e);
@@ -139,7 +132,7 @@ public class XssFilterRewrite implements GlobalFilter, Ordered {
     }
 
     private String xssClean(String bodyString) {
-        return bodyString;
+        return "bbbb"+bodyString;
     }
 
 

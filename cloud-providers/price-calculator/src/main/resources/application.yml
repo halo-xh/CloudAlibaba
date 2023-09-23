@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: price-cal
+  datasource:
+    name: testerDS
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://172.18.176.1:3306/price_ddd?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      poolName: Hikari
+      auto-commit: false

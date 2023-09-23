@@ -54,7 +54,7 @@ public class XssFilter implements GlobalFilter, Ordered {
         //白名单url直接放行
         for (int i = 0; i < urls.size(); i++) {
             if (PATH_MATCHER.match(urls.get(i), uri.getPath())) {
-                log.info("XssFilter 白名单接口:{}", uri.getPath());
+//                log.info("XssFilter 白名单接口:{}", uri.getPath());
                 return chain.filter(exchange);
             }
         }
@@ -74,9 +74,7 @@ public class XssFilter implements GlobalFilter, Ordered {
                         }
                         HttpHeaders httpHeaders = request.getHeaders();
                         // 执行XSS清理
-                        log.debug("{} - [{}：{}] XSS处理前参数：{}", method, uri.getPath(), bodyString);
                         bodyString =  xssClean(bodyString);
-                        log.info("{} - [{}：{}] 参数：{}", method, uri.getPath(), bodyString);
 
                         ServerHttpRequest newRequest = request.mutate().uri(uri).build();
 
@@ -105,14 +103,14 @@ public class XssFilter implements GlobalFilter, Ordered {
                                 return headers;
                             }
                         };
-                        log.info("XssFilter POST请求接口:{}", uri.getPath());
+//                        log.info("XssFilter POST请求接口:{}", uri.getPath());
                         return chain.filter(exchange.mutate().request(newRequest).build());
                     });
         } else if(HttpMethod.GET.name().equals(method)){
 
             String rawQuery = uri.getRawQuery();
             if (!StringUtils.hasText(rawQuery)){
-                log.info("XssFilter GET请求参数为空接口:{}", uri.getPath());
+//                log.info("XssFilter GET请求参数为空接口:{}", uri.getPath());
                 return chain.filter(exchange);
             }
             rawQuery =  xssClean(rawQuery);
@@ -124,10 +122,10 @@ public class XssFilter implements GlobalFilter, Ordered {
 
                 ServerHttpRequest newRequest = exchange.getRequest().mutate()
                         .uri(newUri).build();
-                log.info("XssFilter GET请求接口:{},处理之后的参数:{}", uri.getPath(), rawQuery);
+//                log.info("XssFilter GET请求接口:{},处理之后的参数:{}", uri.getPath(), rawQuery);
                 return chain.filter(exchange.mutate().request(newRequest).build());
             } catch (Exception e) {
-                log.error("get请求清理xss攻击异常", e);
+//                log.error("get请求清理xss攻击异常", e);
                 throw new IllegalStateException("Invalid URI query: \"" + rawQuery + "\"");
             }
         } else {
@@ -136,7 +134,7 @@ public class XssFilter implements GlobalFilter, Ordered {
     }
 
     private String xssClean(String bodyString) {
-        return bodyString;
+        return "aaa"+bodyString;
     }
 
     /**
