@@ -1,6 +1,7 @@
 package com.example.cloudsimple.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
@@ -14,12 +15,13 @@ import java.util.Date;
 
 @Data
 @Entity
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer"})
 public class TestDO {
 
 
     @Id
     @Column(name = "id", nullable = false, length = 20)
-    @GenericGenerator(name = "idCreator", strategy = "AUTO")
+    @GenericGenerator(name = "idCreator", strategy = "com.xh.dlq.config.IdGenerator")
     Long id;
 
     @Column(columnDefinition = "varchar(50) DEFAULT NULL COMMENT '人'")
@@ -44,7 +46,7 @@ public class TestDO {
     private Date modifiedAt;
 
     @Version
-    @Column(columnDefinition = "int(11) NOT NULL COMMENT '版本'")
+    @Column(columnDefinition = "int NOT NULL DEFAULT '0' COMMENT '版本'")
     private Integer version;
 
     @Column(columnDefinition = "bit(1) DEFAULT NULL COMMENT '是否删除'")

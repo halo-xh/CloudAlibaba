@@ -4,7 +4,7 @@ spring:
   datasource:
     name: testerDS
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://172.18.176.1:3306/tester?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://127.0.0.1:3306/tester?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -34,7 +34,7 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-      ddl-auto: create
+      ddl-auto: none
 
 server:
   port: 7777
@@ -59,6 +59,43 @@ management:
 
 logging:
   pattern:
-    level: INFO
+    level: DEBUG
+  level:
+    com:
+      alicp:
+        jetcache: DEBUG
 #    console: >-
 #      {"date":"%d{yyyy-MM-dd HH:mm:ss.SSS}","thread":"%thread","traceId":"%X{tid}" ,"level":"%-5level","env":"%property{spring.profiles.active}","appname":"${spring.application.name}","productline":"${logging.custom.productline}","logger":"%logger{50}","msg":"%replace(%msg %replace(%replace(%replace(%xException){"\r\n", "\\n"}){"\n", "\\n"}){"\t", "\\t"}%nopex){"\"", "\'"}"}%n
+
+jetcache:
+  statIntervalMinutes: 60
+  areaInCacheName: false
+  penetrationProtect: false
+  local:
+    default:
+      type: linkedhashmap # 支持的类型：linkedhashmap、caffeine
+      limit: 100
+      keyConvertor: fastjson # 支持的类型：fastjson，可自定义转换器函数
+      expireAfterWriteInMillis: 6000000
+      expireAfterAccessInMillis: 3000000
+  remote:
+    default:
+      broadcastChannel: jacacheChannel
+      type: redis.lettuce # 支持的类型：redis、redis.lettuce
+      keyPrefix: 'sample:jetcache:'
+      keyConvertor: fastjson
+      valueEncoder: java # 支持的类型：kryo、java，可自定义编码器
+      valueDecoder: java # 支持的类型：kryo、java，可自定义解码器
+      expireAfterWriteInMillis: 3600000
+      #readFrom: slavePreferred # 优先从Slave节点中读取
+      #uri: redis-sentinel://host1:26379,host2:26379,host3:26379/?sentinelMasterId=mymaster # 哨兵模式
+      uri: redis://127.0.0.1:6379/ # 单节点模式
+      #mode: masterslave # 设置为主从模式
+      #uri: # 集群模式
+      #- redis://127.0.0.1:7000
+      #- redis://127.0.0.1:7001
+      #- redis://127.0.0.1:7002
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

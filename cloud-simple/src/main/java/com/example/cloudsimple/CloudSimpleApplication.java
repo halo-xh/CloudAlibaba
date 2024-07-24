@@ -1,5 +1,6 @@
 package com.example.cloudsimple;
 
+import com.alicp.jetcache.anno.config.EnableMethodCache;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RMap;
 import org.redisson.api.RTransaction;
@@ -27,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 
 @Slf4j
+@EnableMethodCache(basePackages = "com.example")
 @SpringBootApplication
 public class CloudSimpleApplication {
 

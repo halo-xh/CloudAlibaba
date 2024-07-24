@@ -23,6 +23,7 @@
         <module>cloud-providers</module>
         <module>cloud-consumers</module>
         <module>cloud-starters</module>
+        <module>cloud-javers-demo</module>
     </modules>
 
     <properties>

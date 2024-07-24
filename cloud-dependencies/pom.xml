@@ -32,6 +32,7 @@
         <hibernate-jpamodelgen.version>5.2.17.Final</hibernate-jpamodelgen.version>
         <skywalking.version>8.7.0</skywalking.version>
         <jjwt.version>0.10.6</jjwt.version>
+        <jetcache.version>2.7.6</jetcache.version>
     </properties>
 
     <dependencyManagement>
@@ -148,6 +149,18 @@
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt-jackson</artifactId>
                 <version>${jjwt.version}</version>
+            </dependency>
+
+            <!-- 使用 jet cache 客户端添加以下依赖 -->
+            <dependency>
+                <groupId>com.alicp.jetcache</groupId>
+                <artifactId>jetcache-starter-redis</artifactId>
+                <version>${jetcache.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alicp.jetcache</groupId>
+                <artifactId>jetcache-starter-redis-lettuce</artifactId>
+                <version>${jetcache.version}</version>
             </dependency>
 
         </dependencies>
