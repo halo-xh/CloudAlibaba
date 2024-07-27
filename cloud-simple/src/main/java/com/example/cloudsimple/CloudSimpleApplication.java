@@ -1,35 +1,18 @@
 package com.example.cloudsimple;
 
 import com.alicp.jetcache.anno.config.EnableMethodCache;
+import com.example.id.IdCreatorConfiguration;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RMap;
-import org.redisson.api.RTransaction;
-import org.redisson.api.RedissonClient;
-import org.redisson.api.TransactionOptions;
-import org.redisson.client.codec.ByteArrayCodec;
-import org.redisson.client.codec.Codec;
-import org.redisson.client.codec.StringCodec;
-import org.redisson.codec.SnappyCodecV2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.messaging.Processor;
-import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.core.RedisOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SessionCallback;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.messaging.support.GenericMessage;
-
-import java.util.concurrent.TimeUnit;
+import org.springframework.context.annotation.Import;
 
 
 @Slf4j
 @EnableMethodCache(basePackages = "com.example")
 @SpringBootApplication
+@Import(IdCreatorConfiguration.class)
 public class CloudSimpleApplication {
 
     public static void main(String[] args) {

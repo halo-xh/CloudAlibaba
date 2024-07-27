@@ -1,0 +1,12 @@
+id:
+  creator:
+    jdbc-driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbc-url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    jdbc-password: 123456
+    jdbc-username: root
+    redis-db-index: 2
+    redis-host: 127.0.0.1
+    redis-port: 6379
+    section-id: 1
+    first-place: 2
+    service-name: ${spring.appplication.name:id-creator-service}
