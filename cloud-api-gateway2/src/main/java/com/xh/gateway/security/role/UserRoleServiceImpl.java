@@ -9,11 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * @Author: lanbo
- * @Description:
- * @Date: 2022/11/15
- */
+
 @Slf4j
 @Service
 public class UserRoleServiceImpl implements UserRoleService {

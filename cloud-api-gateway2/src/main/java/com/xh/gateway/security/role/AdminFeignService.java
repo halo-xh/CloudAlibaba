@@ -7,11 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-/**
- * @Author: lanbo
- * @Description:
- * @Date: 2022/3/28
- */
+
 @FeignClient(name = "xt-saas-admin-service", path = "/adminservice", contextId = "filter-admin-service-feign")
 public interface AdminFeignService {
 

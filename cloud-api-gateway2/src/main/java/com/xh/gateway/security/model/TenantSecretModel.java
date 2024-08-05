@@ -2,11 +2,7 @@ package com.xh.gateway.security.model;
 
 import lombok.Data;
 
-/**
- * @Author: lanbo
- * @Description:
- * @Date: 2022/10/27
- */
+
 @Data
 public class TenantSecretModel {
 

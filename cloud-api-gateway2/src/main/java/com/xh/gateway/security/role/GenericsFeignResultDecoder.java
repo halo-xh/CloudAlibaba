@@ -15,11 +15,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 
-/**
- * @Author: lb
- * @Description:
- * @Date: 2020/9/15
- */
+
 @Component
 @Slf4j
 public class GenericsFeignResultDecoder implements Decoder {

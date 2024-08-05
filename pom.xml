@@ -24,6 +24,7 @@
         <module>cloud-consumers</module>
         <module>cloud-starters</module>
         <module>cloud-javers-demo</module>
+        <module>cloud-ai</module>
     </modules>
 
     <properties>

@@ -9,11 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-/**
- * @Author: lb
- * @Description:
- * @Date: 2021/2/2
- */
+
 @Slf4j
 public class CustomJackDateFormat extends DateFormat {
 
