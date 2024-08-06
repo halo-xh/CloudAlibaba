@@ -21,7 +21,6 @@ spring:
     database: MYSQL
     show-sql: true
     properties:
-      hibernate.hbm2ddl.auto: create
       hibernate.query.substitutions: true 'T', false 'F'
       hibernate.jdbc.batch_size: 30
       hibernate.format_sql: true
@@ -84,8 +83,8 @@ jetcache:
       type: redis.lettuce # 支持的类型：redis、redis.lettuce
       keyPrefix: 'sample:jetcache:'
       keyConvertor: fastjson
-      valueEncoder: java # 支持的类型：kryo、java，可自定义编码器
-      valueDecoder: java # 支持的类型：kryo、java，可自定义解码器
+      valueEncoder: kryo5 # 支持的类型：kryo、java，可自定义编码器 使用java实体增减字段后反序列化第一次会报错 使用 kryo5 不会
+      valueDecoder: kryo5 # 支持的类型：kryo、java，可自定义解码器
       expireAfterWriteInMillis: 3600000
       #readFrom: slavePreferred # 优先从Slave节点中读取
       #uri: redis-sentinel://host1:26379,host2:26379,host3:26379/?sentinelMasterId=mymaster # 哨兵模式

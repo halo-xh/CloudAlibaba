@@ -1,6 +1,7 @@
 package com.example.cloudsimple.jetcache;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -30,6 +31,9 @@ public class TestDO2 implements Serializable {
     private Integer version;
 
     private Boolean isDeleted = Boolean.FALSE;
+
+    @TableField(exist = false)
+    private String test;
 
 
 }
