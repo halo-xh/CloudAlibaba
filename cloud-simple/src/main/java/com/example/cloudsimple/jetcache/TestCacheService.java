@@ -2,10 +2,12 @@ package com.example.cloudsimple.jetcache;
 
 
 import com.alicp.jetcache.anno.*;
-import com.example.cloudsimple.entity.TestDO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 
 @Slf4j
@@ -19,8 +21,12 @@ public class TestCacheService {
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
 
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
 
     public TestDO2 create(String name, Integer value) {
+        stringRedisTemplate.opsForValue().setIfAbsent(name, String.valueOf(value));
         long id = snowflakeIdWorker.nextId();
         TestDO2 testDO = new TestDO2();
         testDO.setId(id);
@@ -42,7 +48,7 @@ public class TestCacheService {
      * @param id
      * @return
      */
-    @Cached(name = "testdo2:", localExpire = 60000 * 5, expire = 60000 * 5, localLimit = 50, cacheType = CacheType.BOTH, key = "#id", syncLocal = true)
+    @Cached(name = "testdo2:", localExpire = 600, expire = 600, localLimit = 50, cacheType = CacheType.BOTH, key = "#id", syncLocal = true)
     @CachePenetrationProtect
     public TestDO2 findById(Long id) {
         return do2Mapper.selectById(id);

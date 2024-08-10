@@ -25,7 +25,7 @@
         <nacos.client.version>2.1.2</nacos.client.version>
         <fastjson.version>1.2.61</fastjson.version>
         <swagger.version>1.6.2</swagger.version>
-        <redisson.version>3.16.3</redisson.version>
+        <redisson.version>3.33.0</redisson.version>
         <mybatis.version>3.3.2</mybatis.version>
         <mybatis-spring.version>1.2.5</mybatis-spring.version>
         <cloud-common.version>0.0.1-SNAPSHOT</cloud-common.version>
@@ -80,7 +80,7 @@
             <!--redis-->
             <dependency>
                 <groupId>org.redisson</groupId>
-                <artifactId>redisson-spring-data-23</artifactId>
+                <artifactId>redisson-spring-data-25</artifactId>
                 <version>${redisson.version}</version>
             </dependency>
             <dependency>
@@ -154,13 +154,14 @@
             <!-- 使用 jet cache 客户端添加以下依赖 -->
             <dependency>
                 <groupId>com.alicp.jetcache</groupId>
-                <artifactId>jetcache-starter-redis</artifactId>
+                <artifactId>jetcache-starter-redisson</artifactId>
                 <version>${jetcache.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.alicp.jetcache</groupId>
-                <artifactId>jetcache-starter-redis-lettuce</artifactId>
-                <version>${jetcache.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.redisson</groupId>
+                        <artifactId>redisson-spring-boot-starter</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
         </dependencies>

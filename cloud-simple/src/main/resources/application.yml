@@ -80,7 +80,7 @@ jetcache:
   remote:
     default:
       broadcastChannel: jacacheChannel
-      type: redis.lettuce # 支持的类型：redis、redis.lettuce
+      type: redisson # 支持的类型：redis、redis.lettuce
       keyPrefix: 'sample:jetcache:'
       keyConvertor: fastjson
       valueEncoder: kryo5 # 支持的类型：kryo、java，可自定义编码器 使用java实体增减字段后反序列化第一次会报错 使用 kryo5 不会
