@@ -1,0 +1,53 @@
+server:
+  port: 7767
+  servlet:
+    context-path: /cloud-statemachine
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  application:
+    name: cloud-statemachine-demo
+  datasource:
+    name: testerDS
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: off
+
+
+
+knife4j:
+  enable: true
+  openapi:
+    title: Statemachine-demo文档
+    description: "statemachine-demo"
+    email: xh@xxxx.com
+    concat: xh
+    url: https://xh.xh.com
+    version: v4.0
+    license: Apache 2.0
+    license-url: https://stackoverflow.com/
+    terms-of-service-url: https://stackoverflow.com/
+    group:
+      task:
+        group-name: Task分组
+        api-rule: package
+        api-rule-resources:
+          - com.example.task
+logging:
+  level:
+    org:
+      springframework:
+        statemachine: debug

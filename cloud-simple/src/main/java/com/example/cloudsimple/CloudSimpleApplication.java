@@ -20,33 +20,4 @@ public class CloudSimpleApplication {
 
     }
 
-//    {
-//        StringRedisTemplate template = context.getBean(StringRedisTemplate.class);
-//        Runnable runnable = () -> {
-//            long l = System.currentTimeMillis();
-//            Object execute = template.execute(new SessionCallback<Object>() {
-//                @Override
-//                public Object execute(RedisOperations operations) throws DataAccessException {
-//                    operations.multi();
-//                    operations.opsForValue().increment("MKT_ACT_ACC" + ":" + 123 + ":" + 666 + ":" + "kuku");
-//                    operations.opsForValue().increment("MKT_ACT_ACC" + ":" + 123 + ":" + 666);
-//                    return operations.exec();
-//                }
-//            });
-//            long l12 = System.currentTimeMillis();
-//            System.out.println("l12 - l = " + (l12 - l) + "----" + execute);
-//        };
-//        for (int i = 0; i < 30; i++) {
-//            System.out.println("======================================== = " + i);
-//            new Thread(runnable).start();
-//        }
-//        try {
-//            TimeUnit.SECONDS.sleep(3);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println(template.opsForValue().get("MKT_ACT_ACC" + ":" + 123 + ":" + 666 + ":" + "kuku"));
-//        System.out.println(template.opsForValue().get("MKT_ACT_ACC" + ":" + 123 + ":" + 666));
-//    }
-
 }

@@ -75,8 +75,8 @@ jetcache:
       type: linkedhashmap # 支持的类型：linkedhashmap、caffeine
       limit: 100
       keyConvertor: fastjson # 支持的类型：fastjson，可自定义转换器函数
-      expireAfterWriteInMillis: 6000000
-      expireAfterAccessInMillis: 3000000
+      expireAfterWriteInMillis: 6000
+      expireAfterAccessInMillis: 3000
   remote:
     default:
       broadcastChannel: jacacheChannel
@@ -85,7 +85,7 @@ jetcache:
       keyConvertor: fastjson
       valueEncoder: kryo5 # 支持的类型：kryo、java，可自定义编码器 使用java实体增减字段后反序列化第一次会报错 使用 kryo5 不会
       valueDecoder: kryo5 # 支持的类型：kryo、java，可自定义解码器
-      expireAfterWriteInMillis: 3600000
+      expireAfterWriteInMillis: 3600
       #readFrom: slavePreferred # 优先从Slave节点中读取
       #uri: redis-sentinel://host1:26379,host2:26379,host3:26379/?sentinelMasterId=mymaster # 哨兵模式
       uri: redis://127.0.0.1:6379/ # 单节点模式

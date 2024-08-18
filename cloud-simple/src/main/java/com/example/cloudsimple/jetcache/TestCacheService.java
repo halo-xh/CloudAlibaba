@@ -3,6 +3,10 @@ package com.example.cloudsimple.jetcache;
 
 import com.alicp.jetcache.anno.*;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RRateLimiter;
+import org.redisson.api.RateIntervalUnit;
+import org.redisson.api.RateType;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,9 @@ public class TestCacheService {
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private RedissonClient redissonClient;
 
 
     public TestDO2 create(String name, Integer value) {
@@ -48,9 +55,13 @@ public class TestCacheService {
      * @param id
      * @return
      */
-    @Cached(name = "testdo2:", localExpire = 600, expire = 600, localLimit = 50, cacheType = CacheType.BOTH, key = "#id", syncLocal = true)
-    @CachePenetrationProtect
+//    @Cached(name = "testdo2:", localExpire = 600, expire = 600, localLimit = 50, cacheType = CacheType.BOTH, key = "#id", syncLocal = true)
+//    @CachePenetrationProtect
     public TestDO2 findById(Long id) {
+        RRateLimiter rateLimiter = redissonClient.getRateLimiter("findById");
+        boolean rate = rateLimiter.trySetRate(RateType.OVERALL, 10, 2, RateIntervalUnit.SECONDS);
+        rateLimiter.acquire(1);
+        log.info("acquired");
         return do2Mapper.selectById(id);
     }
 

@@ -43,7 +43,7 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: 172.18.176.1:8848
+        server-addr: 172.18.176.1:18848
         # 账号密码。 配置了要验证就一定要记得加这个配
         access-key: nacos
         secret-key: nacos

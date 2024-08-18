@@ -24,15 +24,18 @@
         <spring-cloud-openfeign.version>2.2.6.RELEASE</spring-cloud-openfeign.version>
         <nacos.client.version>2.1.2</nacos.client.version>
         <fastjson.version>1.2.61</fastjson.version>
-        <swagger.version>1.6.2</swagger.version>
+        <knife4j.version>4.4.0</knife4j.version>
         <redisson.version>3.33.0</redisson.version>
-        <mybatis.version>3.3.2</mybatis.version>
+        <mybatis.version>3.5.2</mybatis.version>
         <mybatis-spring.version>1.2.5</mybatis-spring.version>
         <cloud-common.version>0.0.1-SNAPSHOT</cloud-common.version>
         <hibernate-jpamodelgen.version>5.2.17.Final</hibernate-jpamodelgen.version>
         <skywalking.version>8.7.0</skywalking.version>
         <jjwt.version>0.10.6</jjwt.version>
         <jetcache.version>2.7.6</jetcache.version>
+        <spring-statemachine.version>3.2.1</spring-statemachine.version>
+        <lombok.version>1.18.24</lombok.version>
+        <mapstruct.version>1.5.2.Final</mapstruct.version>
     </properties>
 
     <dependencyManagement>
@@ -44,6 +47,12 @@
                 <version>${spring.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.statemachine</groupId>
+                <artifactId>spring-statemachine-starter</artifactId>
+                <version>${spring-statemachine.version}</version>
             </dependency>
 
             <!-- spring cloud-->
@@ -88,9 +97,16 @@
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redisson.version}</version>
             </dependency>
+
+            <!--mybatis-->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
                 <version>${mybatis.version}</version>
             </dependency>
 
@@ -101,15 +117,27 @@
                 <version>${fastjson.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-annotations</artifactId>
-                <version>${swagger.version}</version>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-jpamodelgen</artifactId>
                 <version>${hibernate-jpamodelgen.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+                <scope>provided</scope>
             </dependency>
 
             <dependency>
