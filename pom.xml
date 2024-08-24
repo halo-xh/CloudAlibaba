@@ -26,6 +26,8 @@
         <module>cloud-javers-demo</module>
         <module>cloud-ai</module>
         <module>cloud-statemachine-demo</module>
+        <module>mybatis-gen</module>
+        <module>jta-demo</module>
     </modules>
 
     <properties>

@@ -3,6 +3,7 @@ package com.example.task.controller;
 import com.example.task.controller.request.TaskCreateRequest;
 import com.example.task.controller.response.TaskVO;
 import com.example.task.service.TaskService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * @author xh
  * @since 2024-08-18
  */
+@Api(value = "状态机demo任务表", tags = "状态机demo任务表")
 @RestController
 @RequestMapping("/task/task")
 public class TaskController {

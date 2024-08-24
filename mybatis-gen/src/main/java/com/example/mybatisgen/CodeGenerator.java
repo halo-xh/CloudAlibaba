@@ -1,15 +1,18 @@
-package com.example.cloudstatemachinedemo;
+package com.example.mybatisgen;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
+import com.baomidou.mybatisplus.generator.config.builder.CustomFile;
+import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.baomidou.mybatisplus.generator.fill.Property;
-import com.example.common.AbstractEntity;
 
-import java.util.Collections;
+import org.jetbrains.annotations.NotNull;
+import java.io.File;
+import java.util.*;
 
 
 public class CodeGenerator {
@@ -22,7 +25,7 @@ public class CodeGenerator {
                             .disableOpenDir()       // 禁止打开输出目录 默认值:true
                             .commentDate("yyyy-MM-dd") // 注释日期
                             .dateType(DateType.ONLY_DATE)   //定义生成的实体类中日期类型 DateType.ONLY_DATE 默认值: DateType.TIME_PACK
-                            .outputDir(System.getProperty("user.dir") + "/src/main/java"); // 指定输出目录
+                            .outputDir("E:\\IDEAWorkSpace\\CloudAlibaba\\mybatis-gen" + "/src/main/java"); // 指定输出目录
                 })
 
                 .packageConfig(builder -> {
@@ -31,19 +34,19 @@ public class CodeGenerator {
                             .entity("entity")           //Entity 包名 默认值:entity
                             .service("service")         //Service 包名 默认值:service
                             .mapper("mapper")           //Mapper 包名 默认值:mapper
+                            .xml("mappers")
                             .moduleName("task") // 设置父包模块名 默认值:无
-                            .pathInfo(Collections.singletonMap(OutputFile.xml, System.getProperty("user.dir") + "/src/main/resources/mapper")); // 设置mapperXml生成路径
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, "E:\\IDEAWorkSpace\\CloudAlibaba\\mybatis-gen" + "/src/main/resources/mapper")); // 设置mapperXml生成路径
                     //默认存放在mapper的xml下
                 })
 
-//                .injectionConfig(consumer -> {
-//                    Map<String, String> customFile = new HashMap<>();
-//                    // DTO、VO
-//                    customFile.put("DTO.java", "/templates/entityDTO.java.ftl");
-//                    customFile.put("VO.java", "/templates/entityVO.java.ftl");
-//
-//                    consumer.customFile(customFile);
-//                })
+                .injectionConfig(consumer -> {
+                    consumer.customFile(cf -> cf.fileName("DTO.java").templatePath("/templates/dto.java.ftl").packageName("trans.dto").enableFileOverride().build());
+                    consumer.customFile(cf -> cf.fileName("VO.java").templatePath("/templates/vo.java.ftl").packageName("trans.vo").enableFileOverride().build());
+                    consumer.customFile(cf -> cf.fileName("CreateRequest.java").templatePath("/templates/create_request.java.ftl").packageName("trans.request").enableFileOverride().build());
+                    consumer.customFile(cf -> cf.fileName("UpdateRequest.java").templatePath("/templates/update_request.java.ftl").packageName("trans.request").enableFileOverride().build());
+                    consumer.customFile(cf -> cf.fileName("Controller.java").templatePath("/templates/controller.java.ftl").packageName("controller").enableFileOverride().build());
+                })
 
                 .strategyConfig(builder -> {
                     builder.addInclude("fsm_task","fsm_task_type") // 设置需要生成的表名 可边长参数“user”, “user1”
@@ -79,17 +82,19 @@ public class CodeGenerator {
     /**
      * 代码生成器支持自定义[DTO\VO等]模版
      */
-//    public static class EnhanceFreemarkerTemplateEngine extends FreemarkerTemplateEngine {
-//
-//        @Override
-//        protected void outputCustomFile(Map<String, String> customFile, TableInfo tableInfo, Map<String, Object> objectMap) {
-//            String entityName = tableInfo.getEntityName();
-//            String otherPath = this.getPathInfo(OutputFile.other);
-//            customFile.forEach((key, value) -> {
-//                String fileName = String.format(otherPath + File.separator + entityName + "%s", key);
-//                this.outputFile(new File(fileName), objectMap, value, true);
-//            });
-//        }
-//    }
+    public static class EnhanceFreemarkerTemplateEngine extends FreemarkerTemplateEngine {
+
+        @Override
+        protected void outputCustomFile(@NotNull List<CustomFile> customFiles, @NotNull TableInfo tableInfo, @NotNull Map<String, Object> objectMap) {
+            super.outputCustomFile(customFiles, tableInfo, objectMap);
+            String entityName = tableInfo.getEntityName();
+            String otherPath = this.getPathInfo(OutputFile.other);
+            for (CustomFile customFile : customFiles) {
+                String fileName = String.format(otherPath + File.separator + entityName + "%s", customFile.getFileName());
+                this.outputFile(new File(fileName), objectMap, customFile.getTemplatePath(), true);
+            }
+        }
+
+    }
 
 }
