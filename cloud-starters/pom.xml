@@ -16,8 +16,8 @@
     <modules>
         <module>boot-core-starter</module>
         <module>boot-custom-log-starter</module>
-        <module>cloud-dlp-starter</module>
-        <module>mq-distributed-tx-starter</module>
+        <module>boot-dlp-starter</module>
+        <module>boot-mq-distributed-tx-starter</module>
         <module>boot-id-starter</module>
     </modules>
 

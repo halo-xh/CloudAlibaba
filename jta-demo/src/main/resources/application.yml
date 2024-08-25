@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: jta-demo
+  datasource:
+    dynamic:
+      primary: mysql
+      lazy: false
+      strict: true
+      datasource:
+        mysql:
+          type: com.zaxxer.hikari.HikariDataSource #  com.atomikos.jdbc.AtomikosDataSourceBean
+          url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          password: 123456
+          username: root
+          driverClassName: com.mysql.cj.jdbc.Driver #com.mysql.cj.jdbc.MysqlXADataSource
+#          atomikos:
+#            minPoolSize: 5
+#            maxPoolSize: 20
+        postgres:
+          type:  com.zaxxer.hikari.HikariDataSource # com.atomikos.jdbc.AtomikosDataSourceBean
+          url: jdbc:postgresql://localhost:5432/test1
+          password: 123456
+          username: postgres
+          driverClassName: org.postgresql.Driver #org.postgresql.xa.PGXADataSource
+#          atomikos:
+#            minPoolSize: 5
+#            maxPoolSize: 20
+
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: off
+
+
+knife4j:
+  enable: true
+  production: false
+  documents:
+    -
+      group: test
+      name: task
+      locations: com.example.task.controller
