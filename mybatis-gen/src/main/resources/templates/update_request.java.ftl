@@ -1,6 +1,6 @@
-package ${package.Controller?replace('controller','trans')}.request;
+package ${client_request_package};
 
-import ${package.Controller?replace('controller','trans')}.dto.${entity}DTO;
+import ${client_dto_package}.${entity}DTO;
 <#if springdoc>
 import io.swagger.v3.oas.annotations.media.Schema;
 <#elseif swagger>
@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiModelProperty;
 <#if entityLombokModel>
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+    import java.io.Serializable;
 </#if>
 
 /**
@@ -29,7 +31,7 @@ import lombok.EqualsAndHashCode;
 <#elseif swagger>
 @ApiModel(value = "${entity}更新对象", description = "${table.comment!}")
 </#if>
-public class ${entity}UpdateRequest extends ${entity}DTO {
+public class ${entity}UpdateRequest extends ${entity}DTO implements Serializable {
 
 <#if entitySerialVersionUID>
 

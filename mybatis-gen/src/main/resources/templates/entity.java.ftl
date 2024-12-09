@@ -1,9 +1,10 @@
-package ${package.Entity};
+package ${infra_entity_package};
 
 <#list table.importPackages as pkg>
 import ${pkg};
 </#list>
 <#if springdoc>
+
 import io.swagger.v3.oas.annotations.media.Schema;
 <#elseif swagger>
 import io.swagger.annotations.ApiModel;
@@ -41,11 +42,11 @@ import lombok.experimental.Accessors;
 @ApiModel(value = "${entity}对象", description = "${table.comment!}")
 </#if>
 <#if superEntityClass??>
-public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if> {
+    public class ${entity}DO extends ${superEntityClass}<#if activeRecord><${entity}></#if> implements Serializable {
 <#elseif activeRecord>
-public class ${entity} extends Model<${entity}> {
+    public class ${entity}DO extends Model<${entity}> {
 <#elseif entitySerialVersionUID>
-public class ${entity} implements Serializable {
+    public class ${entity}DO implements Serializable {
 <#else>
 public class ${entity} {
 </#if>

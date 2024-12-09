@@ -1,9 +1,9 @@
-package ${package.Controller};
+package ${adapter_web_package};
 
 
-import ${package.Service}.${table.serviceName};
-import ${package.Controller?replace('controller','trans')}.request.${entity}CreateRequest;
-import ${package.Controller?replace('controller','trans')}.vo.${entity}VO;
+import ${client_api_package}.${table.entityName}Service;
+import ${client_request_package}.${entity}CreateRequest;
+import ${client_vo_package}.${entity}VO;
 <#if springdoc>
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -51,7 +51,7 @@ public class ${table.controllerName} {
 </#if>
 
     @Autowired
-    private ${table.serviceName} ${table.serviceName?uncap_first};
+private ${table.entityName}Service ${table.serviceName?uncap_first};
 
 
     <#if springdoc>

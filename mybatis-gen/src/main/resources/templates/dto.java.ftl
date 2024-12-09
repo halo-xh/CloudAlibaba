@@ -1,4 +1,4 @@
-package ${package.Controller?replace('controller','trans')}.dto;
+package ${client_dto_package};
 
 
 <#if springdoc>

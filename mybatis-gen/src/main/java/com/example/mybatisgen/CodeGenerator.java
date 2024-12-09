@@ -9,23 +9,25 @@ import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import com.baomidou.mybatisplus.generator.fill.Property;
-
 import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 
 public class CodeGenerator {
     public static void main(String[] args) {
         // 数据源配置
-        FastAutoGenerator.create("jdbc:mysql://localhost:3306/test?serverTimezone=GMT%2B8", "root", "123456")
+        FastAutoGenerator.create("jdbc:mysql://localhost:3306/test?serverTimezone=GMT%2B8", "root", "12345678")
                 .globalConfig(builder -> {
                     builder.author("xh")        // 设置作者
                             .enableSpringdoc()
                             .disableOpenDir()       // 禁止打开输出目录 默认值:true
                             .commentDate("yyyy-MM-dd") // 注释日期
                             .dateType(DateType.ONLY_DATE)   //定义生成的实体类中日期类型 DateType.ONLY_DATE 默认值: DateType.TIME_PACK
-                            .outputDir("E:\\IDEAWorkSpace\\CloudAlibaba\\mybatis-gen" + "/src/main/java"); // 指定输出目录
+                            .outputDir("/Users/fanyi/work/IdeaProjects/CloudAlibaba/mybatis-gen" + "/src/main/java"); // 指定输出目录
                 })
 
                 .packageConfig(builder -> {
@@ -36,7 +38,7 @@ public class CodeGenerator {
                             .mapper("mapper")           //Mapper 包名 默认值:mapper
                             .xml("mappers")
                             .moduleName("task") // 设置父包模块名 默认值:无
-                            .pathInfo(Collections.singletonMap(OutputFile.xml, "E:\\IDEAWorkSpace\\CloudAlibaba\\mybatis-gen" + "/src/main/resources/mapper")); // 设置mapperXml生成路径
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, "Users/fanyi/work/IdeaProjects/CloudAlibaba/mybatis-gen" + "/src/main/resources/mapper")); // 设置mapperXml生成路径
                     //默认存放在mapper的xml下
                 })
 
@@ -49,8 +51,8 @@ public class CodeGenerator {
                 })
 
                 .strategyConfig(builder -> {
-                    builder.addInclude("fsm_task","fsm_task_type") // 设置需要生成的表名 可边长参数“user”, “user1”
-                            .addTablePrefix("fsm_") // 设置过滤表前缀
+                    builder.addInclude("case_user_status") // 设置需要生成的表名 可边长参数“user”, “user1”
+                            .addTablePrefix("") // 设置过滤表前缀
                             .serviceBuilder()//service策略配置
                             .formatServiceFileName("%sService")
                             .formatServiceImplFileName("%sServiceImpl")

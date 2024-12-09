@@ -1,5 +1,8 @@
-package ${package.Service};
+package ${client_api_package};
 
+
+import ${client_request_package}.${entity}CreateRequest;
+import ${client_vo_package}.${entity}VO;
 
 /**
 * <p>
@@ -9,10 +12,10 @@ package ${package.Service};
 * @author ${author}
 * @since ${date}
 */
-<#if kotlin>
-    interface ${table.serviceName} :
-<#else>
-    public interface ${table.serviceName} {
+public interface ${table.entityName}Service {
 
-    }
-</#if>
+${entity}VO create(${entity}CreateRequest request);
+
+${entity}VO detail(Long id);
+
+}

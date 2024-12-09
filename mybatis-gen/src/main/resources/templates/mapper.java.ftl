@@ -1,10 +1,8 @@
-package ${package.Mapper};
+package ${infra_mapper_package};
 
-import ${package.Entity}.${entity};
+import ${infra_entity_package}.${entity}DO;
 import ${superMapperClassPackage};
-<#if mapperAnnotationClass??>
 import ${mapperAnnotationClass.name};
-</#if>
 
 /**
  * <p>
@@ -14,13 +12,13 @@ import ${mapperAnnotationClass.name};
  * @author ${author}
  * @since ${date}
  */
-<#if mapperAnnotationClass??>
 @${mapperAnnotationClass.simpleName}
-</#if>
 <#if kotlin>
-interface ${table.mapperName} : ${superMapperClass}<${entity}>
+interface ${table.mapperName} : ${superMapperClass}
+<${entity}DO>
 <#else>
-public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
+ public interface ${table.mapperName} extends ${superMapperClass}
+ <${entity}DO> {
 
 }
 </#if>

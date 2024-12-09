@@ -1,7 +1,6 @@
-package ${package.Controller?replace('controller','trans')}.vo;
+package ${client_vo_package};
 
-
-import com.example.mybatisgen.AbstractVO;
+import ${client_common_package}.AbstractVO;
 <#if springdoc>
 import io.swagger.v3.oas.annotations.media.Schema;
 <#elseif swagger>
@@ -12,6 +11,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 </#if>
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -30,7 +31,7 @@ import lombok.EqualsAndHashCode;
 <#elseif swagger>
 @ApiModel(value = "${entity} VO", description = "${table.comment!}")
 </#if>
-public class ${entity}VO extends AbstractVO {
+public class ${entity}VO extends AbstractVO implements Serializable {
 <#if entitySerialVersionUID>
 
     private static final long serialVersionUID = 1L;
