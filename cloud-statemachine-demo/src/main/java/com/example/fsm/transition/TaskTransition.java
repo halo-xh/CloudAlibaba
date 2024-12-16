@@ -14,7 +14,6 @@ import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.annotation.*;
 import org.springframework.statemachine.state.State;
 import org.springframework.util.Assert;
-import reactor.core.publisher.Mono;
 
 import java.util.Collection;
 import java.util.Map;
@@ -78,15 +77,15 @@ public class TaskTransition {
     }
 
 
-    @OnStateChanged
-    public void updateStatus(StateContext<TaskStateEnum, TaskEventEnum> context, @EventHeader(value = "task", required = true) Task task) {
-        log.info("context:{}", context);
-        State<TaskStateEnum, TaskEventEnum> target = context.getTarget();
-        TaskStateEnum stateEnum = target.getId();
-        log.info("updateStatus from:{} to:{}", task.getTaskStatus().getDescription(), stateEnum.getDescription());
-        task.setTaskStatus(stateEnum);
-        taskMapper.updateById(task);
-    }
+//    @OnStateChanged
+//    public void updateStatus(StateContext<TaskStateEnum, TaskEventEnum> context, @EventHeader(value = "task", required = true) Task task) {
+//        log.info("context:{}", context);
+//        State<TaskStateEnum, TaskEventEnum> target = context.getTarget();
+//        TaskStateEnum stateEnum = target.getId();
+//        log.info("updateStatus from:{} to:{}", task.getTaskStatus().getDescription(), stateEnum.getDescription());
+//        task.setTaskStatus(stateEnum);
+//        taskMapper.updateById(task);
+//    }
 
 
     private Task extractTaskFromContext(StateContext<TaskStateEnum, TaskEventEnum> context) {

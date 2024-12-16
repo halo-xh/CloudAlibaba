@@ -28,6 +28,16 @@
             <artifactId>spring-statemachine-starter</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.statemachine</groupId>
+            <artifactId>spring-statemachine-kryo</artifactId>
+            <version>2.5.1</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.statemachine</groupId>-->
+<!--            <artifactId>spring-statemachine-data-redis</artifactId>-->
+<!--            <version>2.5.1</version>-->
+<!--        </dependency>-->
+        <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>

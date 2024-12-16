@@ -50,4 +50,4 @@ logging:
   level:
     org:
       springframework:
-        statemachine: debug
+        statemachine: info

@@ -34,7 +34,7 @@
         <skywalking.version>8.7.0</skywalking.version>
         <jjwt.version>0.10.6</jjwt.version>
         <jetcache.version>2.7.6</jetcache.version>
-        <spring-statemachine.version>3.2.1</spring-statemachine.version>
+        <spring-statemachine.version>2.5.1</spring-statemachine.version>
         <lombok.version>1.18.24</lombok.version>
         <mapstruct.version>1.5.2.Final</mapstruct.version>
     </properties>

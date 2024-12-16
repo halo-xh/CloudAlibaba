@@ -1,6 +1,5 @@
 package com.example.task.service.impl;
 
-import com.example.fsm.TaskStateMachineFactory;
 import com.example.fsm.event.TaskEventEnum;
 import com.example.task.controller.request.TaskCreateRequest;
 import com.example.task.convertor.TaskConvertor;
@@ -16,13 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateMachine;
-import org.springframework.statemachine.StateMachineEventResult;
+import org.springframework.statemachine.service.StateMachineService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /**
  * <p>
@@ -43,7 +39,7 @@ public class TaskServiceImpl implements TaskService {
     private TaskTypeMapper taskTypeMapper;
 
     @Autowired
-    private TaskStateMachineFactory taskStateMachineFactory;
+    private StateMachineService<TaskStateEnum, TaskEventEnum> stateMachineService;
 
 
     private static final TaskConvertor TASK_CONVERTOR = Mappers.getMapper(TaskConvertor.class);
@@ -58,7 +54,7 @@ public class TaskServiceImpl implements TaskService {
         task.setTaskStatus(TaskStateEnum.TO_DISPATCH);
         task.setTaskStates(taskType.getTaskStates());
         taskMapper.insert(task);
-        createAndFireEventWithStateMachine(task.getId(), TaskEventEnum.CREATED);
+        createAndFireEventWithStateMachine(task.getId(), TaskEventEnum.SUBMIT);
         return task.getId();
     }
 
@@ -70,16 +66,12 @@ public class TaskServiceImpl implements TaskService {
     private void createAndFireEventWithStateMachine(Long taskId, TaskEventEnum event) throws Exception {
         log.info("createAndStartStateMachine taskId:{} event:{}", taskId, event.getDescription());
         Task task = taskMapper.findById(taskId);
-        StateMachine<TaskStateEnum, TaskEventEnum> stateMachine = taskStateMachineFactory.createDefault(String.valueOf(taskId));
+        Message<TaskEventEnum> message = MessageBuilder.withPayload(event).setHeader("task", task).build();
+        StateMachine<TaskStateEnum, TaskEventEnum> stateMachine = stateMachineService.acquireStateMachine(String.valueOf(taskId));
         stateMachine.start();
+        stateMachine.sendEvent(message);
         boolean hasStateMachineError = stateMachine.hasStateMachineError();
         Assert.isTrue(!hasStateMachineError, "创建状态机系统错误");
-        Message<TaskEventEnum> message = MessageBuilder.withPayload(event).setHeader("task", task).build();
-        Flux<StateMachineEventResult<TaskStateEnum, TaskEventEnum>> stateMachineEventResultFlux = stateMachine.sendEvent(Mono.just(message));
-        Disposable subscribe = stateMachineEventResultFlux.subscribe();
-        if (subscribe.isDisposed()) {
-            stateMachine.stopReactively();
-        }
     }
 
 

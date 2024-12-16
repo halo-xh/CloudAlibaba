@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public enum TaskStateEnum {
 
+    CREATED("新建"),
 
     TO_DISPATCH("待调派"),
 
@@ -19,9 +20,9 @@ public enum TaskStateEnum {
 
     AUDITING("审核中"),
 
-    AUDITED("已审核"),
+    CLOSED("已关闭"),
 
-    CLOSED("已关闭");
+    SUSPEND("已挂起");
 
     private final String description;
 
