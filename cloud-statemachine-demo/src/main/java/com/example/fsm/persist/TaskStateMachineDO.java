@@ -15,6 +15,6 @@ public class TaskStateMachineDO  {
     private String id;
     private String machineId;
     private String state;
-    private String stateMachineContext;
+    private byte[] stateMachineContext;
 
 }

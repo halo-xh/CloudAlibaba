@@ -7,16 +7,10 @@ import com.example.task.enums.TaskStateEnum;
 import com.example.task.mapper.TaskMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.annotation.*;
-import org.springframework.statemachine.state.State;
 import org.springframework.util.Assert;
-
-import java.util.Collection;
-import java.util.Map;
 
 @Slf4j
 @WithStateMachine

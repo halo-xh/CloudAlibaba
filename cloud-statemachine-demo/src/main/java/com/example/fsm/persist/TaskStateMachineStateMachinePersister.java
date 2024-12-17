@@ -42,16 +42,14 @@ public class TaskStateMachineStateMachinePersister implements StateMachinePersis
         TaskStateMachineDO repositoryStateMachine = taskStateMachineRepository.findById(contextObj.toString());
         // use child contexts if we have those, otherwise fall back to child context refs.
         if (repositoryStateMachine != null) {
-            StateMachineContext<TaskStateEnum, TaskEventEnum> context = serialisationService
-                    .deserialiseStateMachineContext(repositoryStateMachine.getStateMachineContext().getBytes());
-            ;
+            StateMachineContext<TaskStateEnum, TaskEventEnum> context = serialisationService.deserialiseStateMachineContext(repositoryStateMachine.getStateMachineContext());
             if (context != null && context.getChilds() != null && context.getChilds().isEmpty()
                     && context.getChildReferences() != null) {
                 List<StateMachineContext<TaskStateEnum, TaskEventEnum>> contexts = new ArrayList<>();
                 for (String childRef : context.getChildReferences()) {
                     repositoryStateMachine = taskStateMachineRepository.findById(childRef);
                     if (repositoryStateMachine != null) {
-                        contexts.add(serialisationService.deserialiseStateMachineContext(repositoryStateMachine.getStateMachineContext().getBytes()));
+                        contexts.add(serialisationService.deserialiseStateMachineContext(repositoryStateMachine.getStateMachineContext()));
                     }
                 }
                 return new DefaultStateMachineContext<>(contexts, context.getState(), context.getEvent(),
@@ -70,7 +68,7 @@ public class TaskStateMachineStateMachinePersister implements StateMachinePersis
         taskStateMachineDO.setId(contextObj.toString());
         taskStateMachineDO.setMachineId(context.getId());
         taskStateMachineDO.setState(context.getState().toString());
-        taskStateMachineDO.setStateMachineContext(new String(serialisedContext));
+        taskStateMachineDO.setStateMachineContext(serialisedContext);
         return taskStateMachineDO;
     }
 }

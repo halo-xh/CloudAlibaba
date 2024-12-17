@@ -24,21 +24,14 @@ import com.example.task.enums.TaskStateEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.action.StateDoActionPolicy;
-import org.springframework.statemachine.config.EnableStateMachine;
 import org.springframework.statemachine.config.EnableStateMachineFactory;
 import org.springframework.statemachine.config.StateMachineConfigurerAdapter;
-import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 import org.springframework.statemachine.persist.StateMachineRuntimePersister;
-import org.springframework.statemachine.service.DefaultStateMachineService;
-import org.springframework.statemachine.service.StateMachineService;
-import org.springframework.statemachine.support.DefaultStateContext;
-import org.springframework.statemachine.support.DefaultStateMachineContext;
 
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -56,10 +49,10 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<TaskStateE
     @Autowired
     private StateMachineRuntimePersister<TaskStateEnum, TaskEventEnum, String> taskStateMachinePersister;
 
-    @Bean
-    public StateMachineService<TaskStateEnum, TaskEventEnum> stateMachineService(StateMachineFactory<TaskStateEnum, TaskEventEnum> stateMachineFactory) {
-        return new DefaultStateMachineService<>(stateMachineFactory, taskStateMachinePersister);
-    }
+//    @Bean
+//    public StateMachineService<TaskStateEnum, TaskEventEnum> stateMachineService(StateMachineFactory<TaskStateEnum, TaskEventEnum> stateMachineFactory) {
+//        return new DefaultStateMachineService<>(stateMachineFactory, taskStateMachinePersister);
+//    }
 
     @Override
     public void configure(StateMachineConfigurationConfigurer<TaskStateEnum, TaskEventEnum> config) throws Exception {
