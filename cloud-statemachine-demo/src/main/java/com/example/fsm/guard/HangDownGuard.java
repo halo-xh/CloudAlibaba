@@ -2,6 +2,7 @@ package com.example.fsm.guard;
 
 import com.example.fsm.event.TaskEventEnum;
 import com.example.task.enums.TaskStateEnum;
+import com.example.task.manager.TaskManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.statemachine.StateContext;
 import org.springframework.statemachine.guard.Guard;
@@ -13,9 +14,14 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class HangDownGuard implements Guard<TaskStateEnum, TaskEventEnum> {
+public class HangDownGuard extends TaskAbstractGuard {
+
+    protected HangDownGuard(TaskManager taskManager) {
+        super(taskManager);
+    }
+
     @Override
-    public boolean evaluate(StateContext<TaskStateEnum, TaskEventEnum> context) {
+    public boolean doEvaluate(StateContext<TaskStateEnum, TaskEventEnum> context) {
         log.info("HangDownGuard evaluate...");
         return true;
     }
