@@ -22,7 +22,7 @@ public class SubmitAction extends TaskAbstractAction {
 
     @Override
     public void doExecute(StateContext<TaskStateEnum, TaskEventEnum> context) {
-
+        log.info("SubmitAction doExecute");
     }
 
 }

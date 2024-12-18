@@ -11,6 +11,7 @@ import com.example.fsm.action.HangupAction;
 import com.example.fsm.action.PassEvaluateAction;
 import com.example.fsm.action.RejectEvaluateAction;
 import com.example.fsm.action.SubmitAction;
+import com.example.fsm.audit.TaskStateMachineListener;
 import com.example.fsm.event.TaskEventEnum;
 import com.example.fsm.guard.AcceptGuard;
 import com.example.fsm.guard.DispatchGuard;
@@ -29,6 +30,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.action.StateDoActionPolicy;
 import org.springframework.statemachine.config.EnableStateMachineFactory;
 import org.springframework.statemachine.config.StateMachineConfigurerAdapter;
+import org.springframework.statemachine.config.StateMachineFactory;
 import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
@@ -40,7 +42,7 @@ import java.util.HashSet;
 
 @Slf4j
 @Configuration
-@EnableStateMachineFactory
+@EnableStateMachineFactory(contextEvents = false)
 public class StateMachineConfig extends StateMachineConfigurerAdapter<TaskStateEnum, TaskEventEnum> {
 
     @Autowired
@@ -49,6 +51,9 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<TaskStateE
 
     @Autowired
     private StateMachineRuntimePersister<TaskStateEnum, TaskEventEnum, String> taskStateMachinePersister;
+
+    @Autowired
+    private TaskStateMachineListener taskStateMachineListener;
 
 //    @Bean
 //    public StateMachineService<TaskStateEnum, TaskEventEnum> stateMachineService(StateMachineFactory<TaskStateEnum, TaskEventEnum> stateMachineFactory) {
@@ -62,6 +67,7 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<TaskStateE
                  .and()
                  .withConfiguration()
                  .autoStartup(false)
+                 .listener(taskStateMachineListener)
                  .stateDoActionPolicy(StateDoActionPolicy.IMMEDIATE_CANCEL);
 
     }
