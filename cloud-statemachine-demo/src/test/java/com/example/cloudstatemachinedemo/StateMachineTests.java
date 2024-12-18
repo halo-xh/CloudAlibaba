@@ -4,6 +4,7 @@ import com.example.fsm.config.StateMachineConfig;
 import com.example.fsm.event.TaskEventEnum;
 import com.example.task.entity.Task;
 import com.example.task.enums.TaskStateEnum;
+import com.example.task.manager.TaskManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanFactory;
@@ -30,17 +31,33 @@ class StateMachineTests {
     @Autowired
     private StateMachineService<TaskStateEnum, TaskEventEnum> stateMachineService;
 
+    @Autowired
+    private TaskManager taskManager;
+
 
 
     @Test
     void test() throws Exception {
-        createAndFireEventWithStateMachine(1111L,TaskEventEnum.SUBMIT);
-        createAndFireEventWithStateMachine(1111L,TaskEventEnum.ACCEPT);
+        Long id = 1064338254394507264L;
+        createAndFireEventWithStateMachine(id, TaskEventEnum.SUBMIT);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.DISPATCHED);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.ACCEPT);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.HANDLE);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.HANG_UP);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.HANG_DOWN);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.FINISH);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.EVALUATE);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.REJECT_EVALUATE);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.HANG_UP);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.HANG_DOWN);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.FINISH);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.EVALUATE);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.PASS_EVALUATE);
     }
 
     private void createAndFireEventWithStateMachine(Long taskId, TaskEventEnum event) throws Exception {
         log.info("createAndStartStateMachine taskId:{} event:{}", taskId, event.getDescription());
-        Task task = new Task();
+        Task task = taskManager.findById(taskId);
         Message<TaskEventEnum> message = MessageBuilder.withPayload(event).setHeader("task", task).build();
         StateMachine<TaskStateEnum, TaskEventEnum> stateMachine = stateMachineService.acquireStateMachine(String.valueOf(taskId));
         stateMachine.start();

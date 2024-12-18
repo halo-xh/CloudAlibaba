@@ -1,16 +1,19 @@
 package com.example.task.service.impl;
 
+import com.example.common.SnowflakeIdWorker;
 import com.example.fsm.event.TaskEventEnum;
 import com.example.task.controller.request.TaskCreateRequest;
 import com.example.task.convertor.TaskConvertor;
 import com.example.task.entity.Task;
 import com.example.task.entity.TaskType;
 import com.example.task.enums.TaskStateEnum;
-import com.example.task.mapper.TaskMapper;
-import com.example.task.mapper.TaskTypeMapper;
+import com.example.task.manager.TaskManager;
+import com.example.task.manager.TaskTypeManager;
 import com.example.task.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -33,13 +36,19 @@ import org.springframework.util.Assert;
 public class TaskServiceImpl implements TaskService {
 
     @Autowired
-    private TaskMapper taskMapper;
+    private TaskManager taskManager;
 
     @Autowired
-    private TaskTypeMapper taskTypeMapper;
+    private TaskTypeManager taskTypeManager;
 
     @Autowired
     private StateMachineService<TaskStateEnum, TaskEventEnum> stateMachineService;
+
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
+
+    @Autowired
+    private RedissonClient redissonClient;
 
 
     private static final TaskConvertor TASK_CONVERTOR = Mappers.getMapper(TaskConvertor.class);
@@ -47,31 +56,111 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Long createTask(TaskCreateRequest request) throws Exception {
+    public Long submitTask(TaskCreateRequest request) {
+        log.info("createTask request:{}", request);
         Task task = TASK_CONVERTOR.toTask(request);
-        TaskType taskType = taskTypeMapper.findById(task.getTaskType());
+        TaskType taskType = taskTypeManager.findById(task.getTaskType());
         Assert.notNull(taskType, "任务类型不存在");
-        task.setTaskStatus(TaskStateEnum.TO_DISPATCH);
+        task.setTaskStatus(TaskStateEnum.CREATED);
         task.setTaskStates(taskType.getTaskStates());
-        taskMapper.insert(task);
-        createAndFireEventWithStateMachine(task.getId(), TaskEventEnum.SUBMIT);
-        return task.getId();
+        long id = snowflakeIdWorker.nextId();
+        task.setId(id);
+        taskManager.create(task);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.SUBMIT);
+        return id;
     }
 
     @Override
-    public void acceptTask(Long id) throws Exception {
+    public void acceptTask(Long id) {
+        log.info("acceptTask id:{}", id);
         createAndFireEventWithStateMachine(id, TaskEventEnum.ACCEPT);
     }
 
-    private void createAndFireEventWithStateMachine(Long taskId, TaskEventEnum event) throws Exception {
-        log.info("createAndStartStateMachine taskId:{} event:{}", taskId, event.getDescription());
-        Task task = taskMapper.findById(taskId);
-        Message<TaskEventEnum> message = MessageBuilder.withPayload(event).setHeader("task", task).build();
-        StateMachine<TaskStateEnum, TaskEventEnum> stateMachine = stateMachineService.acquireStateMachine(String.valueOf(taskId));
-        stateMachine.start();
-        stateMachine.sendEvent(message);
-        boolean hasStateMachineError = stateMachine.hasStateMachineError();
-        Assert.isTrue(!hasStateMachineError, "创建状态机系统错误");
+    @Override
+    public void rejectTask(Long id) {
+        log.info("rejectTask id:{}", id);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.REJECT);
+    }
+
+    @Override
+    public void finishTask(Long id) {
+        log.info("finishTask id:{}", id);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.FINISH);
+    }
+
+    @Override
+    public void evaluateTask(Long id) {
+        log.info("evaluateTask id:{}", id);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.EVALUATE);
+    }
+
+    @Override
+    public void passEvaluateTask(Long id) {
+        log.info("passEvaluateTask id:{}", id);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.PASS_EVALUATE);
+    }
+
+    @Override
+    public void rejectEvaluateTask(Long id) {
+        log.info("rejectEvaluateTask id:{}", id);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.REJECT_EVALUATE);
+    }
+
+    @Override
+    public void closeTask(Long id) {
+        log.info("closeTask id:{}", id);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.CLOSE);
+    }
+
+    @Override
+    public void hangUpTask(Long id) {
+        log.info("hangUpTask id:{}", id);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.HANG_UP);
+    }
+
+    @Override
+    public void hangDownTask(Long id) {
+        log.info("hangDownTask id:{}", id);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.HANG_DOWN);
+    }
+
+    @Override
+    public void transTask(Long id) {
+        log.info("transTask id:{}", id);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.TRANS);
+    }
+
+    @Override
+    public void handleTask(Long id) {
+        log.info("handleTask id:{}", id);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.HANDLE);
+    }
+
+    @Override
+    public void dispatchTask(Long id) {
+        log.info("dispatchTask id:{}", id);
+        createAndFireEventWithStateMachine(id, TaskEventEnum.DISPATCHED);
+    }
+
+
+    private void createAndFireEventWithStateMachine(Long taskId, TaskEventEnum event) {
+        RLock lock = redissonClient.getLock(String.valueOf(taskId));
+        if (!lock.tryLock()) {
+            throw new RuntimeException("正在处理:" + event.getDescription());
+        }
+        try {
+            log.info("createAndStartStateMachine taskId:{} event:{}", taskId, event.getDescription());
+            Task task = taskManager.findById(taskId);
+            Assert.notNull(task, "task is null");
+            Message<TaskEventEnum> message = MessageBuilder.withPayload(event).setHeader("task", task).build();
+            StateMachine<TaskStateEnum, TaskEventEnum> stateMachine = stateMachineService.acquireStateMachine(String.valueOf(taskId));
+            stateMachine.start();
+            stateMachine.sendEvent(message);
+            boolean hasStateMachineError = stateMachine.hasStateMachineError();
+            Assert.isTrue(!hasStateMachineError, "创建状态机系统错误");
+        } finally {
+            lock.unlock();
+        }
     }
 
 

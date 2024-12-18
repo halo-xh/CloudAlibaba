@@ -9,7 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.statemachine.StateContext;
-import org.springframework.statemachine.annotation.*;
+import org.springframework.statemachine.annotation.EventHeader;
+import org.springframework.statemachine.annotation.OnEventNotAccepted;
+import org.springframework.statemachine.annotation.OnStateChanged;
+import org.springframework.statemachine.annotation.OnTransition;
+import org.springframework.statemachine.annotation.WithStateMachine;
+import org.springframework.statemachine.state.State;
 import org.springframework.util.Assert;
 
 @Slf4j
@@ -20,7 +25,6 @@ public class TaskTransition {
     @Autowired
     private TaskMapper taskMapper;
 
-
     @OnTransition(source = "TO_DISPATCH")
     public void create(StateContext<TaskStateEnum, TaskEventEnum> context) {
         log.info("create a task context:{}",context);
@@ -30,14 +34,12 @@ public class TaskTransition {
     }
 
 
-
     @OnTransition(source = "TO_DISPATCH" , target = "TO_ACCEPT")
     public void toAccept(StateContext<TaskStateEnum, TaskEventEnum> context) {
         log.info("toAccept a task");
         //
 
     }
-
 
     @OnTransition(source = "TO_ACCEPT", target = "ACCEPTED")
     public void accepted(StateContext<TaskStateEnum, TaskEventEnum> context) {
@@ -71,15 +73,20 @@ public class TaskTransition {
     }
 
 
-//    @OnStateChanged
-//    public void updateStatus(StateContext<TaskStateEnum, TaskEventEnum> context, @EventHeader(value = "task", required = true) Task task) {
-//        log.info("context:{}", context);
-//        State<TaskStateEnum, TaskEventEnum> target = context.getTarget();
-//        TaskStateEnum stateEnum = target.getId();
-//        log.info("updateStatus from:{} to:{}", task.getTaskStatus().getDescription(), stateEnum.getDescription());
-//        task.setTaskStatus(stateEnum);
-//        taskMapper.updateById(task);
-//    }
+    @OnStateChanged
+    public void updateStatus(StateContext<TaskStateEnum, TaskEventEnum> context, @EventHeader(value = "task", required = true) Task task) {
+        log.info("context:{}", context);
+        State<TaskStateEnum, TaskEventEnum> target = context.getTarget();
+        TaskStateEnum stateEnum = target.getId();
+        log.info("updateStatus from:{} to:{}", task.getTaskStatus().getDescription(), stateEnum.getDescription());
+        task.setTaskStatus(stateEnum);
+        taskMapper.updateById(task);
+    }
+
+    @OnEventNotAccepted
+    public void handle(StateContext<TaskStateEnum, TaskEventEnum> context) {
+        log.info("OnEventNotAccepted handle a task");
+    }
 
 
     private Task extractTaskFromContext(StateContext<TaskStateEnum, TaskEventEnum> context) {

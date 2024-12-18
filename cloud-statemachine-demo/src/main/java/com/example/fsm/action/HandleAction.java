@@ -2,9 +2,9 @@ package com.example.fsm.action;
 
 import com.example.fsm.event.TaskEventEnum;
 import com.example.task.enums.TaskStateEnum;
+import com.example.task.manager.TaskManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.statemachine.StateContext;
-import org.springframework.statemachine.action.Action;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,12 +13,15 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class HandleAction implements Action<TaskStateEnum, TaskEventEnum> {
+public class HandleAction extends TaskAbstractAction {
 
-    @Override
-    public void execute(StateContext<TaskStateEnum, TaskEventEnum> context) {
-        log.info("HandleAction... context:{}", context);
 
+    protected HandleAction(TaskManager taskManager) {
+        super(taskManager);
     }
 
+    @Override
+    public void doExecute(StateContext<TaskStateEnum, TaskEventEnum> context) {
+
+    }
 }

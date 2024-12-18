@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class SubmitAction extends TaskAbstractAction {
+public class RejectEvaluateAction extends TaskAbstractAction {
 
 
-    protected SubmitAction(TaskManager taskManager) {
+    protected RejectEvaluateAction(TaskManager taskManager) {
         super(taskManager);
     }
 
@@ -24,5 +24,4 @@ public class SubmitAction extends TaskAbstractAction {
     public void doExecute(StateContext<TaskStateEnum, TaskEventEnum> context) {
 
     }
-
 }

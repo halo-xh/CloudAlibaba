@@ -39,7 +39,7 @@ public class TaskStateMachineStateMachinePersister implements StateMachinePersis
 
     @Override
     public StateMachineContext<TaskStateEnum, TaskEventEnum> read(Object contextObj) throws Exception {
-        TaskStateMachineDO repositoryStateMachine = taskStateMachineRepository.findById(contextObj.toString());
+        TaskStateMachineDO repositoryStateMachine = taskStateMachineRepository.findByMachineId(contextObj.toString());
         // use child contexts if we have those, otherwise fall back to child context refs.
         if (repositoryStateMachine != null) {
             StateMachineContext<TaskStateEnum, TaskEventEnum> context = serialisationService.deserialiseStateMachineContext(repositoryStateMachine.getStateMachineContext());
@@ -47,7 +47,7 @@ public class TaskStateMachineStateMachinePersister implements StateMachinePersis
                     && context.getChildReferences() != null) {
                 List<StateMachineContext<TaskStateEnum, TaskEventEnum>> contexts = new ArrayList<>();
                 for (String childRef : context.getChildReferences()) {
-                    repositoryStateMachine = taskStateMachineRepository.findById(childRef);
+                    repositoryStateMachine = taskStateMachineRepository.findByMachineId(childRef);
                     if (repositoryStateMachine != null) {
                         contexts.add(serialisationService.deserialiseStateMachineContext(repositoryStateMachine.getStateMachineContext()));
                     }
@@ -65,7 +65,6 @@ public class TaskStateMachineStateMachinePersister implements StateMachinePersis
 
     protected TaskStateMachineDO build(StateMachineContext<TaskStateEnum, TaskEventEnum> context, Object contextObj, byte[] serialisedContext) {
         TaskStateMachineDO taskStateMachineDO = new TaskStateMachineDO();
-        taskStateMachineDO.setId(contextObj.toString());
         taskStateMachineDO.setMachineId(context.getId());
         taskStateMachineDO.setState(context.getState().toString());
         taskStateMachineDO.setStateMachineContext(serialisedContext);

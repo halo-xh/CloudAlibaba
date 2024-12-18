@@ -51,7 +51,7 @@ public class CodeGenerator {
                 })
 
                 .strategyConfig(builder -> {
-                    builder.addInclude("case_user_status") // 设置需要生成的表名 可边长参数“user”, “user1”
+                    builder.addInclude("fsm_state_machine") // 设置需要生成的表名 可边长参数“user”, “user1”
                             .addTablePrefix("") // 设置过滤表前缀
                             .serviceBuilder()//service策略配置
                             .formatServiceFileName("%sService")

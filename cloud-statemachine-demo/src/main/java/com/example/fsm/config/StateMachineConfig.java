@@ -9,6 +9,7 @@ import com.example.fsm.action.HandleAction;
 import com.example.fsm.action.HangDownAction;
 import com.example.fsm.action.HangupAction;
 import com.example.fsm.action.PassEvaluateAction;
+import com.example.fsm.action.RejectEvaluateAction;
 import com.example.fsm.action.SubmitAction;
 import com.example.fsm.event.TaskEventEnum;
 import com.example.fsm.guard.AcceptGuard;
@@ -136,7 +137,7 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<TaskStateE
                 .source(TaskStateEnum.AUDITING).target(TaskStateEnum.HANDLING)
                 .event(TaskEventEnum.REJECT_EVALUATE)
                 .guard(applicationContext.getBean(PassEvaluateGuard.class))
-                .action(applicationContext.getBean(PassEvaluateAction.class))
+                .action(applicationContext.getBean(RejectEvaluateAction.class))
                 //
                 .and()
                 .withExternal()
@@ -149,6 +150,7 @@ public class StateMachineConfig extends StateMachineConfigurerAdapter<TaskStateE
         states
                 .withStates()
                 .initial(TaskStateEnum.CREATED)
+                .end(TaskStateEnum.CLOSED)
                 .states(new HashSet<>(EnumSet.allOf(TaskStateEnum.class)));
 
     }
