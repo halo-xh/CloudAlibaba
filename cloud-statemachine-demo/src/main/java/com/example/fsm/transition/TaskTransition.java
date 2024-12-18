@@ -17,8 +17,9 @@ import org.springframework.statemachine.annotation.WithStateMachine;
 import org.springframework.statemachine.state.State;
 import org.springframework.util.Assert;
 
+
 @Slf4j
-@WithStateMachine
+@WithStateMachine(id = "1064367610042990592") // 分布式状态下没啥用，只能用于状态机bean或者指定ID的状态机
 public class TaskTransition {
 
 

@@ -38,7 +38,7 @@ CREATE TABLE `fsm_state_machine`
     `id`                    bigint                                                        NOT NULL COMMENT 'id',
     `machine_id`            varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '状态机ID',
     `state`                 varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '状态机当前状态',
-    `state_machine_context` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci         NOT NULL COMMENT '状态机上下文',
+    `state_machine_context` blob   NOT NULL COMMENT '状态机上下文',
     `created_at`            datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by`            varchar(50)                                                            DEFAULT NULL COMMENT '创建人',
     `modified_at`           datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',

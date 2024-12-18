@@ -33,6 +33,7 @@ import org.springframework.util.Assert;
  */
 @Slf4j
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class TaskServiceImpl implements TaskService {
 
     @Autowired
@@ -54,7 +55,6 @@ public class TaskServiceImpl implements TaskService {
     private static final TaskConvertor TASK_CONVERTOR = Mappers.getMapper(TaskConvertor.class);
 
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public Long submitTask(TaskCreateRequest request) {
         log.info("createTask request:{}", request);
