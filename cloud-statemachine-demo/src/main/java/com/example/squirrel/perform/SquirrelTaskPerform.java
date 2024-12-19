@@ -34,11 +34,11 @@ public abstract class SquirrelTaskPerform implements Action<SquirrelTaskStateMac
 
 
     private void beforeExecute(TaskStateEnum from, TaskStateEnum to, SquirrelTaskEvent event, SquirrelTaskContext context) {
-        log.info("SquirrelTaskStateMachine beforeActionInvoked fromState:{}, toState:{}, event:{}, context:{}", from, to, event, context);
+        log.info("SquirrelTaskStateMachine beforeExecute fromState:{}, toState:{}, event:{}, context:{}", from, to, event, context);
     }
 
     private void afterExecute(TaskStateEnum from, TaskStateEnum to, SquirrelTaskEvent event, SquirrelTaskContext context) {
-        log.info("SquirrelTaskStateMachine afterActionInvoked fromState:{}, toState:{}, event:{}, context:{}", from, to, event, context);
+        log.info("SquirrelTaskStateMachine afterExecute fromState:{}, toState:{}, event:{}, context:{}", from, to, event, context);
         Task task = context.getTask();
         taskManager.updateStatus(task.getId(), to);
     }

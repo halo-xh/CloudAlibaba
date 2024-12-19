@@ -13,6 +13,6 @@ import org.springframework.stereotype.Service;
 public class Finished_2_Auditing_Condition extends SquirrelTaskCondition {
     @Override
     public boolean satisfied(SquirrelTaskContext context) {
-        return false;
+        return true;
     }
 }

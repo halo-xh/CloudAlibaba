@@ -15,7 +15,7 @@ public class ToDispatch_2_ToAccept_Condition extends SquirrelTaskCondition {
 
     @Override
     public boolean satisfied(SquirrelTaskContext context) {
-        return false;
+        return true;
     }
 
 
