@@ -2,6 +2,9 @@ package com.example.cloudstatemachinedemo;
 
 import com.example.fsm.config.StateMachineConfig;
 import com.example.fsm.event.TaskEventEnum;
+import com.example.squirrel.context.SquirrelTaskContext;
+import com.example.squirrel.engine.SquirrelTaskStateMachineEngine;
+import com.example.squirrel.event.SquirrelTaskEvent;
 import com.example.task.entity.Task;
 import com.example.task.enums.TaskStateEnum;
 import com.example.task.manager.TaskManager;
@@ -34,11 +37,13 @@ class StateMachineTests {
     @Autowired
     private TaskManager taskManager;
 
+    @Autowired
+    private SquirrelTaskStateMachineEngine squirrelTaskStateMachineEngine;
+
 
 
     @Test
-    void
-    test() throws Exception {
+    void test() throws Exception {
         Long id = 1064367613742366720L;
         createAndFireEventWithStateMachine(id, TaskEventEnum.SUBMIT);
         createAndFireEventWithStateMachine(id, TaskEventEnum.DISPATCHED);
@@ -69,6 +74,14 @@ class StateMachineTests {
         boolean hasStateMachineError = stateMachine.hasStateMachineError();
         Assert.isTrue(!hasStateMachineError, "创建状态机系统错误");
         stateMachine.stop();
+    }
+
+    @Test
+    void testSq() {
+        SquirrelTaskContext squirrelTaskContext = new SquirrelTaskContext();
+        Task task = taskManager.findById(1064332202647175168L);
+        squirrelTaskContext.setTask(task);
+        squirrelTaskStateMachineEngine.createAndFire(squirrelTaskContext, SquirrelTaskEvent.SUBMIT);
     }
 
 }

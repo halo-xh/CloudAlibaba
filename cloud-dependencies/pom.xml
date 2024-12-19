@@ -37,6 +37,7 @@
         <spring-statemachine.version>2.5.1</spring-statemachine.version>
         <lombok.version>1.18.24</lombok.version>
         <mapstruct.version>1.5.2.Final</mapstruct.version>
+        <squirrel.version>0.3.10</squirrel.version>
     </properties>
 
     <dependencyManagement>
@@ -202,6 +203,12 @@
                         <artifactId>redisson-spring-boot-starter</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.squirrelframework</groupId>
+                <artifactId>squirrel-foundation</artifactId>
+                <version>${squirrel.version}</version>
             </dependency>
 
         </dependencies>
