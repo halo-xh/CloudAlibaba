@@ -24,6 +24,7 @@ import com.example.squirrel.perform.Suspend_2_Handling_Perform;
 import com.example.squirrel.perform.ToAccept_2_Accepted_Perform;
 import com.example.squirrel.perform.ToDispatch_2_ToAccept_Perform;
 import com.example.task.entity.Task;
+import com.example.task.entity.TaskType;
 import com.example.task.enums.TaskStateEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ import org.springframework.util.Assert;
 import org.squirrelframework.foundation.fsm.StateMachineBuilder;
 import org.squirrelframework.foundation.fsm.StateMachineBuilderFactory;
 import org.squirrelframework.foundation.fsm.StateMachineConfiguration;
+import org.squirrelframework.foundation.fsm.StateMachinePerformanceMonitor;
 
 /**
  * @author fanyi.xh
@@ -47,6 +49,11 @@ public class SquirrelTaskStateMachineEngine {
     private ApplicationContext applicationContext;
 
     public void createAndFire(SquirrelTaskContext context, SquirrelTaskEvent event) {
+
+        TaskType taskType = context.getTaskType();
+        Assert.notNull(taskType, "taskType is null");
+        String taskStates = taskType.getTaskStates();
+
 
         StateMachineBuilder<SquirrelTaskStateMachine, TaskStateEnum, SquirrelTaskEvent, SquirrelTaskContext> builder =
                 StateMachineBuilderFactory.create(SquirrelTaskStateMachine.class, TaskStateEnum.class, SquirrelTaskEvent.class, SquirrelTaskContext.class);
@@ -109,8 +116,15 @@ public class SquirrelTaskStateMachineEngine {
 
         Task task = context.getTask();
         Assert.notNull(task, "task is null");
-        SquirrelTaskStateMachine newedStateMachine = builder.newStateMachine(task.getTaskStatus(), StateMachineConfiguration.create().enableDebugMode(false).enableAutoStart(true));
+        SquirrelTaskStateMachine newedStateMachine = builder.newStateMachine(task.getTaskStatus(),
+                StateMachineConfiguration.create()
+                        .enableDebugMode(false)
+                        .enableAutoStart(true));
+        StateMachinePerformanceMonitor stateMachinePerformanceMonitor = new StateMachinePerformanceMonitor("task fsm: " + task.getId());
+        newedStateMachine.addDeclarativeListener(stateMachinePerformanceMonitor);
         newedStateMachine.fire(event, context);
+        newedStateMachine.terminate();
+        log.info("\n" + stateMachinePerformanceMonitor.getPerfModel());
     }
 
 

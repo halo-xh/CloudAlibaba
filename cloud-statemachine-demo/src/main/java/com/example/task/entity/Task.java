@@ -3,12 +3,13 @@ package com.example.task.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.example.common.AbstractEntity;
-
 import com.example.task.enums.TaskStateEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -22,7 +23,7 @@ import lombok.Setter;
 @Setter
 @TableName("fsm_task")
 @ApiModel(value = "Task对象", description = "状态机demo任务表")
-public class Task extends AbstractEntity {
+public class Task extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

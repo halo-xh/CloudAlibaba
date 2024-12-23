@@ -79,7 +79,7 @@ class StateMachineTests {
     @Test
     void testSq() {
         SquirrelTaskContext squirrelTaskContext = new SquirrelTaskContext();
-        Task task = taskManager.findById(1064367604863025152L);
+        Task task = taskManager.findById(1064332199027490816L);
         squirrelTaskContext.setTask(task);
         squirrelTaskStateMachineEngine.createAndFire(squirrelTaskContext, SquirrelTaskEvent.SUBMIT);
     }

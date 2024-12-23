@@ -7,6 +7,7 @@ import com.example.task.entity.Task;
 import com.example.task.enums.TaskStateEnum;
 import com.example.task.manager.TaskManager;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.squirrelframework.foundation.fsm.Action;
 
 /**
@@ -14,6 +15,7 @@ import org.squirrelframework.foundation.fsm.Action;
  * @since 2024-12-19
  */
 @Slf4j
+@Transactional(rollbackFor = Exception.class)
 public abstract class SquirrelTaskPerform implements Action<SquirrelTaskStateMachine, TaskStateEnum, SquirrelTaskEvent, SquirrelTaskContext> {
 
     private final TaskManager taskManager;
