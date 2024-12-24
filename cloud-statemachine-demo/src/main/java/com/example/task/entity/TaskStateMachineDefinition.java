@@ -1,22 +1,26 @@
 package com.example.task.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.common.AbstractEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
 
 /**
  * @author fanyi.xh
  * @since 2024-12-23
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class TaskStateMachineDefinition {
+@TableName("task_state_machine_definition")
+public class TaskStateMachineDefinition extends AbstractEntity implements Serializable {
 
-    // 允许挂起
-    private Boolean allowHangUp;
+    private static final long serialVersionUID = 1L;
 
-    // 是否需要审核
-    private Boolean needAudit;
+    private Long taskId;
 
-    // 需要手动调派
-    private Boolean needManualDispatch;
+    private String definition;
 
 
 }

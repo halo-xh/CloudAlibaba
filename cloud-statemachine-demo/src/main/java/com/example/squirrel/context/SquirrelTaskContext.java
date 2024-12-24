@@ -1,6 +1,7 @@
 package com.example.squirrel.context;
 
 import com.example.task.entity.Task;
+import com.example.task.entity.TaskStateMachineDefinition;
 import com.example.task.entity.TaskType;
 import lombok.Data;
 
@@ -15,5 +16,6 @@ public class SquirrelTaskContext {
 
     private TaskType taskType;
 
+    private TaskStateMachineDefinition machineDefinition;
 
 }

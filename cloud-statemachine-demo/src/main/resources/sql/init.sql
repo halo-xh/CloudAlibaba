@@ -23,6 +23,10 @@ CREATE TABLE `fsm_task_type` (
                                  `id` bigint NOT NULL COMMENT 'id',
                                  `type_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '任务类型名称',
                                  `task_states` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '任务类型所需要的节点',
+                                 `allow_huang_up`         bit(1) NOT NULL DEFAULT b'0' COMMENT '允许挂起',
+                                 `need_audit`             bit(1) NOT NULL DEFAULT b'0' COMMENT '完成需要审核',
+                                 `need_manual_dispatch`   bit(1) NOT NULL DEFAULT b'0' COMMENT '手动调派',
+                                 `need_invite_evaluation` bit(1) NOT NULL DEFAULT b'0' COMMENT '需要用户评价',
                                  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                                  `created_by` varchar(50) DEFAULT NULL COMMENT '创建人',
                                  `modified_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
@@ -38,7 +42,7 @@ CREATE TABLE `fsm_state_machine`
     `id`                    bigint                                                        NOT NULL COMMENT 'id',
     `machine_id`            varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '状态机ID',
     `state`                 varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '状态机当前状态',
-    `state_machine_context` blob   NOT NULL COMMENT '状态机上下文',
+    `state_machine_context` blob                                                          NOT NULL COMMENT '状态机上下文',
     `created_at`            datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `created_by`            varchar(50)                                                            DEFAULT NULL COMMENT '创建人',
     `modified_at`           datetime                                                      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
@@ -49,3 +53,23 @@ CREATE TABLE `fsm_state_machine`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='状态机表';
+
+
+-- test.task_state_machine_definition
+
+CREATE TABLE `task_state_machine_definition`
+(
+    `id`          bigint                                                NOT NULL COMMENT 'id',
+    `task_id`     bigint                                                NOT NULL COMMENT '任务ID',
+    `definition`  text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '定义JSON',
+    `created_at`  datetime                                              NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `created_by`  varchar(50)                                                    DEFAULT NULL COMMENT '创建人',
+    `modified_at` datetime                                              NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+    `modified_by` varchar(50)                                                    DEFAULT NULL COMMENT '修改人',
+    `is_deleted`  bit(1)                                                NOT NULL DEFAULT b'0' COMMENT '是否删除',
+    `version`     int                                                   NOT NULL DEFAULT '0' COMMENT '版本',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `task_state_machine_definition_pk` (`task_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='squirrel状态机定义快照';

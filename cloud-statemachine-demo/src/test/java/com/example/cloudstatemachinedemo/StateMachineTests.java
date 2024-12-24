@@ -1,16 +1,21 @@
 package com.example.cloudstatemachinedemo;
 
-import com.example.fsm.config.StateMachineConfig;
 import com.example.fsm.event.TaskEventEnum;
 import com.example.squirrel.context.SquirrelTaskContext;
+import com.example.squirrel.engine.SquirrelTaskStateMachineDefinition;
 import com.example.squirrel.engine.SquirrelTaskStateMachineEngine;
 import com.example.squirrel.event.SquirrelTaskEvent;
 import com.example.task.entity.Task;
+import com.example.task.entity.TaskStateMachineDefinition;
+import com.example.task.entity.TaskType;
 import com.example.task.enums.TaskStateEnum;
 import com.example.task.manager.TaskManager;
+import com.example.task.manager.TaskStateMachineDefinitionManager;
+import com.example.task.manager.TaskTypeManager;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.Message;
@@ -26,20 +31,24 @@ import org.springframework.util.Assert;
 class StateMachineTests {
 
     @Autowired
-    private StateMachineConfig builder;
-
-    @Autowired
-    private BeanFactory beanFactory;
-
-    @Autowired
     private StateMachineService<TaskStateEnum, TaskEventEnum> stateMachineService;
+
+
+
+    @Autowired
+    private SquirrelTaskStateMachineEngine squirrelTaskStateMachineEngine;
 
     @Autowired
     private TaskManager taskManager;
 
     @Autowired
-    private SquirrelTaskStateMachineEngine squirrelTaskStateMachineEngine;
+    private TaskTypeManager taskTypeManager;
 
+    @Autowired
+    private TaskStateMachineDefinitionManager taskStateMachineDefinitionManager;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
 
     @Test
@@ -76,11 +85,30 @@ class StateMachineTests {
         stateMachine.stop();
     }
 
+    @SneakyThrows
     @Test
     void testSq() {
         SquirrelTaskContext squirrelTaskContext = new SquirrelTaskContext();
         Task task = taskManager.findById(1064332199027490816L);
         squirrelTaskContext.setTask(task);
+        TaskType taskType = taskTypeManager.findById(task.getTaskType());
+        squirrelTaskContext.setTaskType(taskType);
+        TaskStateMachineDefinition machineDefinition = taskStateMachineDefinitionManager.findByTaskId(task.getId());
+        if (machineDefinition == null) {
+            TaskStateMachineDefinition definition = new TaskStateMachineDefinition();
+            definition.setTaskId(task.getId());
+            SquirrelTaskStateMachineDefinition squirrelTaskStateMachineDefinition = new SquirrelTaskStateMachineDefinition();
+            squirrelTaskStateMachineDefinition.setTaskStates(taskType.getTaskStates());
+            squirrelTaskStateMachineDefinition.setNeedAudit(taskType.getNeedAudit());
+            squirrelTaskStateMachineDefinition.setNeedManualDispatch(taskType.getNeedManualDispatch());
+            squirrelTaskStateMachineDefinition.setNeedInviteEvaluation(taskType.getNeedInviteEvaluation());
+            squirrelTaskStateMachineDefinition.setAllowHuangUp(taskType.getAllowHuangUp());
+            definition.setDefinition(objectMapper.writeValueAsString(squirrelTaskStateMachineDefinition));
+            taskStateMachineDefinitionManager.save(definition);
+            squirrelTaskContext.setMachineDefinition(definition);
+        } else {
+            squirrelTaskContext.setMachineDefinition(machineDefinition);
+        }
         squirrelTaskStateMachineEngine.createAndFire(squirrelTaskContext, SquirrelTaskEvent.SUBMIT);
     }
 

@@ -46,4 +46,9 @@ public class TaskType extends AbstractEntity implements Serializable {
     @TableField("need_manual_dispatch")
     private Boolean needManualDispatch;
 
+    @ApiModelProperty("需要用户评价")
+    @TableField("need_invite_evaluation")
+    private Boolean needInviteEvaluation;
+
+
 }

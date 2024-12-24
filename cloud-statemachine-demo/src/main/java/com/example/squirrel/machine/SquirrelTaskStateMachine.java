@@ -15,6 +15,11 @@ public class SquirrelTaskStateMachine extends AbstractStateMachine<SquirrelTaskS
 
 
     @Override
+    public synchronized void start(SquirrelTaskContext context) {
+        super.start(context);
+    }
+
+    @Override
     protected void afterActionInvoked(TaskStateEnum fromState, TaskStateEnum toState, SquirrelTaskEvent event, SquirrelTaskContext context) {
         log.info("SquirrelTaskStateMachine afterActionInvoked fromState:{}, toState:{}, event:{}, context:{}", fromState, toState, event, context);
     }

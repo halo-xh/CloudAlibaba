@@ -24,8 +24,10 @@ import com.example.squirrel.perform.Suspend_2_Handling_Perform;
 import com.example.squirrel.perform.ToAccept_2_Accepted_Perform;
 import com.example.squirrel.perform.ToDispatch_2_ToAccept_Perform;
 import com.example.task.entity.Task;
-import com.example.task.entity.TaskType;
+import com.example.task.entity.TaskStateMachineDefinition;
 import com.example.task.enums.TaskStateEnum;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -44,16 +46,20 @@ import org.squirrelframework.foundation.fsm.StateMachinePerformanceMonitor;
 @Component
 public class SquirrelTaskStateMachineEngine {
 
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private ApplicationContext applicationContext;
 
+    @SneakyThrows
     public void createAndFire(SquirrelTaskContext context, SquirrelTaskEvent event) {
 
-        TaskType taskType = context.getTaskType();
-        Assert.notNull(taskType, "taskType is null");
-        String taskStates = taskType.getTaskStates();
-
+        TaskStateMachineDefinition machineDefinition = context.getMachineDefinition();
+        Assert.notNull(machineDefinition, "machineDefinition is null");
+        String definition = machineDefinition.getDefinition();
+        Assert.hasText(definition, "definition is null");
+        SquirrelTaskStateMachineDefinition def = objectMapper.readValue(definition, SquirrelTaskStateMachineDefinition.class);
 
         StateMachineBuilder<SquirrelTaskStateMachine, TaskStateEnum, SquirrelTaskEvent, SquirrelTaskContext> builder =
                 StateMachineBuilderFactory.create(SquirrelTaskStateMachine.class, TaskStateEnum.class, SquirrelTaskEvent.class, SquirrelTaskContext.class);
@@ -85,31 +91,36 @@ public class SquirrelTaskStateMachineEngine {
                 .on(SquirrelTaskEvent.FINISH).when(applicationContext.getBean(Handling_2_Finished_Condition.class))
                 .perform(applicationContext.getBean(Handling_2_Finished_Perform.class));
 
-        builder.externalTransition()
-                .from(TaskStateEnum.HANDLING).to(TaskStateEnum.SUSPEND)
-                .on(SquirrelTaskEvent.HANG_UP).when(applicationContext.getBean(Handling_2_Suspend_Condition.class))
-                .perform(applicationContext.getBean(Handling_2_Suspend_Perform.class));
+        // 挂起
+        if (Boolean.TRUE.equals(def.getAllowHuangUp())) {
+            builder.externalTransition()
+                    .from(TaskStateEnum.HANDLING).to(TaskStateEnum.SUSPEND)
+                    .on(SquirrelTaskEvent.HANG_UP).when(applicationContext.getBean(Handling_2_Suspend_Condition.class))
+                    .perform(applicationContext.getBean(Handling_2_Suspend_Perform.class));
 
-        builder.externalTransition()
-                .from(TaskStateEnum.SUSPEND).to(TaskStateEnum.HANDLING)
-                .on(SquirrelTaskEvent.HANG_DOWN).when(applicationContext.getBean(Suspend_2_Handling_Condition.class))
-                .perform(applicationContext.getBean(Suspend_2_Handling_Perform.class));
+            builder.externalTransition()
+                    .from(TaskStateEnum.SUSPEND).to(TaskStateEnum.HANDLING)
+                    .on(SquirrelTaskEvent.HANG_DOWN).when(applicationContext.getBean(Suspend_2_Handling_Condition.class))
+                    .perform(applicationContext.getBean(Suspend_2_Handling_Perform.class));
+        }
 
+        // 审核
+        if (Boolean.TRUE.equals(def.getNeedAudit())) {
+            builder.externalTransition()
+                    .from(TaskStateEnum.FINISHED).to(TaskStateEnum.AUDITING)
+                    .on(SquirrelTaskEvent.EVALUATE).when(applicationContext.getBean(Finished_2_Auditing_Condition.class))
+                    .perform(applicationContext.getBean(Finished_2_Auditing_Perform.class));
 
-        builder.externalTransition()
-                .from(TaskStateEnum.FINISHED).to(TaskStateEnum.AUDITING)
-                .on(SquirrelTaskEvent.EVALUATE).when(applicationContext.getBean(Finished_2_Auditing_Condition.class))
-                .perform(applicationContext.getBean(Finished_2_Auditing_Perform.class));
+            builder.externalTransition()
+                    .from(TaskStateEnum.AUDITING).to(TaskStateEnum.CLOSED)
+                    .on(SquirrelTaskEvent.PASS_EVALUATE).when(applicationContext.getBean(Auditing_2_Closed_Condition.class))
+                    .perform(applicationContext.getBean(Auditing_2_Closed_Perform.class));
 
-        builder.externalTransition()
-                .from(TaskStateEnum.AUDITING).to(TaskStateEnum.CLOSED)
-                .on(SquirrelTaskEvent.PASS_EVALUATE).when(applicationContext.getBean(Auditing_2_Closed_Condition.class))
-                .perform(applicationContext.getBean(Auditing_2_Closed_Perform.class));
-
-        builder.externalTransition()
-                .from(TaskStateEnum.AUDITING).to(TaskStateEnum.HANDLING)
-                .on(SquirrelTaskEvent.REJECT_EVALUATE).when(applicationContext.getBean(Auditing_2_Handling_Condition.class))
-                .perform(applicationContext.getBean(Auditing_2_Handling_Perform.class));
+            builder.externalTransition()
+                    .from(TaskStateEnum.AUDITING).to(TaskStateEnum.HANDLING)
+                    .on(SquirrelTaskEvent.REJECT_EVALUATE).when(applicationContext.getBean(Auditing_2_Handling_Condition.class))
+                    .perform(applicationContext.getBean(Auditing_2_Handling_Perform.class));
+        }
 
         builder.defineTerminateEvent(SquirrelTaskEvent.CLOSE);
         builder.defineFinalState(TaskStateEnum.CLOSED);

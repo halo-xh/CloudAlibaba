@@ -2,14 +2,22 @@ package com.example.task.service.impl;
 
 import com.example.common.SnowflakeIdWorker;
 import com.example.fsm.event.TaskEventEnum;
+import com.example.squirrel.context.SquirrelTaskContext;
+import com.example.squirrel.engine.SquirrelTaskStateMachineDefinition;
+import com.example.squirrel.engine.SquirrelTaskStateMachineEngine;
+import com.example.squirrel.event.SquirrelTaskEvent;
 import com.example.task.controller.request.TaskCreateRequest;
 import com.example.task.convertor.TaskConvertor;
 import com.example.task.entity.Task;
+import com.example.task.entity.TaskStateMachineDefinition;
 import com.example.task.entity.TaskType;
 import com.example.task.enums.TaskStateEnum;
 import com.example.task.manager.TaskManager;
+import com.example.task.manager.TaskStateMachineDefinitionManager;
 import com.example.task.manager.TaskTypeManager;
 import com.example.task.service.TaskService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.redisson.api.RLock;
@@ -51,6 +59,14 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private RedissonClient redissonClient;
 
+    @Autowired
+    private TaskStateMachineDefinitionManager taskStateMachineDefinitionManager;
+
+    @Autowired
+    private SquirrelTaskStateMachineEngine squirrelTaskStateMachineEngine;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private static final TaskConvertor TASK_CONVERTOR = Mappers.getMapper(TaskConvertor.class);
 
@@ -67,6 +83,7 @@ public class TaskServiceImpl implements TaskService {
         task.setId(id);
         taskManager.create(task);
         createAndFireEventWithStateMachine(id, TaskEventEnum.SUBMIT);
+        createAndFireEventWithSquirrelStateMachine(id, TaskEventEnum.SUBMIT);
         return id;
     }
 
@@ -158,6 +175,40 @@ public class TaskServiceImpl implements TaskService {
             stateMachine.sendEvent(message);
             boolean hasStateMachineError = stateMachine.hasStateMachineError();
             Assert.isTrue(!hasStateMachineError, "创建状态机系统错误");
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    @SneakyThrows
+    private void createAndFireEventWithSquirrelStateMachine(Long taskId, TaskEventEnum event) {
+        RLock lock = redissonClient.getLock(String.valueOf(taskId));
+        if (!lock.tryLock()) {
+            throw new RuntimeException("正在处理:" + event.getDescription());
+        }
+        try {
+            SquirrelTaskContext squirrelTaskContext = new SquirrelTaskContext();
+            Task task = taskManager.findById(taskId);
+            squirrelTaskContext.setTask(task);
+            TaskType taskType = taskTypeManager.findById(task.getTaskType());
+            squirrelTaskContext.setTaskType(taskType);
+            TaskStateMachineDefinition machineDefinition = taskStateMachineDefinitionManager.findByTaskId(task.getId());
+            if (machineDefinition == null) {
+                TaskStateMachineDefinition definition = new TaskStateMachineDefinition();
+                definition.setTaskId(task.getId());
+                SquirrelTaskStateMachineDefinition squirrelTaskStateMachineDefinition = new SquirrelTaskStateMachineDefinition();
+                squirrelTaskStateMachineDefinition.setTaskStates(taskType.getTaskStates());
+                squirrelTaskStateMachineDefinition.setNeedAudit(taskType.getNeedAudit());
+                squirrelTaskStateMachineDefinition.setNeedManualDispatch(taskType.getNeedManualDispatch());
+                squirrelTaskStateMachineDefinition.setNeedInviteEvaluation(taskType.getNeedInviteEvaluation());
+                squirrelTaskStateMachineDefinition.setAllowHuangUp(taskType.getAllowHuangUp());
+                definition.setDefinition(objectMapper.writeValueAsString(squirrelTaskStateMachineDefinition));
+                taskStateMachineDefinitionManager.save(definition);
+                squirrelTaskContext.setMachineDefinition(definition);
+            } else {
+                squirrelTaskContext.setMachineDefinition(machineDefinition);
+            }
+            squirrelTaskStateMachineEngine.createAndFire(squirrelTaskContext, SquirrelTaskEvent.SUBMIT);
         } finally {
             lock.unlock();
         }
