@@ -81,6 +81,7 @@ public class CodeGeneratorCola {
 
                     // --- common ---
                     consumer.customFile(cf -> cf.formatNameFunction((tb) -> "AbstractVO.java").fileName("").filePath(outputDir + CLIENT_MODULE_NAME + "/src/main/java/").packageName((String) customMap.get("client_common_package")).templatePath("/templates/AbstractVO.java.ftl").build());
+                    consumer.customFile(cf -> cf.formatNameFunction((tb) -> "AbstractDTO.java").fileName("").filePath(outputDir + CLIENT_MODULE_NAME + "/src/main/java/").packageName((String) customMap.get("client_common_package")).templatePath("/templates/AbstractDTO.java.ftl").build());
                     consumer.customFile(cf -> cf.formatNameFunction((tb) -> "AbstractEntity.java").fileName("").filePath(outputDir + INFRA_MODULE_NAME + "/src/main/java/").packageName((String) customMap.get("infra_common_package")).templatePath("/templates/AbstractEntity.java.ftl").build());
 
                     // --- client ---
