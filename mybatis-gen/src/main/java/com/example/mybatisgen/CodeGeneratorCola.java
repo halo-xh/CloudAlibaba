@@ -10,11 +10,11 @@ import java.util.Map;
 
 public class CodeGeneratorCola {
 
-    private static final String ARTIFACT_ID = "workorder-order-service";
-    private static final String GROUP_ID = "com.xh.order";
-    private static final String MODULE_NAME = "test";
+    private static final String ARTIFACT_ID = "workorder-admin-service";
+    private static final String GROUP_ID = "com.xh.admin";
+    private static final String MODULE_NAME = "res";
     private static final String outputDir = "/Users/fanyi/Downloads/workorder-main/" + ARTIFACT_ID + "/";
-    private static final String TABLES = "case_user_status";
+    private static final String TABLES = "adm_resource,adm_role,adm_role_relation";
 
 
     private static final String ADAPTER_MODULE_NAME = ARTIFACT_ID + "-adapter";
@@ -58,7 +58,7 @@ public class CodeGeneratorCola {
 
     public static void main(String[] args) {
         // 数据源配置
-        FastAutoGenerator.create("jdbc:mysql://localhost:3306/test?serverTimezone=GMT%2B8", "root", "12345678")
+        FastAutoGenerator.create("jdbc:mysql://localhost:3306/admin_service?serverTimezone=GMT%2B8", "root", "12345678")
                 .globalConfig(builder -> {
                     builder.author("xh")        // 设置作者
                             .enableSpringdoc()
@@ -108,7 +108,7 @@ public class CodeGeneratorCola {
 
                 .strategyConfig(builder -> {
                     builder.addInclude(TABLES) // 设置需要生成的表名 可边长参数“user”, “user1”
-                            .addTablePrefix("case_") // 设置过滤表前缀
+                            .addTablePrefix("") // 设置过滤表前缀
                             .entityBuilder()
                             .enableLombok()
                             .superClass((String) customMap.get("infra_common_package") + ".AbstractEntity")
@@ -121,6 +121,7 @@ public class CodeGeneratorCola {
                             .controllerBuilder() //controller 策略配置
                             .disable()
                             .mapperBuilder()// mapper策略配置
+                            .mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)
                             .disableMapperXml()
                             .disable()
                             .build()

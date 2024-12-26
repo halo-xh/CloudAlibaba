@@ -68,7 +68,7 @@ private ${table.entityName}Service ${table.serviceName?uncap_first};
     <#if springdoc>
     @Operation(summary = "详情", description = "详情")
     @Parameters({
-    @Parameter(name = "id", description = "id", required = true, in = ParameterIn.PATH)
+        @Parameter(name = "id", description = "id", required = true, in = ParameterIn.PATH)
     })
     <#elseif swagger>
     @ApiOperation(value = "详情")
