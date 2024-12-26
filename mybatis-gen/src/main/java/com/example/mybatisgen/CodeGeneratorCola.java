@@ -1,10 +1,16 @@
 package com.example.mybatisgen;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -116,6 +122,7 @@ public class CodeGeneratorCola {
                             .entityBuilder()
                             .enableLombok()
                             .superClass((String) customMap.get("infra_common_package") + ".AbstractEntity")
+                            .addSuperEntityColumns(commonEntityFields())
                             .serviceBuilder()//service策略配置
                             .disableServiceImpl()
                             .disableService()
@@ -125,7 +132,7 @@ public class CodeGeneratorCola {
                             .controllerBuilder() //controller 策略配置
                             .disable()
                             .mapperBuilder()// mapper策略配置
-                            .mapperAnnotation(org.apache.ibatis.annotations.Mapper.class)
+                            .mapperAnnotation(Mapper.class)
                             .disableMapperXml()
                             .disable()
                             .build()
@@ -138,6 +145,21 @@ public class CodeGeneratorCola {
                 .execute();
 
     }
+
+
+    private static List<String> commonEntityFields() {
+        List<String> fs = new ArrayList<>();
+        Class<AbstractEntity> abstractEntityClass = AbstractEntity.class;
+        for (Field field : abstractEntityClass.getDeclaredFields()) {
+            field.setAccessible(true);
+            TableField annotation = field.getAnnotation(TableField.class);
+            if (annotation != null) {
+                fs.add(annotation.value());
+            }
+        }
+        return fs;
+    }
+
 
     /**
      * 代码生成器支持自定义[DTO\VO等]模版

@@ -13,7 +13,8 @@ import java.util.Date;
 public abstract class AbstractEntity {
 
     @Schema(description = "id", requiredMode = Schema.RequiredMode.REQUIRED)
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    @TableField(value = "id")
     private Long id;
 
     @Schema(description = "创建时间")
