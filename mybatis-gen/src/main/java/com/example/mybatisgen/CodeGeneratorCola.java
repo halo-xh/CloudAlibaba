@@ -43,6 +43,7 @@ public class CodeGeneratorCola {
         customMap.put("infra_entity_package", GROUP_ID + ".infra." + MODULE_NAME);
         customMap.put("infra_mapper_package", GROUP_ID + ".infra." + MODULE_NAME + ".mapper");
         customMap.put("infra_repository_package", GROUP_ID + ".infra." + MODULE_NAME + ".repository");
+        customMap.put("infra_manager_package", GROUP_ID + ".infra." + MODULE_NAME + ".manager");
         customMap.put("infra_common_package", GROUP_ID + ".infra.common");
 
 
@@ -96,6 +97,9 @@ public class CodeGeneratorCola {
                     consumer.customFile(cf -> cf.fileName("RepositoryImpl.java").filePath(outputDir + INFRA_MODULE_NAME + "/src/main/java/").packageName((String) customMap.get("infra_repository_package")).templatePath("/templates/repositoryImpl.java.ftl").enableFileOverride().build());
                     // xml
                     consumer.customFile(cf -> cf.fileName("Mapper.xml").filePath(outputDir + INFRA_MODULE_NAME + "/src/main/resources/mapper/" + MODULE_NAME).templatePath("/templates/mapper.xml.ftl").enableFileOverride().build());
+                    // manager
+                    consumer.customFile(cf -> cf.fileName("Manager.java").filePath(outputDir + INFRA_MODULE_NAME + "/src/main/java/").packageName((String) customMap.get("infra_manager_package")).templatePath("/templates/manager.java.ftl").enableFileOverride().build());
+                    consumer.customFile(cf -> cf.fileName("ManagerImpl.java").filePath(outputDir + INFRA_MODULE_NAME + "/src/main/java/").packageName((String) customMap.get("infra_manager_package") + ".impl").templatePath("/templates/managerImpl.java.ftl").enableFileOverride().build());
 
                     // --- domain ---
                     // repository

@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiModelProperty;
 </#if>
 <#if entityLombokModel>
 import lombok.Data;
+
+    import java.io.Serializable;
 </#if>
 
 /**
@@ -27,7 +29,7 @@ import lombok.Data;
 <#elseif swagger>
 @ApiModel(value = "${entity}对象", description = "${table.comment!}")
 </#if>
-public class ${entity}DTO {
+public class ${entity}DTO implements Serializable {
 
 <#if entitySerialVersionUID>
 
