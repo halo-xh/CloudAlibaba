@@ -1,6 +1,6 @@
 package ${client_dto_package};
 
-
+import ${client_common_package}.AbstractDTO;
 <#if springdoc>
 import io.swagger.v3.oas.annotations.media.Schema;
 <#elseif swagger>
@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 </#if>
 <#if entityLombokModel>
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 </#if>
@@ -29,7 +30,8 @@ import java.io.Serializable;
 <#elseif swagger>
 @ApiModel(value = "${entity}对象", description = "${table.comment!}")
 </#if>
-public class ${entity}DTO implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class ${entity}DTO extends AbstractDTO implements Serializable {
 
 <#if entitySerialVersionUID>
 
