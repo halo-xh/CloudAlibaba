@@ -1,6 +1,7 @@
 package ${infra_manager_package}.impl;
 
 import ${infra_entity_package}.${entity}DO;
+import ${infra_manager_package}.${entity}Manager;
 import ${infra_mapper_package}.${table.mapperName};
 <#if generateService>
     import ${package.Service}.${table.serviceName};
@@ -19,6 +20,6 @@ import org.springframework.stereotype.Service;
 */
 @Slf4j
 @Service
-public class ${table.entityName}ManagerImpl extends ${superServiceImplClass}<${table.mapperName}, ${entity}DO><#if generateService> implements ${table.entityName}Manager</#if> {
+public class ${table.entityName}ManagerImpl extends ${superServiceImplClass}<${table.mapperName}, ${entity}DO> implements ${table.entityName}Manager {
 
 }

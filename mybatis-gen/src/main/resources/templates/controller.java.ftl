@@ -14,11 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.annotations.Api;
 </#if>
 import org.springframework.web.bind.annotation.RequestMapping;
-<#if restControllerStyle>
 import org.springframework.web.bind.annotation.RestController;
-<#else>
-import org.springframework.stereotype.Controller;
-</#if>
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 <#if superControllerClassPackage??>
@@ -38,11 +34,7 @@ import ${superControllerClassPackage};
 <#elseif swagger>
 @Api(tags = "${table.comment!}接口")
 </#if>
-<#if restControllerStyle>
 @RestController
-<#else>
-@Controller
-</#if>
 @RequestMapping("<#if package.ModuleName?? && package.ModuleName != "">/${package.ModuleName}</#if>/<#if controllerMappingHyphenStyle>${controllerMappingHyphen}<#else>${table.entityPath}</#if>")
 <#if superControllerClass??>
 public class ${table.controllerName} extends ${superControllerClass} {
