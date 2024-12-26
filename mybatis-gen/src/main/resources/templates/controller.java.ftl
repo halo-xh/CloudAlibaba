@@ -51,7 +51,7 @@ public class ${table.controllerName} {
 </#if>
 
     @Autowired
-private ${table.entityName}Service ${table.serviceName?uncap_first};
+    private ${table.entityName}Service ${table.serviceName?uncap_first};
 
 
     <#if springdoc>

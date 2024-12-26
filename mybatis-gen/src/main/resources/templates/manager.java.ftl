@@ -6,14 +6,13 @@ import org.springframework.stereotype.Service;
 
 /**
 * <p>
-    * ${table.comment!} ManagerImpl
-    * </p>
+* ${table.comment!} ManagerImpl
+* </p>
 *
 * @author ${author}
 * @since ${date}
 */
 @Service
-public interface ${table.entityName}Manager extends IService
-<${entity}DO> {
+public interface ${table.entityName}Manager extends IService<${entity}DO> {
 
-    }
+}

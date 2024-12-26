@@ -17,8 +17,7 @@ import ${mapperAnnotationClass.name};
 interface ${table.mapperName} : ${superMapperClass}
 <${entity}DO>
 <#else>
- public interface ${table.mapperName} extends ${superMapperClass}
- <${entity}DO> {
+public interface ${table.mapperName} extends ${superMapperClass}<${entity}DO> {
 
 }
 </#if>

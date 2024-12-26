@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 
 /**
 * <p>
-    * ${table.comment!} ManagerImpl
-    * </p>
+* ${table.comment!} ManagerImpl
+* </p>
 *
 * @author ${author}
 * @since ${date}

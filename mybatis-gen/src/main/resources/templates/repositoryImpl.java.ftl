@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
-    * ${table.comment!} RepositoryImpl
+ * ${table.comment!} RepositoryImpl
  * </p>
  *
  * @author ${author}
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ${table.entityName}RepositoryImpl implements ${table.entityName}Repository {
 
-@Autowired
-private ${table.entityName}Manager manager;
+    @Autowired
+    private ${table.entityName}Manager ${table.entityName?uncap_first}Manager;
 
 }
