@@ -124,6 +124,7 @@ public class CodeGeneratorCola {
                             .enableLombok()
                             .superClass((String) customMap.get("infra_common_package") + ".AbstractEntity")
                             .addSuperEntityColumns(commonEntityFields())
+                            .enableTableFieldAnnotation()
                             .serviceBuilder()//service策略配置
                             .disableServiceImpl()
                             .disableService()
