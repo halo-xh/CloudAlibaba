@@ -31,6 +31,7 @@ import java.io.Serializable;
 @ApiModel(value = "${entity}对象", description = "${table.comment!}")
 </#if>
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 public class ${entity}DTO extends AbstractDTO implements Serializable {
 
 <#if entitySerialVersionUID>

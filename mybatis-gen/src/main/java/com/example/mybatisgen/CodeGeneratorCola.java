@@ -16,11 +16,12 @@ import java.util.Map;
 
 public class CodeGeneratorCola {
 
-    private static final String ARTIFACT_ID = "workorder-admin-service";
-    private static final String GROUP_ID = "com.xh.admin";
-    private static final String MODULE_NAME = "res";
-    private static final String outputDir = "/Users/fanyi/Downloads/workorder-main/" + ARTIFACT_ID + "/";
-    private static final String TABLES = "adm_resource,adm_role,adm_role_relation";
+    private static final String ARTIFACT_ID = "workorder-order-service";
+    private static final String GROUP_ID = "com.xh.order";
+    private static final String MODULE_NAME = "order";
+    private static final String outputDir = "/Users/hongxiao/IdeaProjects/workorder/" + ARTIFACT_ID + "/";
+    private static final String TABLES =
+            "order_form_config," ;
 
 
     private static final String ADAPTER_MODULE_NAME = ARTIFACT_ID + "-adapter";
@@ -65,7 +66,7 @@ public class CodeGeneratorCola {
 
     public static void main(String[] args) {
         // 数据源配置
-        FastAutoGenerator.create("jdbc:mysql://localhost:3306/admin_service?serverTimezone=GMT%2B8", "root", "12345678")
+        FastAutoGenerator.create("jdbc:mysql://localhost:3306/order_service?serverTimezone=GMT%2B8", "root", "12345678")
                 .globalConfig(builder -> {
                     builder.author("xh")        // 设置作者
                             .enableSpringdoc()

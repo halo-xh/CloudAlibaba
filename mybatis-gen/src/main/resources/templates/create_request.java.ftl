@@ -25,6 +25,7 @@ import java.io.Serializable;
 <#if entityLombokModel>
 @Data
 @EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 </#if>
 <#if springdoc>
 @Schema(name = "${entity}", description = "${table.comment!}")
