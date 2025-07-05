@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
 <#if entityLombokModel>
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.io.Serializable;
 </#if>
